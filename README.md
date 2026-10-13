@@ -1,3 +1,5 @@
+> **AI disclosure.** Most of the code in this repository, and its documentation, was either written or rewritten with [Claude](https://claude.com/claude-code) (Anthropic's AI assistant), under the direction and review of the repository owner. Treat it with the usual scrutiny, and check results that matter.
+
 # dluxtras
 
 Extensions for [∂Lux](https://github.com/LouisDesdoigts/dLux): reusable pieces shared by several dLux-based projects. It currently holds the spectral tools:
@@ -50,8 +52,6 @@ pytest
 ## Credits
 
 `CombinedSpectrum` and `CombinedBasisSpectrum` are adapted from [h-greer/hubble](https://github.com/h-greer/hubble) (MIT License, © 2024 h-greer); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The Hermite sparsity, `proj`, `low_memory`, the incident/detected flux conventions and the spectral Fisher tools were added on top.
-
-> **AI disclosure.** Most of the code in this repository, and its documentation, was written with [Claude](https://claude.com/claude-code) (Anthropic's AI assistant), under the direction and review of the repository owner. Treat it with the usual scrutiny, and check results that matter.
 
 ## License
 
