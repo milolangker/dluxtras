@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dluxtras"
+version = "0.1.0"
+description = "Extensions for dLux: throughput-weighted spectra, Hermite wavelength sparsity, spectral eigenbases"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "Milo Langker" }]
+dependencies = [
+    "numpy",
+    "jax",
+    "dLux>=0.15,<0.16",
+    "zodiax>=0.5",
+    "equinox",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Repository = "https://github.com/milolangker/dluxtras"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
