@@ -43,6 +43,25 @@ telescope = dl.Telescope(optics, PointSourceArcsec(spectrum=spectrum, position=n
 image = telescope.model()  # sums to ~spectrum.proper_flux(); 12 propagated wavelengths stand in for 100
 ```
 
+## Fitting
+
+`FitProblem` holds what is fitted (model, parameters, data, likelihood); its `curvature()` is the
+Fisher matrix in unit-free form; `fit()` runs a resumable optimiser in Fisher-whitened coordinates.
+
+```python
+from dluxtras import FitProblem, gaussian_nll
+
+params = {"source.position": np.zeros(2), "aberrations.coefficients": np.zeros(8)}
+problem = FitProblem(telescope, params, data, gaussian_nll, std)
+fit = problem.fit()                       # default: 1/diag(Fisher) preconditioned SGD, lr 1
+fit.run(200).refresh().run(200)           # refresh: recompute the Fisher where the fit is now
+fit = problem.fit(precondition="full", optimiser="lbfgs").run(50)   # usually much faster
+sigma = problem.curvature(fit.params, precondition="full").std   # marginal 1-sigma
+```
+
+The likelihood is any `nll(prediction, data, *args)`; the Fisher is exact for Gaussian noise of
+fixed (co)variance, correlated or not, and for Poisson noise. See `dluxtras.fitting` for details, and `benchmarks/fitting_benchmark.md` for which method to use.
+
 ## Tests
 
 ```bash

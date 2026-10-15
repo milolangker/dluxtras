@@ -16,6 +16,7 @@ dependencies = [
     "dLux>=0.15,<0.16",
     "zodiax>=0.5",
     "equinox",
+    "optax",
 ]
 
 [project.optional-dependencies]
