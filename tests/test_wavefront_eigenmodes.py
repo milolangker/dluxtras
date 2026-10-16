@@ -119,3 +119,18 @@ def test_masks_and_variances_per_model():
     onp.testing.assert_allclose(both, parts, rtol=1e-10)
     with pytest.raises(ValueError, match="per model"):
         wavefront_fisher(models, KEY, bad_masks=[mask])
+
+
+def test_image_shaped_variances():
+    models, _ = make_models()
+    var = onp.asarray(models[0].model()) + 2.0  # (8, 8), the model's output shape
+    flat = wavefront_fisher(models[0], KEY, noise="gaussian", variance=var.ravel()).dense()
+    image = wavefront_fisher(models[0], KEY, noise="gaussian", variance=var).dense()
+    fn = wavefront_fisher(models[0], KEY, variance_fn=lambda mu: mu + 2.0).dense()
+    onp.testing.assert_allclose(image, flat, rtol=1e-12)
+    onp.testing.assert_allclose(fn, flat, rtol=1e-12)
+    # A variance_fn may ignore mu and return a fixed image (e.g. std**2).
+    fixed = wavefront_fisher(models[0], KEY, variance_fn=lambda mu: var).dense()
+    onp.testing.assert_allclose(fixed, flat, rtol=1e-12)
+    fixed_flat = wavefront_fisher(models[0], KEY, variance_fn=lambda mu: var.ravel()).dense()
+    onp.testing.assert_allclose(fixed_flat, flat, rtol=1e-12)

@@ -207,6 +207,21 @@ def _linearise(model, key, q0, shape, noise, variance, variance_fn, bad):
         return np.asarray(model.set(key, q.reshape(shape)).model()).ravel()
 
     mu = predict(q0)
+    # Variances may be given in the model's output shape or already flattened; flatten
+    # them like the prediction.
+    out_shape = jax.eval_shape(lambda: model.model()).shape
+
+    def flatten(v):
+        v = np.asarray(v, dtype=float)
+        return v if v.shape == mu.shape else np.ravel(np.broadcast_to(v, out_shape))
+
+    variance = flatten(variance)
+    if variance_fn is not None:
+        image_fn = variance_fn
+
+        def variance_fn(flat):
+            return flatten(image_fn(flat.reshape(out_shape)))
+
     weight = noise_weights(mu, noise=noise, variance=variance, variance_fn=variance_fn,
                            bad_mask=None if bad is None else onp.asarray(bad).ravel())
 
