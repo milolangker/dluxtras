@@ -12,6 +12,7 @@ Extensions for [∂Lux](https://github.com/LouisDesdoigts/dLux): reusable pieces
 | `dluxtras.sources` | `HermitePointSource` (honours `n_coarse`) and `PointSourceArcsec` (position in arcsec, flux = detected photons). |
 | `dluxtras.throughput` | Loading and binning system throughput; `spectrum_args(...)` builds a `CombinedBasisSpectrum`. |
 | `dluxtras.spectral_eigenmodes` | Spectral Fisher matrix and eigenmodes, and the number of constrainable modes K. |
+| `dluxtras.spectral_bins` | `optimal_bins`: top-hat bins matching the constrainable spectral modes, for reporting recovered spectra. |
 | `dluxtras.wavefront_eigenmodes` | `MaskedPixelOPD` and matrix-free wavefront Fisher eigenmodes. |
 | `dluxtras.eigenmodes` | Shared core: marginalising any model parameter (per exposure or shared) and `leading_modes`. |
 | `dluxtras.fitting` | `FitProblem` / `Curvature` / `FisherFit`: Fisher-whitened fitting (Nesterov SGD, L-BFGS or natural gradient) and uncertainties. |

@@ -17,6 +17,7 @@ dLux-based projects.
 | `dluxtras.sources` | `HermitePointSource` (honours Hermite sparsity) and `PointSourceArcsec` (position in arcsec, flux in detected photons). | [Spectra, sources and throughput](spectra.md) |
 | `dluxtras.throughput` | Loading and binning system throughput; `spectrum_args` builds a `CombinedBasisSpectrum`. | [Spectra, sources and throughput](spectra.md) |
 | `dluxtras.spectral_eigenmodes` | Spectral Fisher matrix, its eigenmodes, and the number of constrainable modes K, optionally marginalising any model parameter. | [Spectral eigenmodes](spectral_eigenmodes.md) |
+| `dluxtras.spectral_bins` | `optimal_bins`: top-hat bins that best match the constrainable spectral modes, for reporting a recovered spectrum with its covariance. | [Spectral eigenmodes](spectral_eigenmodes.md#reporting-the-spectrum-in-bins) |
 | `dluxtras.wavefront_eigenmodes` | `MaskedPixelOPD` (one OPD value per pupil pixel) and matrix-free wavefront Fisher eigenmodes, marginalising positions, pixel scale, focus or any other parameter. | [Wavefront eigenmodes](wavefront_eigenmodes.md) |
 | `dluxtras.eigenmodes` | The shared core: Fisher operators, marginalisation and `leading_modes`. | [Wavefront eigenmodes](wavefront_eigenmodes.md#marginalising-nuisance-parameters) |
 | `dluxtras.fitting` | `FitProblem`, `Curvature` and `FisherFit`: Fisher-whitened fitting with SGD, Nesterov momentum, L-BFGS or natural gradient, plus uncertainties. | [Fitting](fitting.md) |

@@ -8,6 +8,7 @@ from . import (
     fitting,
     sources,
     spectra,
+    spectral_bins,
     spectral_eigenmodes,
     throughput,
     wavefront_eigenmodes,
@@ -22,6 +23,7 @@ from .spectra import (
     propagate_spectrum,
     recommend_wavelength_sampling,
 )
+from .spectral_bins import SpectralBins, optimal_bins
 from .spectral_eigenmodes import constrainable_modes, spectral_eigenmodes, spectral_fisher
 from .throughput import bin_throughput, load_throughput, spectrum_args
 from .wavefront_eigenmodes import (
@@ -41,6 +43,8 @@ __all__ = [
     "spectral_fisher",
     "spectral_eigenmodes",
     "constrainable_modes",
+    "optimal_bins",
+    "SpectralBins",
     "MaskedPixelOPD",
     "nuisance_shapes",
     "wavefront_fisher",

@@ -86,6 +86,7 @@ nav:
     - Sources: API/sources.md
     - Throughput: API/throughput.md
     - Spectral eigenmodes: API/spectral_eigenmodes.md
+    - Spectral bins: API/spectral_bins.md
     - Wavefront eigenmodes: API/wavefront_eigenmodes.md
     - Eigenmode core: API/eigenmodes.md
     - Fitting: API/fitting.md

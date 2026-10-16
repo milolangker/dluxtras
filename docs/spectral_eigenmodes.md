@@ -124,3 +124,65 @@ K is the number of modes that pass; `constrainable_modes(modes, threshold=0.1)`.
 
 Then use K to choose wavelength sampling:
 `recommend_wavelength_sampling(K, photons=N)` suggests `n_coarse ≈ 2K`.
+
+## Reporting the spectrum in bins
+
+After fitting the spectrum in the eigenmode basis, only the first K modes are measured; the
+rest stay at the reference spectrum. To report the result as K top-hat bins, choose bins that
+the measured modes can fully represent. Otherwise the unmeasured modes leak into the bin
+values as bias.
+
+`optimal_bins` places the edges. With `B` the bin matrix (row k is the fraction of each fine
+wavelength cell inside bin k) and `P = V Vᵀ` the projector onto the K modes, the **leakage**
+of bin k is the fraction of the bin outside the modes' span:
+
+$$
+L_k = \frac{\lVert B_k (I - P)\rVert^2}{\lVert B_k\rVert^2}
+$$
+
+The edges minimise the mean leakage, and every mode counts equally. Since top-hats don't
+overlap, K bins for K modes give the same optimum whether you ask how well the modes
+represent the bins or how well the bins represent the modes.
+
+```python
+from dluxtras import optimal_bins, constrainable_modes
+
+K = constrainable_modes(modes)
+V = modes.vectors[:, :K]
+bins = optimal_bins(V, modes.wavelengths)                     # free widths
+bins = optimal_bins(V, modes.wavelengths, equal_widths=True)  # only the outer edges move
+
+# After fitting coefficients c in that basis, with covariance C (e.g. diag(1 / values)):
+flux, cov = bins.bin_modes(c, C, reference=modes.reference)                # photons per bin
+density, dcov = bins.bin_modes(c, C, reference=modes.reference, density=True)  # per metre
+bins.edges, bins.centres, bins.widths, bins.leakage
+```
+
+- **Outer edges** may move inward by up to `max_edge_shift` (default 10% of the span), to
+  trim poorly constrained band tails. `max_edge_shift=0` fixes them.
+- **Free widths** are always at least one fine cell wide.
+- **The search is global.** The objective has kinks wherever an edge crosses a fine cell
+  boundary, so the outer edges are first scanned on a grid, then polished. The free-width
+  search starts from that equal-width optimum, so free widths are never worse than equal
+  widths.
+- **Your own modes work too.** `modes` can be a `SpectralModes`, or any orthonormal columns
+  with their `wavelengths`, e.g. eigenvectors of the observed information at your best fit.
+
+### Equal widths vs free widths, and the choice of normalisation
+
+Here are both options for the 8 leading F606W modes (101 cells, 4700–7200 Å):
+
+| bins | outer edges | mean leakage |
+|---|---|---|
+| equal widths (`equal_widths=True`) | 4749.8–7117.1 Å | 0.162 |
+| free widths | optimised | **0.144** (bins 253–338 Å wide) |
+
+With equal widths, the mean leakage is the same quantity as the width-weighted
+`Σ‖B_k(I−P)‖² / Σ‖B_k‖²`; on these modes the two agreed to 0.35% or better (cells cut by an
+edge are the only difference). Optimising either one finds the same outer edges, to within
+0.3 Å.
+
+With free widths they differ, and the width-weighted form fails. It lets the optimiser shrink
+seven bins to zero width and give the eighth the whole band (a "leakage" of 0.002), which is
+why each bin is normalised separately here.
+
