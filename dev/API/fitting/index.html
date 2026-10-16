@@ -1,0 +1,4154 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for dluxtras, extensions for dLux.">
+      
+      
+        <meta name="author" content="Milo Langker">
+      
+      
+        <link rel="canonical" href="https://milolangker.github.io/dluxtras/dev/API/fitting/">
+      
+      
+      
+        <link rel="prev" href="../eigenmodes/">
+      
+      
+        <link rel="next" href="../curvature/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.70">
+    
+    
+      
+        <title>Fitting - dluxtras documentation</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.e442bf79.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="dluxtras documentation" class="md-header__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dluxtras documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fitting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="dluxtras documentation" class="md-nav__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    dluxtras documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Guides
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra, sources and throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Unit-free Hessians
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting benchmarks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Validation
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Validation
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavelength_sampling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavelength sampling
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  API
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  API
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Sources
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throughput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Eigenmode core
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        fitting
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting.FitProblem" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        FitProblem
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting.Curvature" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Curvature
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting.FisherFit" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        FisherFit
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting.gaussian_nll" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        gaussian_nll
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.fitting.ParameterSelection" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ParameterSelection
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Curvature
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/milolangker/dluxtras/edit/main/docs/API/fitting.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/milolangker/dluxtras/raw/main/docs/API/fitting.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="fitting">Fitting<a class="headerlink" href="#fitting" title="Permanent link">¤</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="dluxtras.fitting"></a>
+    <div class="doc doc-contents first">
+
+        <p>Fisher-preconditioned fitting for dLux/Zodiax models.</p>
+<p>A <code>FitProblem</code> holds what is fitted (model, parameters, data and likelihood). Its
+<code>curvature</code> method computes the Fisher matrix in unit-free form, and its <code>fit</code> method
+returns a resumable <code>FisherFit</code> that optimises in Fisher-whitened coordinates.</p>
+<p>The three main ways to fit are:</p>
+<div class="highlight"><pre><span></span><code><span class="n">problem</span> <span class="o">=</span> <span class="n">FitProblem</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">gaussian_nll</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>                        <span class="c1"># 1. diagonal Fisher, Nesterov SGD</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">optimiser</span><span class="o">=</span><span class="s2">"lbfgs"</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>       <span class="c1"># 2. L-BFGS (stops when converged)</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">precondition</span><span class="o">=</span><span class="s2">"full"</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>      <span class="c1"># 3. natural gradient</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">curvature</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">precondition</span><span class="o">=</span><span class="s2">"full"</span><span class="p">)</span><span class="o">.</span><span class="n">std</span>   <span class="c1"># marginal 1-sigma</span>
+</code></pre></div>
+<p>Enable <code>jax_enable_x64</code> before building models. See the "Fitting" guide in the
+documentation for when to use each option.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><details class="info" open="open">
+<summary>FitProblem</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.fitting.FitProblem" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">fitting</span><span class="o">.</span><span class="n">FitProblem</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nll</span><span class="p">,</span> <span class="o">*</span><span class="n">nll_args</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nll_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FitProblem" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>What is fitted: model, parameters, data and likelihood.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>model</code>
+            </td>
+            <td>
+                  <code><span title="zodiax.Base">Base</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The model, e.g. a <code>dl.Telescope</code>. Parameters are set with <code>model.set(params)</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Starting parameters, <code>{path: array}</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>data</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The data. NaN marks excluded pixels (the likelihood must handle them).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>nll</code>
+            </td>
+            <td>
+                  <code><span title="callable">callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>nll(prediction, data, *nll_args, **nll_kwargs) -&gt; scalar</code>, a negative log
+likelihood: summed over pixels, not averaged, so that the Fisher matrix and
+uncertainties come out in the right units. It must give finite gradients at
+NaN pixels; mask with <code>np.where</code> before arithmetic, as <code>gaussian_nll</code> does.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>*nll_args</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Extra positional arguments for <code>nll</code>, e.g. the per-pixel <code>std</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>()</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>trainable</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Which entries to fit; see <code>ParameterSelection</code>. Default fits everything.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>predict</code>
+            </td>
+            <td>
+                  <code><span title="callable">callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>predict(params, model) -&gt; prediction</code>. Default <code>model.set(params).model()</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>nll_kwargs</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Extra keyword arguments for <code>nll</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>jax_enable_x64</code> is not enabled.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+                  <details class="mkdocstrings-source">
+                    <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">nll</span><span class="p">,</span> <span class="o">*</span><span class="n">nll_args</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">predict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">nll_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">x64_enabled</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Enable jax_enable_x64 before constructing your models"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="n">ParameterSelection</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">trainable</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">predict_fn</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">model</span><span class="p">())</span> <span class="k">if</span> <span class="n">predict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">predict</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">nll_kwargs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span><span class="n">nll_kwargs</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">nll</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">nll</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">nll_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FitProblem.active_labels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active_labels</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FitProblem.active_labels" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Labels of the fitted entries, e.g. <code>"source.position[0]"</code>.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FitProblem.predict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">active</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FitProblem.predict" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Model prediction for active entries <code>active</code> (frozen entries unchanged).</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">active</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Model prediction for active entries `active` (frozen entries unchanged)."""</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">active</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FitProblem.loss" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">loss</span><span class="p">(</span><span class="n">active</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FitProblem.loss" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The negative log likelihood at active entries <code>active</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>active</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values of the active entries, ordered as <code>active_labels</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>data</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Data to evaluate against. Default is the problem's data.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Scalar loss.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The negative log likelihood at active entries `active`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    active : Array</span>
+<span class="sd">        Values of the active entries, ordered as `active_labels`.</span>
+<span class="sd">    data : Array, optional</span>
+<span class="sd">        Data to evaluate against. Default is the problem's data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        Scalar loss.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">active</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FitProblem.curvature" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">curvature</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">precondition</span><span class="o">=</span><span class="s1">'diagonal'</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'expected'</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">curvature_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FitProblem.curvature" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The Fisher matrix (or loss Hessian) at <code>params</code>, in unit-free form.</p>
+<p>With <code>kind="expected"</code> this is the Fisher matrix <code>F = J.T H J</code>, where <code>J</code> is
+the Jacobian of the prediction and <code>H</code> the Hessian of <code>nll</code> with respect to
+the prediction, with the data replaced by the prediction (NaN pixels kept).
+That is exactly the Fisher matrix for Gaussian noise of fixed (co)variance,
+correlated or not, and for Poisson noise, and it is positive semi-definite
+everywhere.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Where to evaluate it. Default is the problem's initial parameters. Frozen
+entries always take the problem's values.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>precondition</code>
+            </td>
+            <td>
+                  <code>(<span title="diagonal">diagonal</span>, <span title="full">full</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>"diagonal"</code> (default) computes only the diagonal of <code>F</code>, plus its
+largest normalised eigenvalue by power iteration; that is enough for
+whitening but not for covariances. <code>"full"</code> computes the whole matrix.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;diagonal&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kind</code>
+            </td>
+            <td>
+                  <code>(<span title="expected">expected</span>, <span title="observed">observed</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>"expected"</code> (default) is the Fisher matrix described above. <code>"observed"</code>
+is the Hessian of the loss against the actual data (or <code>curvature_data</code>),
+which includes residual terms and can be indefinite away from the best
+fit. <code>"observed"</code> always computes the full matrix.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;expected&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>damping</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Added to the normalised matrix's diagonal before whitening, so 0.01 adds
+1% of each diagonal entry. Only for <code>precondition="full"</code>, to whiten near-
+singular problems. Covariances stay undamped. Default 0.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>curvature_data</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Data to use instead of the problem's data. Only for <code>kind="observed"</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>batch_size</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>How many derivative columns to compute at once. Affects memory only.
+Default 1.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.Curvature(selection, active, kind, precondition, damping, curvature_data, batch_size, scales, normalised, eigenvalues, lambda_max, transform)
+
+  
+      dataclass
+   (dluxtras.fitting.Curvature)" href="./#dluxtras.fitting.Curvature">Curvature</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If a parameter has no positive curvature (freeze it), if the curvature is
+not finite, or if <code>precondition="full"</code> and the normalised matrix is
+singular or indefinite (freeze degenerate parameters or set <code>damping</code>).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">precondition</span><span class="o">=</span><span class="s2">"diagonal"</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"expected"</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+              <span class="n">curvature_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The Fisher matrix (or loss Hessian) at `params`, in unit-free form.</span>
+
+<span class="sd">    With `kind="expected"` this is the Fisher matrix `F = J.T H J`, where `J` is</span>
+<span class="sd">    the Jacobian of the prediction and `H` the Hessian of `nll` with respect to</span>
+<span class="sd">    the prediction, with the data replaced by the prediction (NaN pixels kept).</span>
+<span class="sd">    That is exactly the Fisher matrix for Gaussian noise of fixed (co)variance,</span>
+<span class="sd">    correlated or not, and for Poisson noise, and it is positive semi-definite</span>
+<span class="sd">    everywhere.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : dict, optional</span>
+<span class="sd">        Where to evaluate it. Default is the problem's initial parameters. Frozen</span>
+<span class="sd">        entries always take the problem's values.</span>
+<span class="sd">    precondition : {"diagonal", "full"}, optional</span>
+<span class="sd">        `"diagonal"` (default) computes only the diagonal of `F`, plus its</span>
+<span class="sd">        largest normalised eigenvalue by power iteration; that is enough for</span>
+<span class="sd">        whitening but not for covariances. `"full"` computes the whole matrix.</span>
+<span class="sd">    kind : {"expected", "observed"}, optional</span>
+<span class="sd">        `"expected"` (default) is the Fisher matrix described above. `"observed"`</span>
+<span class="sd">        is the Hessian of the loss against the actual data (or `curvature_data`),</span>
+<span class="sd">        which includes residual terms and can be indefinite away from the best</span>
+<span class="sd">        fit. `"observed"` always computes the full matrix.</span>
+<span class="sd">    damping : float, optional</span>
+<span class="sd">        Added to the normalised matrix's diagonal before whitening, so 0.01 adds</span>
+<span class="sd">        1% of each diagonal entry. Only for `precondition="full"`, to whiten near-</span>
+<span class="sd">        singular problems. Covariances stay undamped. Default 0.</span>
+<span class="sd">    curvature_data : Array, optional</span>
+<span class="sd">        Data to use instead of the problem's data. Only for `kind="observed"`.</span>
+<span class="sd">    batch_size : int, optional</span>
+<span class="sd">        How many derivative columns to compute at once. Affects memory only.</span>
+<span class="sd">        Default 1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Curvature</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a parameter has no positive curvature (freeze it), if the curvature is</span>
+<span class="sd">        not finite, or if `precondition="full"` and the normalised matrix is</span>
+<span class="sd">        singular or indefinite (freeze degenerate parameters or set `damping`).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">precondition</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"diagonal"</span><span class="p">,</span> <span class="s2">"full"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"precondition must be 'diagonal' or 'full'"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"expected"</span><span class="p">,</span> <span class="s2">"observed"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"kind must be 'expected' or 'observed'"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span> <span class="ow">and</span> <span class="n">damping</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"damping must be finite and nonnegative"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">damping</span> <span class="ow">and</span> <span class="n">precondition</span> <span class="o">==</span> <span class="s2">"diagonal"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"damping only applies to precondition='full'"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">curvature_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"expected"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"curvature_data only applies to kind='observed'"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span> <span class="o">!=</span> <span class="n">batch_size</span> <span class="ow">or</span> <span class="n">batch_size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"batch_size must be a positive integer"</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">initial_active</span> <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">active_of</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"expected"</span><span class="p">:</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">jvp</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+        <span class="n">nll_grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nll</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">reference</span><span class="p">))</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">hvp</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># Hessian of nll in prediction space, times t</span>
+            <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">nll_grad</span><span class="p">,</span> <span class="p">(</span><span class="n">mu</span><span class="p">,),</span> <span class="p">(</span><span class="n">t</span><span class="p">,))[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">precondition</span> <span class="o">==</span> <span class="s2">"diagonal"</span><span class="p">:</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">column_curvature</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">jvp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="n">hvp</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+            <span class="n">diagonal</span> <span class="o">=</span> <span class="n">_batched</span><span class="p">(</span><span class="n">column_curvature</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pullback</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">_batched</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">pullback</span><span class="p">(</span><span class="n">hvp</span><span class="p">(</span><span class="n">jvp</span><span class="p">(</span><span class="n">v</span><span class="p">)))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">curvature_data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">curvature_data</span><span class="p">)</span>
+        <span class="n">loss_grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">_batched</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">loss_grad</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="p">(</span><span class="n">v</span><span class="p">,))[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span>
+                          <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">+</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">diagonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">diagonal</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Nonfinite curvature: check that nll has finite gradients at "</span>
+                         <span class="s2">"NaN pixels (see gaussian_nll)"</span><span class="p">)</span>
+    <span class="n">bad</span> <span class="o">=</span> <span class="p">[</span><span class="n">label</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_labels</span><span class="p">,</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">diagonal</span><span class="p">))</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No positive curvature (freeze these parameters): </span><span class="si">{</span><span class="n">bad</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">scales</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">diagonal</span><span class="p">)</span>
+
+    <span class="n">normalised</span> <span class="o">=</span> <span class="n">eigenvalues</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">normalised</span> <span class="o">=</span> <span class="n">scales</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">matrix</span> <span class="o">*</span> <span class="n">scales</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">normalised</span><span class="p">)</span>
+        <span class="n">lambda_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pullback</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vjp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">fvp</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">scales</span> <span class="o">*</span> <span class="n">pullback</span><span class="p">(</span><span class="n">hvp</span><span class="p">(</span><span class="n">jvp</span><span class="p">(</span><span class="n">scales</span> <span class="o">*</span> <span class="n">v</span><span class="p">)))[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">lambda_max</span> <span class="o">=</span> <span class="n">_largest_eigenvalue</span><span class="p">(</span><span class="n">fvp</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">precondition</span> <span class="o">==</span> <span class="s2">"diagonal"</span><span class="p">:</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">scales</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lambda_max</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">damped</span> <span class="o">=</span> <span class="n">normalised</span> <span class="o">+</span> <span class="n">damping</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">damped</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-12</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Normalised curvature is singular or indefinite (eigenvalues "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">). Freeze degenerate "</span>
+                <span class="s2">"parameters, use kind='expected', or set damping &gt; 0."</span>
+            <span class="p">)</span>
+        <span class="n">inverse_factor</span> <span class="o">=</span> <span class="n">jsl</span><span class="o">.</span><span class="n">solve_triangular</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">damped</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span> <span class="n">lower</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">transform</span> <span class="o">=</span> <span class="n">scales</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">inverse_factor</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">Curvature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selection</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">precondition</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">curvature_data</span><span class="p">,</span>
+                     <span class="n">batch_size</span><span class="p">,</span> <span class="n">scales</span><span class="p">,</span> <span class="n">normalised</span><span class="p">,</span> <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">lambda_max</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FitProblem.fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">curvature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">optimiser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">curvature_options</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FitProblem.fit" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Start a resumable <code>FisherFit</code> where the curvature was evaluated.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>curvature</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.Curvature(selection, active, kind, precondition, damping, curvature_data, batch_size, scales, normalised, eigenvalues, lambda_max, transform)
+
+  
+      dataclass
+   (dluxtras.fitting.Curvature)" href="./#dluxtras.fitting.Curvature">Curvature</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The curvature to whiten with. Default computes one with
+<code>self.curvature(**curvature_options)</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>optimiser</code>
+            </td>
+            <td>
+                  <code>(None, <span title="lbfgs">lbfgs</span> or <span title="optax.GradientTransformation">GradientTransformation</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>None</code> (default) picks SGD with lr 1: with Nesterov momentum 0.9 for a
+diagonal curvature, plain (natural gradient) for a full one. <code>"lbfgs"</code> is
+<code>optax.lbfgs()</code>. Any optax transform also works; it receives gradients
+in whitened coordinates. Avoid <code>optax.adam</code>, which undoes the whitening.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>tol</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Stop once steps move every parameter by less than <code>tol</code> conditional sigma;
+see <code>FisherFit</code>. Default 0.01 for <code>"lbfgs"</code> and 0 (no early stop) otherwise.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**curvature_options</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Passed to <code>curvature</code> when no <code>curvature</code> is given, e.g.
+<code>precondition="full"</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.FisherFit(problem, curvature, optimiser=None, tol=None) (dluxtras.fitting.FisherFit)" href="./#dluxtras.fitting.FisherFit">FisherFit</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If both <code>curvature</code> and <code>curvature_options</code> are given.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curvature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">optimiser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">curvature_options</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Start a resumable `FisherFit` where the curvature was evaluated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    curvature : Curvature, optional</span>
+<span class="sd">        The curvature to whiten with. Default computes one with</span>
+<span class="sd">        `self.curvature(**curvature_options)`.</span>
+<span class="sd">    optimiser : None, "lbfgs" or optax.GradientTransformation, optional</span>
+<span class="sd">        `None` (default) picks SGD with lr 1: with Nesterov momentum 0.9 for a</span>
+<span class="sd">        diagonal curvature, plain (natural gradient) for a full one. `"lbfgs"` is</span>
+<span class="sd">        `optax.lbfgs()`. Any optax transform also works; it receives gradients</span>
+<span class="sd">        in whitened coordinates. Avoid `optax.adam`, which undoes the whitening.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        Stop once steps move every parameter by less than `tol` conditional sigma;</span>
+<span class="sd">        see `FisherFit`. Default 0.01 for `"lbfgs"` and 0 (no early stop) otherwise.</span>
+<span class="sd">    **curvature_options</span>
+<span class="sd">        Passed to `curvature` when no `curvature` is given, e.g.</span>
+<span class="sd">        `precondition="full"`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    FisherFit</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If both `curvature` and `curvature_options` are given.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">curvature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">curvature_options</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Pass either a Curvature or curvature options, not both"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">curvature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">curvature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curvature</span><span class="p">(</span><span class="o">**</span><span class="n">curvature_options</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">FisherFit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curvature</span><span class="p">,</span> <span class="n">optimiser</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>Curvature</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.fitting.Curvature" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">fitting</span><span class="o">.</span><span class="n">Curvature</span><span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">precondition</span><span class="p">,</span> <span class="n">damping</span><span class="p">,</span> <span class="n">curvature_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">scales</span><span class="p">,</span> <span class="n">normalised</span><span class="p">,</span> <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">lambda_max</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>The Fisher matrix (or loss Hessian) at one point, held in unit-free form.</p>
+<p>Created by <code>FitProblem.curvature</code>. The matrix is stored as
+<code>F = normalised / outer(scales, scales)</code>, where <code>normalised</code> has a unit diagonal.
+Matrix-valued properties need <code>precondition="full"</code> (or <code>kind="observed"</code>).</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.selection">selection</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.ParameterSelection(params, trainable=None) (dluxtras.fitting.ParameterSelection)" href="./#dluxtras.fitting.ParameterSelection">ParameterSelection</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The problem's parameter selection.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.active">active</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The active entries where the curvature was evaluated.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.kind, precondition">kind, precondition</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>As passed to <code>FitProblem.curvature</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.damping">damping</span></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>As passed to <code>FitProblem.curvature</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.curvature_data">curvature_data</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span> or None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>As passed to <code>FitProblem.curvature</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.batch_size">batch_size</span></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>As passed to <code>FitProblem.curvature</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.scales">scales</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>1 / sqrt(diag(F))</code>: the conditional 1-sigma of each active entry (all other
+entries held fixed), in the parameters' own units.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.normalised">normalised</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span> or None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>S F S</code> with <code>S = diag(scales)</code>, unit diagonal. <code>None</code> for a diagonal-only
+curvature.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.eigenvalues">eigenvalues</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span> or None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Eigenvalues of <code>normalised</code>, ascending. <code>None</code> for a diagonal-only curvature.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.lambda_max">lambda_max</span></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Largest eigenvalue of <code>normalised</code> (power iteration if diagonal only).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.Curvature.transform">transform</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>T</code> in <code>x = x0 + T u</code>, the whitening: a vector for diagonal, a matrix for full.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.labels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">labels</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.labels" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Labels of the active entries; the order of all matrices and vectors.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.params" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">params</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.params" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Full parameter dictionary at which this curvature was evaluated.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.conditional_std" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">conditional_std</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.conditional_std" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Conditional 1-sigma, <code>1 / sqrt(F_ii)</code>, in the parameters' dict shapes.</p>
+<p>This is the uncertainty with all other entries held fixed, so it is
+optimistic when parameters are correlated. Frozen entries are 0.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.matrix" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">matrix</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.matrix" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The matrix <code>F</code> in the parameters' own units, ordered by <code>labels</code>.</p>
+<p>In float32 this can over/underflow when units span many decades; prefer
+<code>normalised</code> and <code>scales</code> for any further linear algebra.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.covariance" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">covariance</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.covariance" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Covariance <code>inv(F)</code> in the parameters' own units, ordered by <code>labels</code>.</p>
+<p>Computed by Cholesky of <code>normalised</code>, then rescaled; never damped.</p>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the curvature is not positive definite.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.std" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">std</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.std" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Marginal 1-sigma, <code>sqrt(diag(covariance))</code>, in the parameters' dict shapes.</p>
+<p>Frozen entries are 0; they are treated as known, not marginalised over.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.correlation" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">correlation</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.correlation" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Correlation matrix of the covariance, ordered by <code>labels</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.Curvature.condition_number" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">condition_number</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.Curvature.condition_number" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Condition number of <code>normalised</code>: the degeneracy left once units are removed.</p>
+<p>Roughly, digits lost when inverting. Values near 1 mean uncorrelated
+parameters; large values mean near-degenerate combinations.</p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>FisherFit</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.fitting.FisherFit" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">fitting</span><span class="o">.</span><span class="n">FisherFit</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">curvature</span><span class="p">,</span> <span class="n">optimiser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FisherFit" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A resumable fit in Fisher-whitened coordinates.</p>
+<p>Usually created by <code>FitProblem.fit</code>. The fit optimises <code>u</code>, where the active
+parameters are <code>x = x0 + T u</code> with <code>T = curvature.transform</code>, so that the curvature
+in <code>u</code> at <code>x0</code> is (close to) the identity. <code>run</code> and <code>refresh</code> return <code>self</code>, so
+calls chain: <code>fit.run(200).refresh().run(200)</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>problem</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.FitProblem(model, params, data, nll, *nll_args, trainable=None, predict=None, nll_kwargs=None) (dluxtras.fitting.FitProblem)" href="./#dluxtras.fitting.FitProblem">FitProblem</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The problem to fit.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>curvature</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.Curvature(selection, active, kind, precondition, damping, curvature_data, batch_size, scales, normalised, eigenvalues, lambda_max, transform)
+
+  
+      dataclass
+   (dluxtras.fitting.Curvature)" href="./#dluxtras.fitting.Curvature">Curvature</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The curvature to whiten with; the fit starts where it was evaluated.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>optimiser</code>
+            </td>
+            <td>
+                  <code>(None, <span title="lbfgs">lbfgs</span> or <span title="optax.GradientTransformation">GradientTransformation</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>See <code>FitProblem.fit</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>tol</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>run</code> stops once two consecutive steps each move every parameter by less than
+<code>tol</code> conditional sigma (<code>curvature.scales</code>), and sets <code>converged</code>. Because it
+is measured in sigma, the test does not depend on the likelihood's
+normalisation, provided <code>nll</code> is a proper (summed) negative log likelihood.
+Default 0.01 for <code>"lbfgs"</code> and 0 (no early stop) otherwise. Small steps
+reliably mean convergence for L-BFGS and natural gradient, whose steps approach
+the whole remaining distance. Diagonal SGD on correlated parameters can take
+small steps while still far away, so use a smaller <code>tol</code> there.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.losses">losses</span></code></td>
+            <td>
+                  <code>list of float</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Loss before each step.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.history">history</span></code></td>
+            <td>
+                  <code>list of Array</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Active entries before each step, so <code>history[i]</code> produced <code>losses[i]</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.moves">moves</span></code></td>
+            <td>
+                  <code>list of float</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Size of each step: the largest change of any parameter, in conditional sigma.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.steps">steps</span></code></td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of steps taken.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.converged">converged</span></code></td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether the <code>tol</code> test has been met (reset by <code>refresh</code>).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.curvature">curvature</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.Curvature(selection, active, kind, precondition, damping, curvature_data, batch_size, scales, normalised, eigenvalues, lambda_max, transform)
+
+  
+      dataclass
+   (dluxtras.fitting.Curvature)" href="./#dluxtras.fitting.Curvature">Curvature</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The curvature currently used for whitening.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.FisherFit.state">state</span></code></td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The optimiser state.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+                  <details class="mkdocstrings-source">
+                    <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span>
+<span class="normal">640</span>
+<span class="normal">641</span>
+<span class="normal">642</span>
+<span class="normal">643</span>
+<span class="normal">644</span>
+<span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">curvature</span><span class="p">,</span> <span class="n">optimiser</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span>
+    <span class="k">if</span> <span class="n">tol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimiser</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">optimiser</span> <span class="o">==</span> <span class="s2">"lbfgs"</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tol</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"tol must be finite and nonnegative"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">optimiser</span> <span class="o">=</span> <span class="n">_make_optimiser</span><span class="p">(</span><span class="n">optimiser</span><span class="p">,</span> <span class="n">curvature</span><span class="o">.</span><span class="n">precondition</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">moves</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mi">0</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">loss</span>
+    <span class="n">optimiser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimiser</span>
+    <span class="c1"># Line-search optimisers (L-BFGS) store the value and gradient at the accepted</span>
+    <span class="c1"># point; reusing them avoids recomputing both at the start of the next step.</span>
+    <span class="n">probe</span> <span class="o">=</span> <span class="n">optimiser</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">curvature</span><span class="o">.</span><span class="n">active</span><span class="p">))</span>
+    <span class="n">reuse</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">optax</span><span class="o">.</span><span class="n">tree_utils</span><span class="o">.</span><span class="n">tree_get</span><span class="p">(</span><span class="n">probe</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"value"</span><span class="p">,</span> <span class="s2">"grad"</span><span class="p">))</span>
+
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">scales</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">loss</span><span class="p">(</span><span class="n">center</span> <span class="o">+</span> <span class="n">_apply</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">reuse</span><span class="p">:</span>
+            <span class="n">loss_value</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">value_and_grad_from_state</span><span class="p">(</span><span class="n">value</span><span class="p">)(</span><span class="n">u</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loss_value</span><span class="p">,</span> <span class="n">grad</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">value</span><span class="p">)(</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">optimiser</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">loss_value</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="n">grad</span><span class="p">,</span>
+                                          <span class="n">value_fn</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">new_u</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="n">finite_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">loss_value</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span>
+        <span class="n">finite_step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">new_u</span><span class="p">))</span>
+        <span class="n">move</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">_apply</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">new_u</span> <span class="o">-</span> <span class="n">u</span><span class="p">))</span> <span class="o">/</span> <span class="n">scales</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss_value</span><span class="p">,</span> <span class="n">new_u</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">finite_loss</span><span class="p">,</span> <span class="n">finite_step</span><span class="p">,</span> <span class="n">move</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="n">step</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_restart</span><span class="p">(</span><span class="n">curvature</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.active" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.active" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Current values of the active entries, ordered as <code>active_labels</code>.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.active_labels" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active_labels</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.active_labels" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Labels of the active entries.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.params" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">params</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.params" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Current full parameter dictionary, frozen entries included.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.fitted_model" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fitted_model</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.fitted_model" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The model with the current parameters set.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.active_history" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active_history</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.active_history" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Active entries before each step, shape <code>(n_steps, n_active)</code>.</p>
+<p>Columns are ordered as <code>active_labels</code>, so
+<code>plt.plot(fit.active_history, label=fit.active_labels)</code> plots one line each.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.fitting.FisherFit.param_history" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">param_history</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.fitting.FisherFit.param_history" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Full parameter dictionary before each step, <code>{key: (n_steps, *shape)}</code>.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FisherFit.refresh" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">refresh</span><span class="p">()</span></code>
+
+<a href="#dluxtras.fitting.FisherFit.refresh" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Recompute the curvature at the current parameters, with the same settings.</p>
+<p>The fit restarts from there with a fresh optimiser state; history, losses and
+step count are kept.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.FisherFit(problem, curvature, optimiser=None, tol=None) (dluxtras.fitting.FisherFit)" href="./#dluxtras.fitting.FisherFit">FisherFit</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>self</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">691</span>
+<span class="normal">692</span>
+<span class="normal">693</span>
+<span class="normal">694</span>
+<span class="normal">695</span>
+<span class="normal">696</span>
+<span class="normal">697</span>
+<span class="normal">698</span>
+<span class="normal">699</span>
+<span class="normal">700</span>
+<span class="normal">701</span>
+<span class="normal">702</span>
+<span class="normal">703</span>
+<span class="normal">704</span>
+<span class="normal">705</span>
+<span class="normal">706</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Recompute the curvature at the current parameters, with the same settings.</span>
+
+<span class="sd">    The fit restarts from there with a fresh optimiser state; history, losses and</span>
+<span class="sd">    step count are kept.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    FisherFit</span>
+<span class="sd">        `self`.</span>
+<span class="sd">    """</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curvature</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_restart</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">curvature</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="n">precondition</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">precondition</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">kind</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
+        <span class="n">curvature_data</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">curvature_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">c</span><span class="o">.</span><span class="n">batch_size</span><span class="p">))</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FisherFit.step" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">step</span><span class="p">()</span></code>
+
+<a href="#dluxtras.fitting.FisherFit.step" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Take one step, even if already converged.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The loss before the step.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="FloatingPointError">FloatingPointError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the loss, gradient or proposed parameters are not finite. No update is
+applied, so the fit can continue from the last good point.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">708</span>
+<span class="normal">709</span>
+<span class="normal">710</span>
+<span class="normal">711</span>
+<span class="normal">712</span>
+<span class="normal">713</span>
+<span class="normal">714</span>
+<span class="normal">715</span>
+<span class="normal">716</span>
+<span class="normal">717</span>
+<span class="normal">718</span>
+<span class="normal">719</span>
+<span class="normal">720</span>
+<span class="normal">721</span>
+<span class="normal">722</span>
+<span class="normal">723</span>
+<span class="normal">724</span>
+<span class="normal">725</span>
+<span class="normal">726</span>
+<span class="normal">727</span>
+<span class="normal">728</span>
+<span class="normal">729</span>
+<span class="normal">730</span>
+<span class="normal">731</span>
+<span class="normal">732</span>
+<span class="normal">733</span>
+<span class="normal">734</span>
+<span class="normal">735</span>
+<span class="normal">736</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Take one step, even if already converged.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The loss before the step.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FloatingPointError</span>
+<span class="sd">        If the loss, gradient or proposed parameters are not finite. No update is</span>
+<span class="sd">        applied, so the fit can continue from the last good point.</span>
+<span class="sd">    """</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curvature</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">finite_loss</span><span class="p">,</span> <span class="n">finite_step</span><span class="p">,</span> <span class="n">move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">scales</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">finite_loss</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FloatingPointError</span><span class="p">(</span><span class="s2">"Nonfinite loss/gradient; no update applied"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">finite_step</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FloatingPointError</span><span class="p">(</span><span class="s2">"Nonfinite proposed parameters; no update applied"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">move</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_small_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_small_steps</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moves</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">converged</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_small_steps</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.FisherFit.run" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run</span><span class="p">(</span><span class="n">nsteps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.FisherFit.run" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Take up to <code>nsteps</code> steps, stopping early once converged (see <code>tol</code>).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>nsteps</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum number of steps. Default 100.</p>
+              </div>
+            </td>
+            <td>
+                  <code>100</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>progress</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Show a tqdm progress bar, if tqdm is installed. Default True.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.fitting.FisherFit(problem, curvature, optimiser=None, tol=None) (dluxtras.fitting.FisherFit)" href="./#dluxtras.fitting.FisherFit">FisherFit</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>self</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">738</span>
+<span class="normal">739</span>
+<span class="normal">740</span>
+<span class="normal">741</span>
+<span class="normal">742</span>
+<span class="normal">743</span>
+<span class="normal">744</span>
+<span class="normal">745</span>
+<span class="normal">746</span>
+<span class="normal">747</span>
+<span class="normal">748</span>
+<span class="normal">749</span>
+<span class="normal">750</span>
+<span class="normal">751</span>
+<span class="normal">752</span>
+<span class="normal">753</span>
+<span class="normal">754</span>
+<span class="normal">755</span>
+<span class="normal">756</span>
+<span class="normal">757</span>
+<span class="normal">758</span>
+<span class="normal">759</span>
+<span class="normal">760</span>
+<span class="normal">761</span>
+<span class="normal">762</span>
+<span class="normal">763</span>
+<span class="normal">764</span>
+<span class="normal">765</span>
+<span class="normal">766</span>
+<span class="normal">767</span>
+<span class="normal">768</span>
+<span class="normal">769</span>
+<span class="normal">770</span>
+<span class="normal">771</span>
+<span class="normal">772</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Take up to `nsteps` steps, stopping early once converged (see `tol`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nsteps : int, optional</span>
+<span class="sd">        Maximum number of steps. Default 100.</span>
+<span class="sd">    progress : bool, optional</span>
+<span class="sd">        Show a tqdm progress bar, if tqdm is installed. Default True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    FisherFit</span>
+<span class="sd">        `self`.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nsteps</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">nsteps</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"nsteps must be a nonnegative integer"</span><span class="p">)</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsteps</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">converged</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="s2">"set_postfix"</span><span class="p">):</span>
+            <span class="n">iterator</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.6g</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">,</span>
+                                 <span class="n">move</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">moves</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2"> sigma"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="s2">"close"</span><span class="p">):</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>gaussian_nll</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.fitting.gaussian_nll" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">fitting</span><span class="o">.</span><span class="n">gaussian_nll</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.gaussian_nll" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Independent Gaussian negative log likelihood, up to a constant.</p>
+<p>Pixels where <code>data</code> or <code>std</code> is NaN are excluded. Unlike <code>np.nansum</code>, the masking
+happens before any arithmetic, so gradients stay finite at excluded pixels.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>prediction</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Model prediction.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>data</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Data, the same shape as <code>prediction</code>. NaN marks excluded pixels.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>std</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Per-pixel standard deviation, broadcastable to <code>data</code>. NaN also excludes.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Scalar <code>0.5 * sum(((data - prediction) / std) ** 2)</code> over included pixels.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">gaussian_nll</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Independent Gaussian negative log likelihood, up to a constant.</span>
+
+<span class="sd">    Pixels where `data` or `std` is NaN are excluded. Unlike `np.nansum`, the masking</span>
+<span class="sd">    happens before any arithmetic, so gradients stay finite at excluded pixels.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prediction : Array</span>
+<span class="sd">        Model prediction.</span>
+<span class="sd">    data : Array</span>
+<span class="sd">        Data, the same shape as `prediction`. NaN marks excluded pixels.</span>
+<span class="sd">    std : Array</span>
+<span class="sd">        Per-pixel standard deviation, broadcastable to `data`. NaN also excludes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        Scalar `0.5 * sum(((data - prediction) / std) ** 2)` over included pixels.</span>
+<span class="sd">    """</span>
+    <span class="n">excluded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">excluded</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">excluded</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">excluded</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">excluded</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">residual</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>ParameterSelection</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.fitting.ParameterSelection" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">fitting</span><span class="o">.</span><span class="n">ParameterSelection</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.ParameterSelection" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Flatten dictionary parameters and keep track of which entries are fitted.</p>
+<p>Used internally by <code>FitProblem</code>; exposed for its labels and helpers.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>{path: array}</code> of real floating parameters, e.g.
+<code>{"source.position": np.zeros(2)}</code>. All values must be finite.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>trainable</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>{path: bool or boolean array}</code>. <code>True</code> fits every entry of that key, <code>False</code>
+freezes it, and a boolean array (broadcastable to the parameter's shape)
+selects entries. Keys not given are fitted. Default fits everything.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.ParameterSelection.initial_params">initial_params</span></code></td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The parameters as given.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.ParameterSelection.initial_active">initial_active</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The fitted (active) entries, flattened in JAX's sorted-key order.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.ParameterSelection.indices">indices</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Positions of the active entries in the full flattened vector.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.ParameterSelection.active_labels">active_labels</span></code></td>
+            <td>
+                  <code>list of str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>One label per active entry, e.g. <code>"source.position[0]"</code>.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.fitting.ParameterSelection.mask">mask</span></code></td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The boolean mask per key, at full shape.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+                  <details class="mkdocstrings-source">
+                    <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">params</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"params must be a nonempty dictionary of real arrays"</span><span class="p">)</span>
+    <span class="n">trainable</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">trainable</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">trainable</span>
+    <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">trainable</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown mask keys: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">masks</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: parameters must be real floating arrays"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">onp</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: initial parameters must be finite"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">trainable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">raw</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">onp</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: trainable mask must be boolean"</span><span class="p">)</span>
+        <span class="n">masks</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">initial_flat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unflatten</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">)</span>
+    <span class="n">mask_flat</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">(</span><span class="n">masks</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mask_flat</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Select at least one trainable parameter entry"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">masks</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">initial_active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_flat</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+    <span class="c1"># Dict leaves are flattened in sorted key order by JAX.</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">key</span> <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">[</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="p">))</span><span class="si">}</span><span class="s2">]"</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">onp</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">active_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.ParameterSelection.active_of" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">active_of</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.ParameterSelection.active_of" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Active (fitted) entries of a full parameter dictionary.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with the same keys and shapes as the initial parameters.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The active entries, flattened, ordered as <code>active_labels</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">active_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Active (fitted) entries of a full parameter dictionary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    params : dict</span>
+<span class="sd">        Dictionary with the same keys and shapes as the initial parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        The active entries, flattened, ordered as `active_labels`.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have keys </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">flat</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_params</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">flat</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_flat</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"params shapes differ from the problem's"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flat</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.ParameterSelection.expand" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">expand</span><span class="p">(</span><span class="n">active</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.ParameterSelection.expand" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Full parameter dictionary from active entries; frozen entries unchanged.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>active</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values for the active entries, ordered as <code>active_labels</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>{path: array}</code> with the initial values for frozen entries.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">active</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Full parameter dictionary from active entries; frozen entries unchanged.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    active : Array</span>
+<span class="sd">        Values for the active entries, ordered as `active_labels`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        `{path: array}` with the initial values for frozen entries.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unflatten</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_flat</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">active</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.fitting.ParameterSelection.expand_zeros" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">expand_zeros</span><span class="p">(</span><span class="n">active</span><span class="p">)</span></code>
+
+<a href="#dluxtras.fitting.ParameterSelection.expand_zeros" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Like <code>expand</code>, but frozen entries are set to exactly zero.</p>
+<p>Used for per-entry quantities such as uncertainties.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>active</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Values for the active entries, ordered as <code>active_labels</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>{path: array}</code> with zeros for frozen entries.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/fitting.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expand_zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">active</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Like `expand`, but frozen entries are set to exactly zero.</span>
+
+<span class="sd">    Used for per-entry quantities such as uncertainties.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    active : Array</span>
+<span class="sd">        Values for the active entries, ordered as `active_labels`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        `{path: array}` with zeros for frozen entries.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unflatten</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_flat</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">active</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.top","navigation.indexes","content.code.copy","toc.integrate","content.action.edit","content.action.view"],"redirect":null,"search":"../../assets/javascripts/workers/search.c47bb847.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a2388154.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

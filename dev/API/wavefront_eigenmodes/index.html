@@ -1,0 +1,3135 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for dluxtras, extensions for dLux.">
+      
+      
+        <meta name="author" content="Milo Langker">
+      
+      
+        <link rel="canonical" href="https://milolangker.github.io/dluxtras/dev/API/wavefront_eigenmodes/">
+      
+      
+      
+        <link rel="prev" href="../spectral_eigenmodes/">
+      
+      
+        <link rel="next" href="../eigenmodes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.70">
+    
+    
+      
+        <title>Wavefront eigenmodes - dluxtras documentation</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.e442bf79.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="dluxtras documentation" class="md-header__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dluxtras documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Wavefront eigenmodes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="dluxtras documentation" class="md-nav__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    dluxtras documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Guides
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra, sources and throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Unit-free Hessians
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting benchmarks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Validation
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Validation
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavelength_sampling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavelength sampling
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  API
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  API
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Sources
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throughput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        wavefront_eigenmodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.wavefront_eigenmodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        wavefront_eigenmodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.wavefront_fisher" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        wavefront_fisher
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.WavefrontModes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        WavefrontModes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.MaskedPixelOPD" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MaskedPixelOPD
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.nuisance_shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        nuisance_shapes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.wavefront_eigenmodes.mode_maps" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        mode_maps
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Eigenmode core
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Curvature
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/milolangker/dluxtras/edit/main/docs/API/wavefront_eigenmodes.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/milolangker/dluxtras/raw/main/docs/API/wavefront_eigenmodes.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="wavefront-eigenmodes">Wavefront eigenmodes<a class="headerlink" href="#wavefront-eigenmodes" title="Permanent link">¤</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="dluxtras.wavefront_eigenmodes"></a>
+    <div class="doc doc-contents first">
+
+        <p>Matrix-free Fisher eigenmodes of a wavefront (or any parameter vector) of dLux models.</p>
+<p><code>MaskedPixelOPD</code> adds one OPD coefficient (nm) per transmitting pupil pixel.
+<code>wavefront_eigenmodes</code> finds the wavefront shapes the data constrain best, optionally
+with nuisance parameters marginalised: any model parameter by key (e.g. the source
+position, the pixel scale, a defocus term), and/or OPD shapes such as tip, tilt and
+defocus (<code>nuisance_shapes</code>). The API matches <code>dluxtras.spectral_eigenmodes</code>; the
+marginalisation rules are described in <code>dluxtras.eigenmodes</code>.</p>
+<p>The Fisher matrix is never formed: it is applied as Jacobian-vector and vector-Jacobian
+products, and its leading eigenpairs found by Lanczos iteration. Memory is
+O(N_active * ncv) for the Lanczos vectors, plus the model's autodiff workspace. SciPy
+runs on the CPU; each product transfers its result back from JAX.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">"jax_enable_x64"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dluxtras.wavefront_eigenmodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaskedPixelOPD</span><span class="p">,</span> <span class="n">nuisance_shapes</span><span class="p">,</span> <span class="n">wavefront_eigenmodes</span>
+
+<span class="n">fit_opd</span> <span class="o">=</span> <span class="n">MaskedPixelOPD</span><span class="p">(</span><span class="n">pupil</span><span class="p">)</span>  <span class="c1"># the transmission array of the aperture layer</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"optics"</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">optics</span><span class="o">.</span><span class="n">insert_layer</span><span class="p">((</span><span class="s2">"fit_opd"</span><span class="p">,</span> <span class="n">fit_opd</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
+<span class="n">modes</span> <span class="o">=</span> <span class="n">wavefront_eigenmodes</span><span class="p">(</span>
+    <span class="n">models</span><span class="p">,</span> <span class="s2">"optics.fit_opd.coefficients"</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">marginalise</span><span class="o">=</span><span class="p">[</span><span class="s2">"source.position"</span><span class="p">],</span>                 <span class="c1"># each exposure's own position</span>
+    <span class="n">marginalise_shared</span><span class="o">=</span><span class="p">[</span><span class="s2">"optics.psf_pixel_scale"</span><span class="p">],</span>   <span class="c1"># one pixel scale for all</span>
+    <span class="n">variance_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">mu</span><span class="p">:</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">read_noise</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>       <span class="c1"># Poisson + read noise, in counts</span>
+<span class="n">maps</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">maps</span><span class="p">()</span>      <span class="c1"># (6, ny, nx), NaN outside the fitted pixels</span>
+<span class="n">sigma_nm</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">sigma</span>   <span class="c1"># 1-sigma of each mode's coefficient, in nm</span>
+</code></pre></div>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>The models describe ONE shared wavefront, set by <code>key</code>, seen in several exposures; flux
+in each model must already include the intended integration time. Index 1 in
+<code>insert_layer</code> assumes the first optical layer is the aperture. Use a layer name that
+does not clash with an existing one (e.g. <code>"fit_opd"</code>).</p>
+<p>OPD piston has no effect on images, so it is projected out by default for
+<code>MaskedPixelOPD</code> keys. Relative pistons between disconnected pupil regions remain, and
+further null modes can exist. At a symmetric zero-aberration reference some directions
+have zero first-order sensitivity despite second-order image effects.</p>
+<p><code>vectors[:, i]</code> has Euclidean norm one across active pixels. For a modal coefficient <code>c</code>
+in nm the physical OPD is <code>c * vectors[:, i]</code> nm, with unweighted pupil RMS
+<code>|c| / sqrt(N_active)</code>. For unit-RMS maps, multiply the maps by <code>sqrt(N_active)</code> and
+divide <code>sigma</code> by it. Eigenvalues depend on this convention and on pupil sampling; do
+not rescale individual pixels if you want modes in the uniform OPD pixel metric.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><details class="info" open="open">
+<summary>wavefront_eigenmodes</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.wavefront_eigenmodes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_piston</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-07</span><span class="p">,</span> <span class="n">ncv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.wavefront_eigenmodes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Leading wavefront Fisher eigenmodes in one call.</p>
+<p>Runs <code>wavefront_fisher</code> and <code>eigenmodes.leading_modes</code>. The arguments match
+<code>spectral_eigenmodes.spectral_eigenmodes</code> where they overlap.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>models</code>
+            </td>
+            <td>
+                  <code><span title="zodiax.Base">Base</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Model(s) sharing the parameter at <code>key</code>; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path of the parameter, e.g. <code>"optics.fit_opd.coefficients"</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>k</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of leading modes. Default 6.</p>
+              </div>
+            </td>
+            <td>
+                  <code>6</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>q0</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Reference value; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>remove_piston</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Project out a constant (piston) direction. Default None: True when <code>key</code> is the
+<code>coefficients</code> of a <code>MaskedPixelOPD</code>, else False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances to marginalise; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise_shared</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances to marginalise; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>noise</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance_fn</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>bad_masks</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>wavefront_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>rcond</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>See <code>wavefront_fisher</code>. Default 1e-10.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-10</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>tol</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Lanczos settings; see <code>eigenmodes.leading_modes</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-07</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>ncv</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Lanczos settings; see <code>eigenmodes.leading_modes</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-07</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>seed</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Lanczos settings; see <code>eigenmodes.leading_modes</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-07</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.wavefront_eigenmodes.WavefrontModes(key, reference, fisher, values, vectors, residuals, layer=None)
+
+  
+      dataclass
+   (dluxtras.wavefront_eigenmodes.WavefrontModes)" href="./#dluxtras.wavefront_eigenmodes.WavefrontModes">WavefrontModes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">wavefront_eigenmodes</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_piston</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s2">"poisson"</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                         <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">ncv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Leading wavefront Fisher eigenmodes in one call.</span>
+
+<span class="sd">    Runs `wavefront_fisher` and `eigenmodes.leading_modes`. The arguments match</span>
+<span class="sd">    `spectral_eigenmodes.spectral_eigenmodes` where they overlap.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    models : zodiax.Base or list</span>
+<span class="sd">        Model(s) sharing the parameter at `key`; see `wavefront_fisher`.</span>
+<span class="sd">    key : str</span>
+<span class="sd">        Path of the parameter, e.g. `"optics.fit_opd.coefficients"`.</span>
+<span class="sd">    k : int, optional</span>
+<span class="sd">        Number of leading modes. Default 6.</span>
+<span class="sd">    q0 : Array, optional</span>
+<span class="sd">        Reference value; see `wavefront_fisher`.</span>
+<span class="sd">    remove_piston : bool, optional</span>
+<span class="sd">        Project out a constant (piston) direction. Default None: True when `key` is the</span>
+<span class="sd">        `coefficients` of a `MaskedPixelOPD`, else False.</span>
+<span class="sd">    marginalise, marginalise_shared : list, optional</span>
+<span class="sd">        Nuisances to marginalise; see `wavefront_fisher`.</span>
+<span class="sd">    noise, variance, variance_fn, bad_masks</span>
+<span class="sd">        Noise model; see `wavefront_fisher`.</span>
+<span class="sd">    rcond : float, optional</span>
+<span class="sd">        See `wavefront_fisher`. Default 1e-10.</span>
+<span class="sd">    tol, ncv, seed</span>
+<span class="sd">        Lanczos settings; see `eigenmodes.leading_modes`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    WavefrontModes</span>
+<span class="sd">    """</span>
+    <span class="n">models_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">models</span><span class="p">]</span>
+    <span class="n">fisher</span> <span class="o">=</span> <span class="n">wavefront_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="n">q0</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="n">variance</span><span class="p">,</span>
+                              <span class="n">variance_fn</span><span class="o">=</span><span class="n">variance_fn</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="n">bad_masks</span><span class="p">,</span>
+                              <span class="n">marginalise</span><span class="o">=</span><span class="n">marginalise</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="n">marginalise_shared</span><span class="p">,</span>
+                              <span class="n">rcond</span><span class="o">=</span><span class="n">rcond</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">models_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">q0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">q0</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".coefficients"</span><span class="p">):</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">models_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".coefficients"</span><span class="p">)])</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">candidate</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">MaskedPixelOPD</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">remove_piston</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">remove_piston</span> <span class="o">=</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">project_out</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">reference</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">if</span> <span class="n">remove_piston</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span> <span class="o">=</span> <span class="n">leading_modes</span><span class="p">(</span><span class="n">fisher</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">project_out</span><span class="o">=</span><span class="n">project_out</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
+                                               <span class="n">ncv</span><span class="o">=</span><span class="n">ncv</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">WavefrontModes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">fisher</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>wavefront_fisher</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.wavefront_fisher" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">wavefront_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.wavefront_fisher" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Matrix-free Fisher matrix of the parameter at <code>key</code>, nuisances marginalised.</p>
+<p>The Fisher matrix is <code>sum J.T diag(1 / variance) J</code> over models and included pixels,
+where <code>J</code> is the Jacobian of each model's prediction with respect to the parameter at
+<code>key</code> (flattened). It is applied with one JVP and one VJP per model, so neither the
+matrix nor a dense Jacobian is formed. With <code>marginalise</code> or <code>marginalise_shared</code>, it
+is the Fisher matrix left once those nuisances are fitted freely (Schur complement);
+see <code>dluxtras.eigenmodes</code>. Other parameters are held fixed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>models</code>
+            </td>
+            <td>
+                  <code><span title="zodiax.Base">Base</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A model or list/tuple of models (e.g. exposures) that share the parameter at
+<code>key</code>. Any output shape works, e.g. an <code>(n_exposures, ny, nx)</code> stack.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path of the parameter, e.g. <code>"optics.fit_opd.coefficients"</code> (a
+<code>MaskedPixelOPD</code>) or <code>"optics.aberrations.coefficients"</code> (Zernikes).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>q0</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Reference value of that parameter, used in every model. Default is its value in
+the first model.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>noise</code>
+            </td>
+            <td>
+                  <code>(<span title="poisson">poisson</span>, <span title="gaussian">gaussian</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>"poisson"</code> (default) uses the reference prediction as the variance (counts,
+strictly positive on included pixels); <code>"gaussian"</code> uses <code>variance</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;poisson&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span> or <span title="Array">Array</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Gaussian variance (not standard deviation), for every model or one per model in a
+list. Default 1.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1.0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance_fn</code>
+            </td>
+            <td>
+                  <code><span title="callable">callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>variance_fn(mu) -&gt; variance</code> overrides both, e.g. <code>lambda mu: mu + read**2</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>bad_masks</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Boolean mask of the model output (True excludes), for every model or one (or
+None) per model in a list.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Per-model nuisances: model keys and/or arrays of directions in the parameter's
+flattened space, <code>(n,)</code> or <code>(n, m)</code>, e.g. <code>nuisance_shapes(layer)</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise_shared</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances shared by all models, e.g. <code>["optics.psf_pixel_scale"]</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>rcond</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Relative cutoff of the nuisance pseudo-inverse (in unit-free form). Default 1e-10.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-10</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.eigenmodes.FisherOperator(size, matvec)
+
+  
+      dataclass
+   (dluxtras.eigenmodes.FisherOperator)" href="../eigenmodes/#dluxtras.eigenmodes.FisherOperator">FisherOperator</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>F(v)</code> gives <code>F @ v</code>; <code>F.dense()</code> builds the matrix (small parameters only).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>jax_enable_x64</code> is not enabled, the number of masks or variances does not
+match the number of models, or the noise model is invalid (see
+<code>eigenmodes.noise_weights</code>).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">wavefront_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s2">"poisson"</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Matrix-free Fisher matrix of the parameter at `key`, nuisances marginalised.</span>
+
+<span class="sd">    The Fisher matrix is `sum J.T diag(1 / variance) J` over models and included pixels,</span>
+<span class="sd">    where `J` is the Jacobian of each model's prediction with respect to the parameter at</span>
+<span class="sd">    `key` (flattened). It is applied with one JVP and one VJP per model, so neither the</span>
+<span class="sd">    matrix nor a dense Jacobian is formed. With `marginalise` or `marginalise_shared`, it</span>
+<span class="sd">    is the Fisher matrix left once those nuisances are fitted freely (Schur complement);</span>
+<span class="sd">    see `dluxtras.eigenmodes`. Other parameters are held fixed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    models : zodiax.Base or list</span>
+<span class="sd">        A model or list/tuple of models (e.g. exposures) that share the parameter at</span>
+<span class="sd">        `key`. Any output shape works, e.g. an `(n_exposures, ny, nx)` stack.</span>
+<span class="sd">    key : str</span>
+<span class="sd">        Path of the parameter, e.g. `"optics.fit_opd.coefficients"` (a</span>
+<span class="sd">        `MaskedPixelOPD`) or `"optics.aberrations.coefficients"` (Zernikes).</span>
+<span class="sd">    q0 : Array, optional</span>
+<span class="sd">        Reference value of that parameter, used in every model. Default is its value in</span>
+<span class="sd">        the first model.</span>
+<span class="sd">    noise : {"poisson", "gaussian"}, optional</span>
+<span class="sd">        `"poisson"` (default) uses the reference prediction as the variance (counts,</span>
+<span class="sd">        strictly positive on included pixels); `"gaussian"` uses `variance`.</span>
+<span class="sd">    variance : float or Array or list, optional</span>
+<span class="sd">        Gaussian variance (not standard deviation), for every model or one per model in a</span>
+<span class="sd">        list. Default 1.</span>
+<span class="sd">    variance_fn : callable, optional</span>
+<span class="sd">        `variance_fn(mu) -&gt; variance` overrides both, e.g. `lambda mu: mu + read**2`.</span>
+<span class="sd">    bad_masks : Array or list, optional</span>
+<span class="sd">        Boolean mask of the model output (True excludes), for every model or one (or</span>
+<span class="sd">        None) per model in a list.</span>
+<span class="sd">    marginalise : list, optional</span>
+<span class="sd">        Per-model nuisances: model keys and/or arrays of directions in the parameter's</span>
+<span class="sd">        flattened space, `(n,)` or `(n, m)`, e.g. `nuisance_shapes(layer)`.</span>
+<span class="sd">    marginalise_shared : list, optional</span>
+<span class="sd">        Nuisances shared by all models, e.g. `["optics.psf_pixel_scale"]`.</span>
+<span class="sd">    rcond : float, optional</span>
+<span class="sd">        Relative cutoff of the nuisance pseudo-inverse (in unit-free form). Default 1e-10.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    FisherOperator</span>
+<span class="sd">        `F(v)` gives `F @ v`; `F.dense()` builds the matrix (small parameters only).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `jax_enable_x64` is not enabled, the number of masks or variances does not</span>
+<span class="sd">        match the number of models, or the noise model is invalid (see</span>
+<span class="sd">        `eigenmodes.noise_weights`).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">x64_enabled</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Enable jax_enable_x64 before building models"</span><span class="p">)</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">models</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Supply a model or a list of models"</span><span class="p">)</span>
+    <span class="n">q0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">q0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">q0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">q0</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">q0</span> <span class="o">=</span> <span class="n">q0</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">masks</span> <span class="o">=</span> <span class="n">_each</span><span class="p">(</span><span class="n">bad_masks</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">),</span> <span class="s2">"bad_masks"</span><span class="p">)</span>
+    <span class="n">variances</span> <span class="o">=</span> <span class="n">_each</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">)</span>
+    <span class="n">lins</span> <span class="o">=</span> <span class="p">[</span><span class="n">_linearise</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">q0</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">variance_fn</span><span class="p">,</span> <span class="n">bad</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">bad</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="n">variances</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">_assemble</span><span class="p">(</span><span class="n">lins</span><span class="p">,</span> <span class="n">q0</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">marginalise</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="p">,</span> <span class="n">rcond</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>WavefrontModes</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.WavefrontModes" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">WavefrontModes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">fisher</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#dluxtras.wavefront_eigenmodes.WavefrontModes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Result of <code>wavefront_eigenmodes</code>: the Fisher operator and its leading eigenmodes.</p>
+<p>The fields shared with <code>spectral_eigenmodes.SpectralModes</code> (<code>reference</code>, <code>fisher</code>,
+<code>values</code>, <code>vectors</code>, <code>residuals</code>, <code>sigma</code>, <code>coefficients</code>) mean the same.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.key">key</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path of the parameter.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.reference">reference</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Reference value of the parameter (flattened), shape (n,).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.fisher">fisher</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.eigenmodes.FisherOperator(size, matvec)
+
+  
+      dataclass
+   (dluxtras.eigenmodes.FisherOperator)" href="../eigenmodes/#dluxtras.eigenmodes.FisherOperator">FisherOperator</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The (marginalised, if requested) Fisher matrix, matrix-free.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.values">values</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Leading eigenvalues, descending, shape (k,).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.vectors">vectors</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Unit-norm eigenvectors as columns, shape (n, k).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.residuals">residuals</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Relative Lanczos residuals, shape (k,); check they are small.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.WavefrontModes.layer">layer</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD(transmission, threshold=0.0, coefficients=None) (dluxtras.wavefront_eigenmodes.MaskedPixelOPD)" href="./#dluxtras.wavefront_eigenmodes.MaskedPixelOPD">MaskedPixelOPD</a> or None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer at <code>key</code>, if it is a <code>MaskedPixelOPD</code>; used by <code>maps</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.WavefrontModes.sigma" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sigma</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.wavefront_eigenmodes.WavefrontModes.sigma" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>1-sigma error of each mode's coefficient, in the parameter's units (nm for OPD).</p>
+<p>Conditional on the other modes being known (other parameters held fixed, or
+marginalised if requested).</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>1 / sqrt(values)</code>, inf where the eigenvalue is not positive; shape (k,).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.WavefrontModes.coefficients" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">coefficients</span><span class="p">(</span><span class="n">q</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.WavefrontModes.coefficients" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Project a parameter vector onto the modes.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>q</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Parameter value, any shape with <code>n</code> entries (e.g. an OPD per active pixel).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>vectors.T @ q</code>, shape (k,).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Project a parameter vector onto the modes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : Array</span>
+<span class="sd">        Parameter value, any shape with `n` entries (e.g. an OPD per active pixel).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        `vectors.T @ q`, shape (k,).</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.WavefrontModes.maps" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">maps</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">onp</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.WavefrontModes.maps" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Mode maps on the pupil grid (only for <code>MaskedPixelOPD</code> keys).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>fill</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Value outside the fitted pixels. Default NaN, for plotting.</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="numpy.nan">nan</span></code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>(k, ny, nx)</code> maps of the unit-norm eigenvectors.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">onp</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Mode maps on the pupil grid (only for `MaskedPixelOPD` keys).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fill : float, optional</span>
+<span class="sd">        Value outside the fitted pixels. Default NaN, for plotting.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        `(k, ny, nx)` maps of the unit-norm eigenvectors.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"maps needs a MaskedPixelOPD at key"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mode_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="p">,</span> <span class="n">fill</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>MaskedPixelOPD</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.MaskedPixelOPD" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">MaskedPixelOPD</span><span class="p">(</span><span class="n">transmission</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.MaskedPixelOPD" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="dLux.OpticalLayer">OpticalLayer</span></code></p>
+
+
+
+        <p>One fitted OPD coefficient, in nm, per selected pupil pixel.</p>
+<p>The layer only adds OPD; amplitude transmission stays with the aperture layer, so
+place it in the same pupil plane, on exactly the same grid. Construct it outside JIT.
+Any existing static OPD can stay in the optical train.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>transmission</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>2D pupil amplitude transmission, on the wavefront grid.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>threshold</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pixels are fitted where <code>|transmission| &gt; threshold * max|transmission|</code>. The
+default 0 fits every nonzero pixel, including partially transmitting edges.
+Raising it excludes pixels from the fit, not from optical transmission.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>coefficients</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Starting OPD per active pixel, in nm, shape <code>(N_active,)</code>. Default zeros.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.coefficients">coefficients</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPD per active pixel, in nm.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.indices">indices</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Flat indices of the active pixels in the pupil grid.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.shape">shape</span></code></td>
+            <td>
+                  <code><span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pupil grid shape.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>transmission</code> is not a finite 2D array, <code>threshold</code> is not in [0, 1), no pixel
+is selected, or <code>coefficients</code> has the wrong length.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+                  <details class="mkdocstrings-source">
+                    <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmission</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">coefficients</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">transmission</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">transmission</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transmission</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">onp</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">transmission</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"transmission must be a finite 2D array"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">threshold</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"threshold must be in [0, 1)"</span><span class="p">)</span>
+    <span class="n">amplitude</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">transmission</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">amplitude</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">amplitude</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">indices</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No transmitting pixels selected"</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">transmission</span><span class="o">.</span><span class="n">shape</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">if</span> <span class="n">coefficients</span> <span class="ow">is</span> <span class="kc">None</span>
+                         <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">coefficients</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">,):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"coefficients must have length N_active"</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.opd" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">opd</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.wavefront_eigenmodes.MaskedPixelOPD.opd" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Full pupil OPD in metres; zero outside the fitted pixels.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.to_map" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">to_map</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.MaskedPixelOPD.to_map" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Scatter per-active-pixel values onto the pupil grid, keeping their units.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>values</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>One value per active pixel, shape <code>(N_active,)</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>fill</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Value outside the active pixels. Default 0.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Map with the pupil grid's shape.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">to_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Scatter per-active-pixel values onto the pupil grid, keeping their units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : Array</span>
+<span class="sd">        One value per active pixel, shape `(N_active,)`.</span>
+<span class="sd">    fill : float, optional</span>
+<span class="sd">        Value outside the active pixels. Default 0.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        Map with the pupil grid's shape.</span>
+<span class="sd">    """</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"values must have length N_active"</span><span class="p">)</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fill</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># Integer cast: the indices can come back as floats once inside a model.</span>
+    <span class="k">return</span> <span class="n">flat</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.wavefront_eigenmodes.MaskedPixelOPD.apply" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.MaskedPixelOPD.apply" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Add the OPD to a wavefront.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Add the OPD to a wavefront."""</span>
+    <span class="k">return</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">add_opd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opd</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>nuisance_shapes</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.nuisance_shapes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">nuisance_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="p">(</span><span class="s1">'tip'</span><span class="p">,</span> <span class="s1">'tilt'</span><span class="p">,</span> <span class="s1">'defocus'</span><span class="p">))</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.nuisance_shapes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Orthonormal OPD shapes over a layer's active pixels, to marginalise.</p>
+<p>The shapes are orthonormalised (QR) together with piston, which is then dropped, so
+the columns are orthogonal to piston and to each other. Pass the result in
+<code>marginalise</code> (per exposure) or <code>marginalise_shared</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>layer</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD(transmission, threshold=0.0, coefficients=None) (dluxtras.wavefront_eigenmodes.MaskedPixelOPD)" href="./#dluxtras.wavefront_eigenmodes.MaskedPixelOPD">MaskedPixelOPD</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer whose active pixels define the shapes.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>terms</code>
+            </td>
+            <td>
+                  <code><span title="sequence">sequence</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Names <code>"tip"</code> (x), <code>"tilt"</code> (y) and <code>"defocus"</code> (x² + y²), and/or arrays of
+length <code>N_active</code> for custom shapes. Default <code>("tip", "tilt", "defocus")</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>(&#39;tip&#39;, &#39;tilt&#39;, &#39;defocus&#39;)</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Shapes as columns, <code>(N_active, len(terms))</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If a custom term does not have length <code>N_active</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">nuisance_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="p">(</span><span class="s2">"tip"</span><span class="p">,</span> <span class="s2">"tilt"</span><span class="p">,</span> <span class="s2">"defocus"</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">"""Orthonormal OPD shapes over a layer's active pixels, to marginalise.</span>
+
+<span class="sd">    The shapes are orthonormalised (QR) together with piston, which is then dropped, so</span>
+<span class="sd">    the columns are orthogonal to piston and to each other. Pass the result in</span>
+<span class="sd">    `marginalise` (per exposure) or `marginalise_shared`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    layer : MaskedPixelOPD</span>
+<span class="sd">        The layer whose active pixels define the shapes.</span>
+<span class="sd">    terms : sequence, optional</span>
+<span class="sd">        Names `"tip"` (x), `"tilt"` (y) and `"defocus"` (x² + y²), and/or arrays of</span>
+<span class="sd">        length `N_active` for custom shapes. Default `("tip", "tilt", "defocus")`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        Shapes as columns, `(N_active, len(terms))`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a custom term does not have length `N_active`.</span>
+<span class="sd">    """</span>
+    <span class="n">yy</span><span class="p">,</span> <span class="n">xx</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">layer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">layer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">named</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"tip"</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">"tilt"</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">"defocus"</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">}</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">onp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">:</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">named</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">column</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">idx</span><span class="o">.</span><span class="n">size</span><span class="p">,):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"custom terms must have length N_active"</span><span class="p">)</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">onp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">columns</span><span class="p">))[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">:]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>mode_maps</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.wavefront_eigenmodes.mode_maps" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">wavefront_eigenmodes</span><span class="o">.</span><span class="n">mode_maps</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">onp</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></code>
+
+<a href="#dluxtras.wavefront_eigenmodes.mode_maps" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Scatter mode vectors onto the pupil grid.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>layer</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.wavefront_eigenmodes.MaskedPixelOPD(transmission, threshold=0.0, coefficients=None) (dluxtras.wavefront_eigenmodes.MaskedPixelOPD)" href="./#dluxtras.wavefront_eigenmodes.MaskedPixelOPD">MaskedPixelOPD</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The layer whose active pixels the vectors live on.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>vectors</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Modes as columns, <code>(N_active, k)</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>fill</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Value outside the active pixels. Default NaN, for plotting.</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="numpy.nan">nan</span></code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>(k, ny, nx)</code> maps.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/wavefront_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mode_maps</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">onp</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Scatter mode vectors onto the pupil grid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    layer : MaskedPixelOPD</span>
+<span class="sd">        The layer whose active pixels the vectors live on.</span>
+<span class="sd">    vectors : Array</span>
+<span class="sd">        Modes as columns, `(N_active, k)`.</span>
+<span class="sd">    fill : float, optional</span>
+<span class="sd">        Value outside the active pixels. Default NaN, for plotting.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        `(k, ny, nx)` maps.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">onp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">to_map</span><span class="p">(</span><span class="n">vectors</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="n">fill</span><span class="p">))</span>
+                      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.top","navigation.indexes","content.code.copy","toc.integrate","content.action.edit","content.action.view"],"redirect":null,"search":"../../assets/javascripts/workers/search.c47bb847.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a2388154.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

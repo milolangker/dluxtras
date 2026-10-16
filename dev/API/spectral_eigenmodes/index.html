@@ -1,0 +1,3455 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for dluxtras, extensions for dLux.">
+      
+      
+        <meta name="author" content="Milo Langker">
+      
+      
+        <link rel="canonical" href="https://milolangker.github.io/dluxtras/dev/API/spectral_eigenmodes/">
+      
+      
+      
+        <link rel="prev" href="../throughput/">
+      
+      
+        <link rel="next" href="../wavefront_eigenmodes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.70">
+    
+    
+      
+        <title>Spectral eigenmodes - dluxtras documentation</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.e442bf79.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="dluxtras documentation" class="md-header__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dluxtras documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spectral eigenmodes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="dluxtras documentation" class="md-nav__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    dluxtras documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Guides
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra, sources and throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Unit-free Hessians
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fitting_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting benchmarks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Validation
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Validation
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wavelength_sampling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavelength sampling
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  API
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  API
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Sources
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../throughput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        spectral_eigenmodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.spectral_eigenmodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        spectral_eigenmodes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.spectral_fisher" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        spectral_fisher
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.SpectralModes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        SpectralModes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.mode_criterion" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        mode_criterion
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.constrainable_modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        constrainable_modes
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.attach_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        attach_spectrum
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dluxtras.spectral_eigenmodes.SpectralSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        SpectralSource
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Eigenmode core
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Curvature
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/milolangker/dluxtras/edit/main/docs/API/spectral_eigenmodes.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/milolangker/dluxtras/raw/main/docs/API/spectral_eigenmodes.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="spectral-eigenmodes">Spectral eigenmodes<a class="headerlink" href="#spectral-eigenmodes" title="Permanent link">¤</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="dluxtras.spectral_eigenmodes"></a>
+    <div class="doc doc-contents first">
+
+        <p>Small spectral Fisher eigenbases for existing dLux optics/telescopes.</p>
+<p>Enable <code>jax_enable_x64</code> before constructing models. Dependencies: dLux, JAX,
+NumPy. No files are loaded here. Pass the dictionary from <code>throughput.spectrum_args</code>.</p>
+<p>Coordinates are incident photons per wavelength bin, before <code>filt_weights</code>.
+Eigenvectors are Euclidean unit-norm columns in that coordinate system.
+This metric depends on wavelength sampling; no bin-width whitening is applied.
+Other model parameters (e.g. source position, pixel scale) are held fixed unless
+listed in <code>marginalise</code> / <code>marginalise_shared</code>, in which case they are marginalised
+(fitted freely); see <code>dluxtras.eigenmodes</code>. The API matches
+<code>dluxtras.wavefront_eigenmodes</code>. Poisson noise requires predictions in expected counts,
+not MJy/sr.</p>
+
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <p>No Hessian is needed: cached first derivatives form the expected Fisher matrix. Source
+classes inherit dLux's Zodiax model behaviour. Detector covariance between pixels is
+not modelled.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>In your notebook:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">'jax_enable_x64'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dluxtras.throughput</span><span class="w"> </span><span class="kn">import</span> <span class="n">spectrum_args</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dluxtras.spectral_eigenmodes</span><span class="w"> </span><span class="kn">import</span> <span class="n">spectral_eigenmodes</span><span class="p">,</span> <span class="n">constrainable_modes</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">spectrum_args</span><span class="p">(</span><span class="n">wavelengths_m</span><span class="p">,</span> <span class="n">throughput</span><span class="p">,</span> <span class="n">nwavels</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">photons</span><span class="o">=</span><span class="mf">1e6</span><span class="p">)</span>
+<span class="n">modes</span> <span class="o">=</span> <span class="n">spectral_eigenmodes</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">constrainable_modes</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>   <span class="c1"># 1/(|a0| sqrt(d_i)) &lt; 0.1</span>
+<span class="c1"># Bare optics also work; optionally pass detector=your_detector.</span>
+<span class="c1"># Gaussian alternative: noise='gaussian', variance=1.0</span>
+<span class="c1"># variance_fn=lambda mu: mu + read_noise**2 supports mixed noise.</span>
+<span class="c1"># bad_masks=image.bad excludes the same pixels as your image loader.</span>
+<span class="c1"># modes.vectors: (30, 30); modes.values: (30,); modes.sigma: (30,)</span>
+
+<span class="c1"># Marginalise the source position and the pixel scale:</span>
+<span class="n">modes</span> <span class="o">=</span> <span class="n">spectral_eigenmodes</span><span class="p">(</span><span class="n">telescope</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                            <span class="n">marginalise</span><span class="o">=</span><span class="p">[</span><span class="s1">'source.position'</span><span class="p">],</span>
+                            <span class="n">marginalise_shared</span><span class="o">=</span><span class="p">[</span><span class="s1">'optics.psf_pixel_scale'</span><span class="p">])</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><details class="info" open="open">
+<summary>spectral_eigenmodes</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.spectral_eigenmodes.spectral_eigenmodes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">spectrum_args</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.spectral_eigenmodes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Leading spectral Fisher eigenmodes in one call.</p>
+<p>Runs <code>attach_spectrum</code>, <code>spectral_fisher</code> and <code>leading_modes</code> in turn. The arguments
+match <code>wavefront_eigenmodes.wavefront_eigenmodes</code> where they overlap.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>model_or_optics</code>
+            </td>
+            <td>
+                  <code><span title="dLux.Telescope">Telescope</span> or <span title="dLux.BaseOpticalSystem">BaseOpticalSystem</span> or <span title="list">list</span> or <span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Model(s) or bare optics; see <code>attach_spectrum</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>spectrum_args</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary from <code>throughput.spectrum_args</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>k</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of leading modes to return. Default 6.</p>
+              </div>
+            </td>
+            <td>
+                  <code>6</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>detector</code>
+            </td>
+            <td>
+                  <code><span title="dLux.BaseDetector">BaseDetector</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Detector override; see <code>attach_spectrum</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>position_arcsec</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span> or <span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Source position(s) in arcseconds; see <code>attach_spectrum</code>. Default (0., 0.).</p>
+              </div>
+            </td>
+            <td>
+                  <code>(0.0, 0.0)</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances to marginalise, per model or shared; see <code>spectral_fisher</code>. For
+example <code>marginalise_shared=["optics.psf_pixel_scale"]</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise_shared</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances to marginalise, per model or shared; see <code>spectral_fisher</code>. For
+example <code>marginalise_shared=["optics.psf_pixel_scale"]</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>noise</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>spectral_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>spectral_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance_fn</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>spectral_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>bad_masks</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Noise model; see <code>spectral_fisher</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;poisson&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>rcond</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>See <code>spectral_fisher</code>. Default 1e-10.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-10</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.spectral_eigenmodes.SpectralModes(wavelengths, filt_weights, reference, fisher, values, vectors, residuals=None)
+
+  
+      dataclass
+   (dluxtras.spectral_eigenmodes.SpectralModes)" href="./#dluxtras.spectral_eigenmodes.SpectralModes">SpectralModes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>As raised by <code>attach_spectrum</code>, <code>spectral_fisher</code> or <code>leading_modes</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spectral_eigenmodes</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">spectrum_args</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">noise</span><span class="o">=</span><span class="s2">"poisson"</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Leading spectral Fisher eigenmodes in one call.</span>
+
+<span class="sd">    Runs `attach_spectrum`, `spectral_fisher` and `leading_modes` in turn. The arguments</span>
+<span class="sd">    match `wavefront_eigenmodes.wavefront_eigenmodes` where they overlap.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_or_optics : dl.Telescope or dl.BaseOpticalSystem or list or tuple</span>
+<span class="sd">        Model(s) or bare optics; see `attach_spectrum`.</span>
+<span class="sd">    spectrum_args : dict</span>
+<span class="sd">        Dictionary from `throughput.spectrum_args`.</span>
+<span class="sd">    k : int, optional</span>
+<span class="sd">        Number of leading modes to return. Default 6.</span>
+<span class="sd">    detector : dl.BaseDetector, optional</span>
+<span class="sd">        Detector override; see `attach_spectrum`.</span>
+<span class="sd">    position_arcsec : Array or tuple, optional</span>
+<span class="sd">        Source position(s) in arcseconds; see `attach_spectrum`. Default (0., 0.).</span>
+<span class="sd">    marginalise, marginalise_shared : list, optional</span>
+<span class="sd">        Nuisances to marginalise, per model or shared; see `spectral_fisher`. For</span>
+<span class="sd">        example `marginalise_shared=["optics.psf_pixel_scale"]`.</span>
+<span class="sd">    noise, variance, variance_fn, bad_masks</span>
+<span class="sd">        Noise model; see `spectral_fisher`.</span>
+<span class="sd">    rcond : float, optional</span>
+<span class="sd">        See `spectral_fisher`. Default 1e-10.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SpectralModes</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        As raised by `attach_spectrum`, `spectral_fisher` or `leading_modes`.</span>
+<span class="sd">    """</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="n">attach_spectrum</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">spectrum_args</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">,</span>
+                             <span class="n">position_arcsec</span><span class="o">=</span><span class="n">position_arcsec</span><span class="p">)</span>
+    <span class="n">fisher</span> <span class="o">=</span> <span class="n">spectral_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="n">variance</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="n">variance_fn</span><span class="p">,</span>
+                             <span class="n">bad_masks</span><span class="o">=</span><span class="n">bad_masks</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="n">marginalise</span><span class="p">,</span>
+                             <span class="n">marginalise_shared</span><span class="o">=</span><span class="n">marginalise_shared</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="n">rcond</span><span class="p">)</span>
+    <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span> <span class="o">=</span> <span class="n">leading_modes</span><span class="p">(</span><span class="n">fisher</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">models</span><span class="p">)</span><span class="o">.</span><span class="n">source</span>
+    <span class="k">return</span> <span class="n">SpectralModes</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">filt_weights</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">bin_flux</span><span class="p">,</span>
+                         <span class="n">fisher</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>spectral_fisher</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.spectral_eigenmodes.spectral_fisher" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">spectral_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s1">'poisson'</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.spectral_fisher" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Dense Fisher matrix of the bin fluxes, optionally with nuisances marginalised.</p>
+<p>The Fisher matrix is <code>sum J.T diag(1 / variance) J</code> over models and included
+pixels, where <code>J</code> is the Jacobian of the (detected) image with respect to
+<code>bin_flux</code>, the incident photons per wavelength bin. Monochromatic optical
+responses are computed one at a time. The detector is differentiated at the full
+polychromatic reference using JVP, so a differentiable nonlinear detector is handled
+locally too.</p>
+<p>With <code>marginalise</code> or <code>marginalise_shared</code>, it is the Fisher matrix left once those
+nuisance parameters are fitted freely (the Schur complement); see
+<code>dluxtras.eigenmodes</code>. Other parameters are held fixed.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>models</code>
+            </td>
+            <td>
+                  <code><span title="dLux.Telescope">Telescope</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A model, or list/tuple of models, prepared with <code>attach_spectrum</code>. All must share
+wavelengths and reference bin fluxes.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>noise</code>
+            </td>
+            <td>
+                  <code>(<span title="poisson">poisson</span>, <span title="gaussian">gaussian</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>"poisson"</code> (default) uses the reference image as the variance, so it must be in
+counts and strictly positive on included pixels. <code>"gaussian"</code> uses <code>variance</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;poisson&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span> or <span title="Array">Array</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Gaussian variance (not standard deviation): a scalar or image-shaped array, used
+for every model, or a list with one entry per model. Ignored for Poisson noise or
+when <code>variance_fn</code> is given. Default 1.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1.0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>variance_fn</code>
+            </td>
+            <td>
+                  <code><span title="callable">callable</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>variance_fn(mu)</code> overrides either noise choice and is frozen at the reference
+image <code>mu</code>, e.g. <code>lambda mu: mu + read_noise**2</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>bad_masks</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Boolean image mask (True excludes a pixel) used for every model, or a list with
+one mask (or None) per model.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Per-model nuisances: model keys (e.g. <code>"source.position"</code>) and/or arrays of
+directions in bin-flux space, shape <code>(n_bins,)</code> or <code>(n_bins, m)</code>. Each model gets
+its own copy. Default None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>marginalise_shared</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Nuisances shared by all models, e.g. <code>["optics.psf_pixel_scale"]</code>. Default None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>rcond</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Relative cutoff of the nuisance pseudo-inverse (in unit-free form). Default 1e-10.</p>
+              </div>
+            </td>
+            <td>
+                  <code>1e-10</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Symmetric Fisher matrix, shape <code>(n_bins, n_bins)</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>jax_enable_x64</code> is not enabled; <code>noise</code> is invalid; a model has no
+<code>SpectralSource</code> (use <code>attach_spectrum</code> first); the number of masks or variances
+does not match the number of models; models do not share wavelengths and
+reference bin fluxes; a mask does not match the image or excludes every pixel;
+the reference image is nonfinite (or negative for Poisson) on included pixels;
+or included variances are not finite and positive (mask zero-mean Poisson pixels
+explicitly).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spectral_fisher</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="s2">"poisson"</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">variance_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">bad_masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Dense Fisher matrix of the bin fluxes, optionally with nuisances marginalised.</span>
+
+<span class="sd">    The Fisher matrix is `sum J.T diag(1 / variance) J` over models and included</span>
+<span class="sd">    pixels, where `J` is the Jacobian of the (detected) image with respect to</span>
+<span class="sd">    `bin_flux`, the incident photons per wavelength bin. Monochromatic optical</span>
+<span class="sd">    responses are computed one at a time. The detector is differentiated at the full</span>
+<span class="sd">    polychromatic reference using JVP, so a differentiable nonlinear detector is handled</span>
+<span class="sd">    locally too.</span>
+
+<span class="sd">    With `marginalise` or `marginalise_shared`, it is the Fisher matrix left once those</span>
+<span class="sd">    nuisance parameters are fitted freely (the Schur complement); see</span>
+<span class="sd">    `dluxtras.eigenmodes`. Other parameters are held fixed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    models : dl.Telescope or list</span>
+<span class="sd">        A model, or list/tuple of models, prepared with `attach_spectrum`. All must share</span>
+<span class="sd">        wavelengths and reference bin fluxes.</span>
+<span class="sd">    noise : {"poisson", "gaussian"}, optional</span>
+<span class="sd">        `"poisson"` (default) uses the reference image as the variance, so it must be in</span>
+<span class="sd">        counts and strictly positive on included pixels. `"gaussian"` uses `variance`.</span>
+<span class="sd">    variance : float or Array or list, optional</span>
+<span class="sd">        Gaussian variance (not standard deviation): a scalar or image-shaped array, used</span>
+<span class="sd">        for every model, or a list with one entry per model. Ignored for Poisson noise or</span>
+<span class="sd">        when `variance_fn` is given. Default 1.</span>
+<span class="sd">    variance_fn : callable, optional</span>
+<span class="sd">        `variance_fn(mu)` overrides either noise choice and is frozen at the reference</span>
+<span class="sd">        image `mu`, e.g. `lambda mu: mu + read_noise**2`.</span>
+<span class="sd">    bad_masks : Array or list, optional</span>
+<span class="sd">        Boolean image mask (True excludes a pixel) used for every model, or a list with</span>
+<span class="sd">        one mask (or None) per model.</span>
+<span class="sd">    marginalise : list, optional</span>
+<span class="sd">        Per-model nuisances: model keys (e.g. `"source.position"`) and/or arrays of</span>
+<span class="sd">        directions in bin-flux space, shape `(n_bins,)` or `(n_bins, m)`. Each model gets</span>
+<span class="sd">        its own copy. Default None.</span>
+<span class="sd">    marginalise_shared : list, optional</span>
+<span class="sd">        Nuisances shared by all models, e.g. `["optics.psf_pixel_scale"]`. Default None.</span>
+<span class="sd">    rcond : float, optional</span>
+<span class="sd">        Relative cutoff of the nuisance pseudo-inverse (in unit-free form). Default 1e-10.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        Symmetric Fisher matrix, shape `(n_bins, n_bins)`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `jax_enable_x64` is not enabled; `noise` is invalid; a model has no</span>
+<span class="sd">        `SpectralSource` (use `attach_spectrum` first); the number of masks or variances</span>
+<span class="sd">        does not match the number of models; models do not share wavelengths and</span>
+<span class="sd">        reference bin fluxes; a mask does not match the image or excludes every pixel;</span>
+<span class="sd">        the reference image is nonfinite (or negative for Poisson) on included pixels;</span>
+<span class="sd">        or included variances are not finite and positive (mask zero-mean Poisson pixels</span>
+<span class="sd">        explicitly).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">x64_enabled</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Enable jax_enable_x64 before building models"</span><span class="p">)</span>
+    <span class="n">models</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">models</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">SpectralSource</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Use attach_spectrum first"</span><span class="p">)</span>
+    <span class="n">masks</span> <span class="o">=</span> <span class="n">_each</span><span class="p">(</span><span class="n">bad_masks</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">),</span> <span class="s2">"bad_masks"</span><span class="p">)</span>
+    <span class="n">variances</span> <span class="o">=</span> <span class="n">_each</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">models</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">source</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">bin_flux</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="n">lins</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">bad</span><span class="p">,</span> <span class="n">model_variance</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="n">variances</span><span class="p">):</span>
+        <span class="n">source</span><span class="p">,</span> <span class="n">optics</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">optics</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">onp</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> \
+                <span class="n">onp</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">bin_flux</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">bin_flux</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Models must share wavelengths and reference bin fluxes"</span><span class="p">)</span>
+        <span class="n">mono</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">monochromatic_psf</span><span class="p">(</span><span class="n">optics</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">))</span>
+        <span class="n">psfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">mono</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">]</span>
+        <span class="n">responses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">psfs</span><span class="p">])</span> <span class="o">*</span> <span class="n">source</span><span class="o">.</span><span class="n">filt_weights</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">optical</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">bin_flux</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">psfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">detect</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">detector</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">model</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+                <span class="n">template</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+
+        <span class="n">mu</span><span class="p">,</span> <span class="n">pushforward</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">linearize</span><span class="p">(</span><span class="n">detect</span><span class="p">,</span> <span class="n">optical</span><span class="p">)</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">noise_weights</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="n">noise</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="n">model_variance</span><span class="p">,</span>
+                               <span class="n">variance_fn</span><span class="o">=</span><span class="n">variance_fn</span><span class="p">,</span> <span class="n">bad_mask</span><span class="o">=</span><span class="n">bad</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">tangent</span><span class="p">:</span> <span class="n">pushforward</span><span class="p">(</span><span class="n">tangent</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">column</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">F</span> <span class="o">+</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">J</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">J</span> <span class="o">*</span> <span class="n">weight</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]))</span>
+        <span class="n">lins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_Linearisation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="n">J</span><span class="p">:</span> <span class="n">J</span> <span class="o">@</span> <span class="n">v</span><span class="p">,</span>
+                                   <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="n">J</span><span class="p">:</span> <span class="n">J</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">t</span><span class="p">))</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="n">_schur_terms</span><span class="p">(</span><span class="n">lins</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">marginalise</span><span class="p">,</span> <span class="n">marginalise_shared</span><span class="p">,</span> <span class="n">rcond</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">terms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">G</span><span class="p">,</span> <span class="n">C_pinv</span> <span class="o">=</span> <span class="n">terms</span>
+        <span class="n">F</span> <span class="o">=</span> <span class="n">F</span> <span class="o">-</span> <span class="n">G</span> <span class="o">@</span> <span class="n">C_pinv</span> <span class="o">@</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">F</span> <span class="o">+</span> <span class="n">F</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>SpectralModes</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.spectral_eigenmodes.SpectralModes" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">SpectralModes</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">filt_weights</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">fisher</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">residuals</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralModes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>Result of <code>spectral_eigenmodes</code>: the Fisher matrix and its leading eigenmodes.</p>
+<p>All quantities are in incident-photons-per-bin coordinates (before <code>filt_weights</code>).
+The fields shared with <code>wavefront_eigenmodes.WavefrontModes</code> (<code>reference</code>,
+<code>fisher</code>, <code>values</code>, <code>vectors</code>, <code>residuals</code>, <code>sigma</code>, <code>coefficients</code>) mean the same.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.wavelengths">wavelengths</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Bin wavelengths in metres, shape (n_bins,).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.filt_weights">filt_weights</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Throughput per bin, shape (n_bins,).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.reference">reference</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Reference incident photons per bin (<code>bin_flux</code> of the source), shape (n_bins,).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.fisher">fisher</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Fisher matrix (marginalised, if requested), shape (n_bins, n_bins).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.values">values</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Leading Fisher eigenvalues in descending order, shape (k,); numerically null
+eigenvalues are set to zero.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.vectors">vectors</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Corresponding Euclidean unit-norm eigenvectors as columns, shape (n_bins, k).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="dluxtras.spectral_eigenmodes.SpectralModes.residuals">residuals</span></code></td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Relative eigen-residuals, shape (k,); ~1e-15 for this dense calculation.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="dluxtras.spectral_eigenmodes.SpectralModes.sigma" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sigma</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralModes.sigma" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>1-sigma error of each mode's coefficient, in incident photons.</p>
+<p>This is conditional on the other modes being known (all other parameters held
+fixed, or marginalised if requested).</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>1 / sqrt(values)</code>, with inf where the eigenvalue is not positive; shape (k,).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.spectral_eigenmodes.SpectralModes.coefficients" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">coefficients</span><span class="p">(</span><span class="n">bin_flux</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralModes.coefficients" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Project a spectrum onto the modes; useful as <code>basis_weights</code>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>bin_flux</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Incident photons per bin, shape (n_bins,).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>vectors.T @ bin_flux</code>, shape (k,).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">coefficients</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bin_flux</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Project a spectrum onto the modes; useful as `basis_weights`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bin_flux : Array</span>
+<span class="sd">        Incident photons per bin, shape (n_bins,).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array</span>
+<span class="sd">        `vectors.T @ bin_flux`, shape (k,).</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bin_flux</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>mode_criterion</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.spectral_eigenmodes.mode_criterion" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">mode_criterion</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.mode_criterion" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Fractional modal uncertainty 1 / (|a0| sqrt(d_i)) for every computed mode.</p>
+<p>d_i are the Fisher eigenvalues (<code>modes.values</code>) and a0 = v_0 . q0 is the
+reference spectrum's coefficient on the LEADING mode, both in the
+incident-photons-per-bin coordinates of <code>spectral_fisher</code>. The value scales
+as N**-1/2 with the detected photon count N = reference image sum, so
+build the Fisher at the real flux. Null modes (d_i = 0) give inf.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>modes</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.spectral_eigenmodes.SpectralModes(wavelengths, filt_weights, reference, fisher, values, vectors, residuals=None)
+
+  
+      dataclass
+   (dluxtras.spectral_eigenmodes.SpectralModes)" href="./#dluxtras.spectral_eigenmodes.SpectralModes">SpectralModes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Output of <code>spectral_eigenmodes</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="numpy.ndarray">ndarray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>1 / (|a0| sqrt(d_i)) per mode, shape (k,); inf for non-positive d_i.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the reference spectrum has no component on the leading mode (a0 = 0).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mode_criterion</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Fractional modal uncertainty 1 / (|a0| sqrt(d_i)) for every computed mode.</span>
+
+<span class="sd">    d_i are the Fisher eigenvalues (`modes.values`) and a0 = v_0 . q0 is the</span>
+<span class="sd">    reference spectrum's coefficient on the LEADING mode, both in the</span>
+<span class="sd">    incident-photons-per-bin coordinates of `spectral_fisher`. The value scales</span>
+<span class="sd">    as N**-1/2 with the detected photon count N = reference image sum, so</span>
+<span class="sd">    build the Fisher at the real flux. Null modes (d_i = 0) give inf.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    modes : SpectralModes</span>
+<span class="sd">        Output of `spectral_eigenmodes`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        1 / (|a0| sqrt(d_i)) per mode, shape (k,); inf for non-positive d_i.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the reference spectrum has no component on the leading mode (a0 = 0).</span>
+<span class="sd">    """</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">a0</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="o">.</span><span class="n">vectors</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="o">.</span><span class="n">reference</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">a0</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Reference spectrum has no component on the leading mode"</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">onp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">positive</span> <span class="o">=</span> <span class="n">values</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">positive</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">a0</span> <span class="o">*</span> <span class="n">onp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">positive</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>constrainable_modes</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.spectral_eigenmodes.constrainable_modes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">constrainable_modes</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.constrainable_modes" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>K = number of modes with 1 / (|a0| sqrt(d_i)) &lt; threshold (default 0.1).</p>
+<p>Compute modes with k equal to the number of wavelength bins (and &gt;= ~100
+bins for wide bands, otherwise K is unconverged). If every computed mode
+passes, K is only a lower bound and a warning is issued. Use K in
+<code>dluxtras.spectra.recommend_wavelength_sampling</code> (n_coarse ~ 2K).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>modes</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="dluxtras.spectral_eigenmodes.SpectralModes(wavelengths, filt_weights, reference, fisher, values, vectors, residuals=None)
+
+  
+      dataclass
+   (dluxtras.spectral_eigenmodes.SpectralModes)" href="./#dluxtras.spectral_eigenmodes.SpectralModes">SpectralModes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Output of <code>spectral_eigenmodes</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>threshold</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Positive threshold on the criterion from <code>mode_criterion</code>. Default 0.1.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.1</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>K, the number of modes below <code>threshold</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>threshold</code> is not positive, or as raised by <code>mode_criterion</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Warns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="UserWarning">UserWarning</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If every computed mode passes, so K is only a lower bound.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">constrainable_modes</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""K = number of modes with 1 / (|a0| sqrt(d_i)) &lt; threshold (default 0.1).</span>
+
+<span class="sd">    Compute modes with k equal to the number of wavelength bins (and &gt;= ~100</span>
+<span class="sd">    bins for wide bands, otherwise K is unconverged). If every computed mode</span>
+<span class="sd">    passes, K is only a lower bound and a warning is issued. Use K in</span>
+<span class="sd">    `dluxtras.spectra.recommend_wavelength_sampling` (n_coarse ~ 2K).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    modes : SpectralModes</span>
+<span class="sd">        Output of `spectral_eigenmodes`.</span>
+<span class="sd">    threshold : float, optional</span>
+<span class="sd">        Positive threshold on the criterion from `mode_criterion`. Default 0.1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        K, the number of modes below `threshold`.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `threshold` is not positive, or as raised by `mode_criterion`.</span>
+
+<span class="sd">    Warns</span>
+<span class="sd">    -----</span>
+<span class="sd">    UserWarning</span>
+<span class="sd">        If every computed mode passes, so K is only a lower bound.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"threshold must be positive"</span><span class="p">)</span>
+    <span class="n">passed</span> <span class="o">=</span> <span class="n">mode_criterion</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">threshold</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">passed</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="n">passed</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"All computed modes are constrainable: K is a lower bound; "</span>
+                      <span class="s2">"compute more modes or wavelength bins."</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>attach_spectrum</summary>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="dluxtras.spectral_eigenmodes.attach_spectrum" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">attach_spectrum</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">spectrum_args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.attach_spectrum" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Replace the source, preserving existing telescope optics and detector.</p>
+<p>The new source is a <code>SpectralSource</code> whose <code>bin_flux</code> is the reference incident
+spectrum <code>maximum(basis @ (proj @ basis_weights), 1e-8)</code> from <code>spectrum_args</code>
+(clipping only evaluates the reference; it does not define Fisher coordinates).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>model_or_optics</code>
+            </td>
+            <td>
+                  <code><span title="dLux.Telescope">Telescope</span> or <span title="dLux.BaseOpticalSystem">BaseOpticalSystem</span> or <span title="list">list</span> or <span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A telescope-like model (anything with <code>optics</code> and <code>source</code> attributes) or
+bare optics, or a list/tuple of these. Bare optics create a <code>dl.Telescope</code>.
+Lists/tuples return a list of telescopes with one shared reference spectrum.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>spectrum_args</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary from <code>throughput.spectrum_args</code>: <code>wavels</code> (metres), <code>filt_weights</code>,
+<code>basis</code>, <code>basis_weights</code> and optionally <code>proj</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>detector</code>
+            </td>
+            <td>
+                  <code><span title="dLux.BaseDetector">BaseDetector</span> or None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A non-None detector overrides the existing detector (or is used for new
+telescopes). Keyword-only. Default None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>position_arcsec</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span> or <span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Source position in arcseconds; defaults to field centre. For a list it may
+also be (n_models, 2), one position per model. Keyword-only. Default (0., 0.).</p>
+              </div>
+            </td>
+            <td>
+                  <code>(0.0, 0.0)</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dLux.Telescope">Telescope</span> or <span title="list">list</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The model with the new source, or a list of models for list/tuple input.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the spectrum arguments are invalid (wavelengths not matching 1D, finite,
+positive and increasing; throughput not finite, nonnegative and nonzero;
+<code>basis</code> not (n_wavelengths, n_coefficients); <code>proj</code> not
+(n_coefficients, n_coefficients); or a nonfinite reference spectrum).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">attach_spectrum</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">spectrum_args</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">"""Replace the source, preserving existing telescope optics and detector.</span>
+
+<span class="sd">    The new source is a `SpectralSource` whose `bin_flux` is the reference incident</span>
+<span class="sd">    spectrum `maximum(basis @ (proj @ basis_weights), 1e-8)` from `spectrum_args`</span>
+<span class="sd">    (clipping only evaluates the reference; it does not define Fisher coordinates).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_or_optics : dl.Telescope or dl.BaseOpticalSystem or list or tuple</span>
+<span class="sd">        A telescope-like model (anything with `optics` and `source` attributes) or</span>
+<span class="sd">        bare optics, or a list/tuple of these. Bare optics create a `dl.Telescope`.</span>
+<span class="sd">        Lists/tuples return a list of telescopes with one shared reference spectrum.</span>
+<span class="sd">    spectrum_args : dict</span>
+<span class="sd">        Dictionary from `throughput.spectrum_args`: `wavels` (metres), `filt_weights`,</span>
+<span class="sd">        `basis`, `basis_weights` and optionally `proj`.</span>
+<span class="sd">    detector : dl.BaseDetector or None, optional</span>
+<span class="sd">        A non-None detector overrides the existing detector (or is used for new</span>
+<span class="sd">        telescopes). Keyword-only. Default None.</span>
+<span class="sd">    position_arcsec : Array or tuple, optional</span>
+<span class="sd">        Source position in arcseconds; defaults to field centre. For a list it may</span>
+<span class="sd">        also be (n_models, 2), one position per model. Keyword-only. Default (0., 0.).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dl.Telescope or list</span>
+<span class="sd">        The model with the new source, or a list of models for list/tuple input.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the spectrum arguments are invalid (wavelengths not matching 1D, finite,</span>
+<span class="sd">        positive and increasing; throughput not finite, nonnegative and nonzero;</span>
+<span class="sd">        `basis` not (n_wavelengths, n_coefficients); `proj` not</span>
+<span class="sd">        (n_coefficients, n_coefficients); or a nonfinite reference spectrum).</span>
+<span class="sd">    """</span>
+    <span class="n">wavels</span><span class="p">,</span> <span class="n">filt</span><span class="p">,</span> <span class="n">q0</span> <span class="o">=</span> <span class="n">_reference</span><span class="p">(</span><span class="n">spectrum_args</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">attach</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">SpectralSource</span><span class="p">(</span><span class="n">wavels</span><span class="p">,</span> <span class="n">filt</span><span class="p">,</span> <span class="n">q0</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"optics"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">):</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"source"</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">model</span> <span class="k">if</span> <span class="n">detector</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">model</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"detector"</span><span class="p">,</span> <span class="n">detector</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dl</span><span class="o">.</span><span class="n">Telescope</span><span class="p">(</span><span class="n">optics</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">position_arcsec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+                                     <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">attach</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">positions</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">model_or_optics</span><span class="p">,</span> <span class="n">position_arcsec</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div></details>
+<details class="info" open="open">
+<summary>SpectralSource</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dluxtras.spectral_eigenmodes.SpectralSource" class="doc doc-heading">
+              <code class="highlight language-python"><span class="n">dluxtras</span><span class="o">.</span><span class="n">spectral_eigenmodes</span><span class="o">.</span><span class="n">SpectralSource</span><span class="p">(</span><span class="n">wavels</span><span class="p">,</span> <span class="n">filt_weights</span><span class="p">,</span> <span class="n">bin_flux</span><span class="p">,</span> <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralSource" class="headerlink" title="Permanent link">¤</a></h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="dLux.PointSource">PointSource</span></code></p>
+
+
+
+        <p>Point source with absolute bin fluxes; inherited position is in radians.</p>
+<p>The image is <code>sum_i bin_flux[i] * filt_weights[i] * PSF(wavelengths[i])</code>, with each
+monochromatic PSF propagated with unit weight. <code>bin_flux</code> is in incident photons per
+wavelength bin, before <code>filt_weights</code>.</p>
+<p>Signed <code>bin_flux</code> is allowed for local linear perturbations. A physical
+reference must be nonnegative. No positivity clipping is differentiated.
+<code>flux</code> is inherited for compatibility but is not used as another scale.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>wavels</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Wavelengths in metres (1D).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>filt_weights</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Throughput per bin, same shape as <code>wavels</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>bin_flux</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Incident photons per wavelength bin, same shape as <code>wavels</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>position_arcsec</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span> or <span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>(x, y) position in arcseconds; converted to radians and stored as <code>position</code>.
+Default (0., 0.).</p>
+              </div>
+            </td>
+            <td>
+                  <code>(0.0, 0.0)</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>wavels</code>, <code>filt_weights</code> and <code>bin_flux</code> do not have matching 1D shapes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+                  <details class="mkdocstrings-source">
+                    <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+                    <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span>
+<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavels</span><span class="p">,</span> <span class="n">filt_weights</span><span class="p">,</span> <span class="n">bin_flux</span><span class="p">,</span> <span class="n">position_arcsec</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wavels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+                     <span class="n">position</span><span class="o">=</span><span class="n">dlu</span><span class="o">.</span><span class="n">arcsec2rad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">position_arcsec</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bin_flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bin_flux</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">filt_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">filt_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_flux</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">filt_weights</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavels, filt_weights and bin_flux must have matching 1D shapes"</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+                  </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.spectral_eigenmodes.SpectralSource.monochromatic_psf" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">monochromatic_psf</span><span class="p">(</span><span class="n">optics</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralSource.monochromatic_psf" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Unit-weight PSF of the source at a single wavelength.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>optics</code>
+            </td>
+            <td>
+                  <code><span title="dLux.BaseOpticalSystem">BaseOpticalSystem</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optical system to propagate through.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>wavelength</code>
+            </td>
+            <td>
+                  <code><span title="Array">Array</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Scalar wavelength in metres.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dLux.PSF">PSF</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>PSF from <code>optics.propagate</code> at <code>self.position</code> with weight one.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">monochromatic_psf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optics</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Unit-weight PSF of the source at a single wavelength.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    optics : dl.BaseOpticalSystem</span>
+<span class="sd">        Optical system to propagate through.</span>
+<span class="sd">    wavelength : Array</span>
+<span class="sd">        Scalar wavelength in metres.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dl.PSF</span>
+<span class="sd">        PSF from `optics.propagate` at `self.position` with weight one.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">optics</span><span class="o">.</span><span class="n">propagate</span><span class="p">(</span><span class="n">wavelength</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                            <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">return_psf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="dluxtras.spectral_eigenmodes.SpectralSource.model" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">model</span><span class="p">(</span><span class="n">optics</span><span class="p">,</span> <span class="n">return_wf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_psf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#dluxtras.spectral_eigenmodes.SpectralSource.model" class="headerlink" title="Permanent link">¤</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Incoherent sum of monochromatic PSFs weighted by <code>bin_flux * filt_weights</code>.</p>
+<p>Wavelengths are propagated one at a time (<code>jax.lax.scan</code>).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>optics</code>
+            </td>
+            <td>
+                  <code><span title="dLux.BaseOpticalSystem">BaseOpticalSystem</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Optical system to propagate through.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>return_wf</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Not supported; must be False. Default False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>return_psf</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Return a <code>dl.PSF</code> (with the pixel scale of the first wavelength's PSF)
+instead of an image array. Default False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="Array">Array</span> or <span title="dLux.PSF">PSF</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The polychromatic image, or a <code>dl.PSF</code> if <code>return_psf</code> is True.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>return_wf</code> is True.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>src/dluxtras/spectral_eigenmodes.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optics</span><span class="p">,</span> <span class="n">return_wf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_psf</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Incoherent sum of monochromatic PSFs weighted by `bin_flux * filt_weights`.</span>
+
+<span class="sd">    Wavelengths are propagated one at a time (`jax.lax.scan`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    optics : dl.BaseOpticalSystem</span>
+<span class="sd">        Optical system to propagate through.</span>
+<span class="sd">    return_wf : bool, optional</span>
+<span class="sd">        Not supported; must be False. Default False.</span>
+<span class="sd">    return_psf : bool, optional</span>
+<span class="sd">        Return a `dl.PSF` (with the pixel scale of the first wavelength's PSF)</span>
+<span class="sd">        instead of an image array. Default False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Array or dl.PSF</span>
+<span class="sd">        The polychromatic image, or a `dl.PSF` if `return_psf` is True.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `return_wf` is True.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">return_wf</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"This incoherent spectral source returns images/PSFs, not wavefronts"</span><span class="p">)</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monochromatic_psf</span><span class="p">(</span><span class="n">optics</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="n">wavelength</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">psf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monochromatic_psf</span><span class="p">(</span><span class="n">optics</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span> <span class="o">+</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">psf</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+                          <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_flux</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">filt_weights</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">return_psf</span> <span class="k">else</span> <span class="n">data</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div></details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.top","navigation.indexes","content.code.copy","toc.integrate","content.action.edit","content.action.view"],"redirect":null,"search":"../../assets/javascripts/workers/search.c47bb847.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a2388154.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

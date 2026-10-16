@@ -1,0 +1,1615 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for dluxtras, extensions for dLux.">
+      
+      
+        <meta name="author" content="Milo Langker">
+      
+      
+        <link rel="canonical" href="https://milolangker.github.io/dluxtras/dev/wavelength_sampling/">
+      
+      
+      
+        <link rel="prev" href="../fitting_benchmark/">
+      
+      
+        <link rel="next" href="../API/spectra/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.70">
+    
+    
+      
+        <title>Wavelength sampling - dluxtras documentation</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.e442bf79.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="dluxtras documentation" class="md-header__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dluxtras documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Wavelength sampling
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="dluxtras documentation" class="md-nav__button md-logo" aria-label="dluxtras documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    dluxtras documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/milolangker/dluxtras" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    milolangker/dluxtras
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Guides
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Guides
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra, sources and throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Unit-free Hessians
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fitting_benchmark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting benchmarks
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Validation
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Validation
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavelength sampling
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavelength sampling
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Setup
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#method" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Method
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Results
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Conclusion
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  API
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  API
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/spectra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectra
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Sources
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/throughput/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Throughput
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/spectral_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/wavefront_eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Wavefront eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/eigenmodes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Eigenmode core
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/fitting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fitting
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/curvature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Curvature
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/milolangker/dluxtras/edit/main/docs/wavelength_sampling.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/milolangker/dluxtras/raw/main/docs/wavelength_sampling.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="validation-how-many-wavelengths">Validation: how many wavelengths?<a class="headerlink" href="#validation-how-many-wavelengths" title="Permanent link">¤</a></h1>
+<p><code>recommend_wavelength_sampling(K, N)</code> (see <a href="../spectra/#how-many-wavelengths">Spectra</a>) turns
+the number of constrainable spectral modes <code>K</code> and the detected photon count <code>N</code> into a
+number of wavelengths to propagate:</p>
+<ul>
+<li><strong>Hermite:</strong> <code>n_coarse = max(3, 2K)</code> coarse nodes on a fixed fine grid;</li>
+<li><strong>Exact:</strong> <code>n_exact = ceil(23.5 K^0.553 (N/1e9)^0.208)</code> wavelength bins.</li>
+</ul>
+<p>Both rules were fitted to JWST/NIRCam models. This page re-derives them on generic optics
+and synthetic filters, using only dluxtras, dLux, JAX and NumPy, and checks whether either
+rule ever asks for too few wavelengths.</p>
+<p>Reproduce with:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>validation/wavelength_sampling.py<span class="w">          </span><span class="c1"># ~6 min</span>
+python<span class="w"> </span>validation/wavelength_sampling.py<span class="w"> </span>--quick<span class="w">  </span><span class="c1"># ~30 s, 1 pupil, 2 filters, 2 stamps</span>
+</code></pre></div>
+<p>Run on 2026-10-16, Apple M5 Pro CPU, jax 0.11.2, dLux 0.15.1, NumPy 2.5.4 (full run: 375 s).</p>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">¤</a></h2>
+<ul>
+<li><strong>Optics.</strong> <code>dl.AngularOpticalSystem</code>, D = 1 m, 256-pixel pupil, oversample 3, summed to
+  detector pixels. Two pupils:<ul>
+<li><strong>clear:</strong> an unobscured, unaberrated circle;</li>
+<li><strong>obscured:</strong> a 20% central obscuration, four spider vanes 1% of D wide, and 50 nm RMS
+  of random Zernike aberration (Noll 4–11, about λ_c/20, Strehl ~0.9).</li>
+</ul>
+</li>
+<li>
+<p><strong>Filters.</strong> Four synthetic smooth top-hats centred on 1 µm, with tanh edges and a 20%
+  linear throughput tilt (like a QE slope). Their fractional bandwidths (at 1% of peak, as
+  <code>fractional_bandwidth</code> measures them) and λ_c/D in detector pixels match the four NIRCam
+  filters of the original study:</p>
+<table>
+<thead>
+<tr>
+<th>filter</th>
+<th>Δλ/λ_c</th>
+<th>λ_c/D [px]</th>
+<th>mimics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N3</td>
+<td>0.030</td>
+<td>2.14</td>
+<td>F212N</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>0.166</td>
+<td>1.86</td>
+<td>F182M</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>0.291</td>
+<td>2.20</td>
+<td>F444W</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>0.530</td>
+<td>1.62</td>
+<td>F322W2</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>Stamps</strong> of 32, 64, 128 and 256 px, i.e. half-widths <code>R_half</code> of 7–80 λ_c/D. The source
+  sits at a sub-pixel offset of (0.3, −0.2) px with a flat incident spectrum.</p>
+</li>
+<li><strong>Photons</strong> N = 1e8, 1e9 and 1e10, where N is the <strong>detected</strong> photon count in the stamp
+  (the truth image sum).</li>
+</ul>
+<h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">¤</a></h2>
+<p>For each (pupil, filter, stamp):</p>
+<ol>
+<li><strong>Truth.</strong> 600 exact monochromatic PSFs on the <code>spectrum_args(nwavels=600)</code> grid, summed
+   with <code>CombinedBasisSpectrum.weights</code>.</li>
+<li><strong>K.</strong> The Fisher matrix in incident-photons-per-bin coordinates, with Poisson variance
+   equal to the image, is built once at unit flux from the cached PSFs. <code>K(N)</code> then follows
+   analytically, since the criterion <code>1/(|a0| sqrt(d_i))</code> scales as <code>N^-1/2</code>; it's counted
+   with <code>constrainable_modes</code> (threshold 0.1).</li>
+<li><strong>Model error.</strong> <code>Δχ² = N Σ_p (I_model − I_truth)² / I_truth</code>, with both images divided by
+   the truth sum.</li>
+<li><strong>Minimum n_coarse.</strong> Hermite images on the same 600-bin spectrum, so only the
+   interpolation error enters. Every integer <code>n_coarse</code> from 3 upwards is scanned, and the
+   minimum is the smallest value beyond which every scanned value has <code>Δχ² &lt; 1</code>.
+   (<code>Δχ²(n_coarse)</code> isn't monotonic: node alignment makes it ripple, in 18 of 32 cases.)</li>
+<li><strong>Minimum n_exact.</strong> Exact images from <code>spectrum_args(nwavels=n)</code> with their own binning,
+   so this is the quadrature error. Found on a grid, then bisected to the integer.</li>
+<li><strong>Rules.</strong> Both rules are evaluated at <code>K(N)</code> with <code>recommend_wavelength_sampling</code>. Each
+   prediction's own image is then tested: a rule undershoots if <code>Δχ² ≥ 1</code> there.</li>
+</ol>
+<p>The script also runs these consistency checks:</p>
+<ul>
+<li>the truth equals <code>dl.Telescope(optics, HermitePointSource(...), detector).model()</code> to 1e-14;</li>
+<li>the cached Hermite images match <code>HermitePointSource(n_coarse=...)</code> (Δχ² to 1e-11);</li>
+<li>the Fisher matrix equals <code>spectral_eigenmodes</code> to 4e-15, with the same K at the library's
+  photon count;</li>
+<li>600 vs 900 bins in the hardest case (W53, 256 px) gives Δχ² ≤ 1.2e-3 at N = 1e10.</li>
+</ul>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">¤</a></h2>
+<p>Each cell gives the values at N = 1e8 / 1e9 / 1e10. <code>R_half</code> is in λ_c/D.</p>
+<p><strong>Clear pupil</strong></p>
+<table>
+<thead>
+<tr>
+<th>filter</th>
+<th>stamp</th>
+<th>R_half</th>
+<th>K</th>
+<th>min n_coarse</th>
+<th>max(3, 2K)</th>
+<th>min n_exact</th>
+<th>n_exact rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N3</td>
+<td>32 px</td>
+<td>7.5</td>
+<td>3 / 3 / 4</td>
+<td>3 / 3 / 4</td>
+<td>6 / 6 / 8</td>
+<td>9 / 13 / 24</td>
+<td>27 / 44 / 82</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>64 px</td>
+<td>15.0</td>
+<td>4 / 4 / 5</td>
+<td>4 / 5 / 6</td>
+<td>8 / 8 / 10</td>
+<td>11 / 21 / 36</td>
+<td>32 / 51 / 93</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>128 px</td>
+<td>29.9</td>
+<td>5 / 5 / 6</td>
+<td>5 / 6 / 7</td>
+<td>10 / 10 / 12</td>
+<td>13 / 25 / 45</td>
+<td>36 / 58 / 103</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>256 px</td>
+<td>59.8</td>
+<td>6 / 7 / 8</td>
+<td>6 / 8 / 10</td>
+<td>12 / 14 / 16</td>
+<td>16 / 28 / 50</td>
+<td>40 / 69 / 120</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>32 px</td>
+<td>8.6</td>
+<td>6 / 7 / 8</td>
+<td>6 / 8 / 10</td>
+<td>12 / 14 / 16</td>
+<td>22 / 38 / 67</td>
+<td>40 / 69 / 120</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>64 px</td>
+<td>17.2</td>
+<td>9 / 11 / 12</td>
+<td>8 / 12 / 15</td>
+<td>18 / 22 / 24</td>
+<td>25 / 44 / 78</td>
+<td>50 / 89 / 150</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>128 px</td>
+<td>34.4</td>
+<td>16 / 17 / 19</td>
+<td>13 / 16 / 21</td>
+<td>32 / 34 / 38</td>
+<td>28 / 49 / 86</td>
+<td>68 / 113 / 194</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>256 px</td>
+<td>68.8</td>
+<td>28 / 31 / 33</td>
+<td>21 / 24 / 36</td>
+<td>56 / 62 / 66</td>
+<td>29 / 51 / 89</td>
+<td>92 / 157 / 263</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>32 px</td>
+<td>7.3</td>
+<td>8 / 9 / 10</td>
+<td>8 / 11 / 15</td>
+<td>16 / 18 / 20</td>
+<td>30 / 52 / 91</td>
+<td>46 / 80 / 136</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>64 px</td>
+<td>14.5</td>
+<td>13 / 15 / 16</td>
+<td>13 / 16 / 21</td>
+<td>26 / 30 / 32</td>
+<td>33 / 58 / 103</td>
+<td>61 / 106 / 176</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>128 px</td>
+<td>29.1</td>
+<td>23 / 25 / 27</td>
+<td>20 / 24 / 33</td>
+<td>46 / 50 / 54</td>
+<td>35 / 62 / 109</td>
+<td>83 / 140 / 235</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>256 px</td>
+<td>58.2</td>
+<td>42 / 46 / 49</td>
+<td>34 / 43 / 60</td>
+<td>84 / 92 / 98</td>
+<td>36 / 63 / 110</td>
+<td>116 / 196 / 327</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>32 px</td>
+<td>9.9</td>
+<td>16 / 17 / 19</td>
+<td>16 / 18 / 23</td>
+<td>32 / 34 / 38</td>
+<td>33 / 59 / 103</td>
+<td>68 / 113 / 194</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>64 px</td>
+<td>19.8</td>
+<td>28 / 31 / 33</td>
+<td>26 / 31 / 41</td>
+<td>56 / 62 / 66</td>
+<td>36 / 63 / 110</td>
+<td>92 / 157 / 263</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>128 px</td>
+<td>39.5</td>
+<td>50 / 58 / 62</td>
+<td>47 / 59 / 83</td>
+<td>100 / 116 / 124</td>
+<td>47 / 63 / 111</td>
+<td>127 / 222 / 372</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>256 px</td>
+<td>79.0</td>
+<td>82 / 103 / 116</td>
+<td>83 / 112 / 145</td>
+<td>164 / 206 / 232</td>
+<td>80 / 90 / 111</td>
+<td>167 / 305 / 526</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Obscured, aberrated pupil</strong></p>
+<table>
+<thead>
+<tr>
+<th>filter</th>
+<th>stamp</th>
+<th>R_half</th>
+<th>K</th>
+<th>min n_coarse</th>
+<th>max(3, 2K)</th>
+<th>min n_exact</th>
+<th>n_exact rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N3</td>
+<td>32 px</td>
+<td>7.5</td>
+<td>3 / 3 / 4</td>
+<td>3 / 3 / 4</td>
+<td>6 / 6 / 8</td>
+<td>9 / 13 / 24</td>
+<td>27 / 44 / 82</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>64 px</td>
+<td>15.0</td>
+<td>4 / 4 / 5</td>
+<td>4 / 4 / 5</td>
+<td>8 / 8 / 10</td>
+<td>11 / 21 / 36</td>
+<td>32 / 51 / 93</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>128 px</td>
+<td>29.9</td>
+<td>5 / 5 / 6</td>
+<td>5 / 6 / 7</td>
+<td>10 / 10 / 12</td>
+<td>15 / 27 / 48</td>
+<td>36 / 58 / 103</td>
+</tr>
+<tr>
+<td>N3</td>
+<td>256 px</td>
+<td>59.8</td>
+<td>6 / 7 / 8</td>
+<td>6 / 8 / 10</td>
+<td>12 / 14 / 16</td>
+<td>19 / 32 / 57</td>
+<td>40 / 69 / 120</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>32 px</td>
+<td>8.6</td>
+<td>6 / 7 / 8</td>
+<td>7 / 8 / 10</td>
+<td>12 / 14 / 16</td>
+<td>26 / 46 / 81</td>
+<td>40 / 69 / 120</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>64 px</td>
+<td>17.2</td>
+<td>9 / 10 / 11</td>
+<td>8 / 11 / 15</td>
+<td>18 / 20 / 22</td>
+<td>30 / 53 / 93</td>
+<td>50 / 84 / 143</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>128 px</td>
+<td>34.4</td>
+<td>15 / 17 / 18</td>
+<td>13 / 16 / 20</td>
+<td>30 / 34 / 36</td>
+<td>33 / 59 / 103</td>
+<td>66 / 113 / 188</td>
+</tr>
+<tr>
+<td>M17</td>
+<td>256 px</td>
+<td>68.8</td>
+<td>27 / 31 / 33</td>
+<td>21 / 24 / 33</td>
+<td>54 / 62 / 66</td>
+<td>36 / 63 / 110</td>
+<td>91 / 157 / 263</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>32 px</td>
+<td>7.3</td>
+<td>8 / 9 / 10</td>
+<td>8 / 11 / 15</td>
+<td>16 / 18 / 20</td>
+<td>34 / 59 / 104</td>
+<td>46 / 80 / 136</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>64 px</td>
+<td>14.5</td>
+<td>13 / 14 / 15</td>
+<td>13 / 16 / 20</td>
+<td>26 / 28 / 30</td>
+<td>38 / 67 / 117</td>
+<td>61 / 102 / 170</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>128 px</td>
+<td>29.1</td>
+<td>22 / 24 / 26</td>
+<td>19 / 23 / 31</td>
+<td>44 / 48 / 52</td>
+<td>42 / 74 / 128</td>
+<td>81 / 137 / 230</td>
+</tr>
+<tr>
+<td>W29</td>
+<td>256 px</td>
+<td>58.2</td>
+<td>40 / 45 / 48</td>
+<td>31 / 41 / 60</td>
+<td>80 / 90 / 96</td>
+<td>43 / 77 / 134</td>
+<td>112 / 193 / 323</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>32 px</td>
+<td>9.9</td>
+<td>15 / 17 / 19</td>
+<td>16 / 18 / 24</td>
+<td>30 / 34 / 38</td>
+<td>42 / 74 / 130</td>
+<td>66 / 113 / 194</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>64 px</td>
+<td>19.8</td>
+<td>27 / 30 / 32</td>
+<td>25 / 29 / 41</td>
+<td>54 / 60 / 64</td>
+<td>45 / 79 / 138</td>
+<td>91 / 155 / 258</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>128 px</td>
+<td>39.5</td>
+<td>48 / 55 / 60</td>
+<td>44 / 59 / 74</td>
+<td>96 / 110 / 120</td>
+<td>48 / 82 / 143</td>
+<td>124 / 216 / 366</td>
+</tr>
+<tr>
+<td>W53</td>
+<td>256 px</td>
+<td>79.0</td>
+<td>82 / 103 / 115</td>
+<td>84 / 112 / 145</td>
+<td>164 / 206 / 230</td>
+<td>81 / 93 / 145</td>
+<td>167 / 305 / 524</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Summary over all 96 cases</strong> (32 configurations × 3 values of N). Ratios are rule ÷
+measured minimum, so ≥ 1 means the rule is safe.</p>
+<table>
+<thead>
+<tr>
+<th>subset</th>
+<th>min n_coarse / K</th>
+<th>2K rule: min</th>
+<th>median</th>
+<th>max</th>
+<th>n_exact rule: min</th>
+<th>median</th>
+<th>max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all</td>
+<td>0.75–1.50</td>
+<td>1.33</td>
+<td>1.92</td>
+<td>2.67</td>
+<td>1.31</td>
+<td>2.26</td>
+<td>4.74</td>
+</tr>
+<tr>
+<td>N = 1e8</td>
+<td>0.75–1.17</td>
+<td>1.71</td>
+<td>2.00</td>
+<td>2.67</td>
+<td>1.35</td>
+<td>2.24</td>
+<td>3.22</td>
+</tr>
+<tr>
+<td>N = 1e9</td>
+<td>0.77–1.25</td>
+<td>1.60</td>
+<td>1.88</td>
+<td>2.58</td>
+<td>1.36</td>
+<td>2.28</td>
+<td>3.52</td>
+</tr>
+<tr>
+<td>N = 1e10</td>
+<td>1.00–1.50</td>
+<td>1.33</td>
+<td>1.60</td>
+<td>2.00</td>
+<td>1.31</td>
+<td>2.21</td>
+<td>4.74</td>
+</tr>
+</tbody>
+</table>
+<p>At the rules' own predictions, the largest Δχ² was 0.056 for Hermite (2K) and 0.32 for
+exact propagation.</p>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">¤</a></h2>
+<p><strong>Neither rule undershot</strong> in any of the 96 cases (Δχ² &lt; 1 at the prediction in 96/96 for
+both). The generic setup reproduces the NIRCam study closely: K is typically 5–20% above the
+NIRCam values for the matching filter and stamp (by 0–1 for the narrowest filter), and
+min n_coarse / K spans 0.75–1.50 (NIRCam: 0.87–1.78). Both rules are confirmed, and both
+are conservative:</p>
+<ul>
+<li><strong>Hermite, <code>max(3, 2K)</code>:</strong> at least 1.33× the minimum (median 1.9×). The tightest cases
+  are at N = 1e10. <code>max(3, ceil(1.45 K))</code> would already have sufficed here (NIRCam needed
+  1.70), so <code>c = 2</code> leaves about 20–40% headroom for setups less benign than these.</li>
+<li><strong>Exact, <code>23.5 K^0.553 (N/1e9)^0.208</code>:</strong> at least 1.31× the minimum, but with a median of
+  2.3× and up to 4.7×. The overshoot grows with stamp size. At fixed filter and N, the
+  minimum <code>n_exact</code> barely depends on the stamp (W29 at 1e10: 91–134 from 32 to 256 px),
+  while K roughly triples, so the <code>K^0.553</code> term over-predicts for large stamps.</li>
+</ul>
+<p>Caveats:</p>
+<ul>
+<li><strong>The speedup estimate is biased towards Hermite.</strong> <code>recommend_wavelength_sampling</code>
+  estimates the speedup as <code>n_exact / (2.5 n_coarse)</code> with the conservative <code>n_exact</code>
+  rule. Against the measured minimum <code>n_exact</code>, it predicts ≥ 1.5× when the true figure is
+  below 1.5× in 36 of 96 cases, mostly narrow filters or small K at high N (e.g. N3 at
+  32 px: estimated 1.8–4.1×, true 0.6–1.2×). The recommendation is still safe (both
+  rules are), but it can pick the slower option. The <code>jvp_cost</code> of 2.5
+  was not re-measured here.</li>
+<li><strong>The filters are smooth.</strong> The quadrature error, and so <code>n_exact</code>, depends on how sharp
+  the throughput is. Real filters with steeper edges or ripples need more bins. At N = 1e10,
+  NIRCam's F322W2 needed 150–200 (on a coarse grid), against 103–145 for W53 here. Check
+  <code>n_exact</code> with a real throughput curve before relying on a margin as small as 1.3×.</li>
+<li><strong>The tested range is narrow.</strong> These results cover one source position, a flat source
+  spectrum, Poisson noise only, 600 fine bins, and N = 1e8–1e10, the range the rules were
+  fitted on.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["navigation.top","navigation.indexes","content.code.copy","toc.integrate","content.action.edit","content.action.view"],"redirect":null,"search":"../assets/javascripts/workers/search.c47bb847.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a2388154.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
