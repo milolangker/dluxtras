@@ -4,7 +4,7 @@
 
 Extensions for [∂Lux](https://github.com/LouisDesdoigts/dLux): reusable pieces shared by several dLux-based projects.
 
-**Documentation: <https://milolangker.github.io/dluxtras/>** (guides on when to use each option, plus the full API reference).
+**Documentation: <https://milolangker.github.io/dluxtras/dev/>** (guides on when to use each option, plus the full API reference).
 
 | Module | Contents |
 | --- | --- |
@@ -59,7 +59,7 @@ fit = problem.fit(precondition="full").run(10)       # natural gradient, near th
 sigma = problem.curvature(fit.params, precondition="full").std   # marginal 1-sigma
 ```
 
-See the [fitting guide](https://milolangker.github.io/dluxtras/fitting/) for when to use each.
+See the [fitting guide](https://milolangker.github.io/dluxtras/dev/fitting/) for when to use each.
 
 ## Tests and docs
 
