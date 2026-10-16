@@ -1,61 +1,21 @@
 """Fisher-preconditioned fitting for dLux/Zodiax models.
 
-    problem = FitProblem(model, params, data, gaussian_nll, std, trainable=mask)
-    fit = problem.fit()                      # diagonal Fisher, SGD with lr 1
-    fit.run(200).refresh().run(200)          # refresh: new curvature where the fit is now
-    fit = problem.fit(precondition="full", optimiser="lbfgs")   # fastest, most robust
-    problem.curvature(fit.params, precondition="full").std   # marginal 1-sigma, dict shapes
+A `FitProblem` holds what is fitted (model, parameters, data and likelihood). Its
+`curvature` method computes the Fisher matrix in unit-free form, and its `fit` method
+returns a resumable `FisherFit` that optimises in Fisher-whitened coordinates.
 
-Contract: nll(prediction, data, *nll_args, **nll_kwargs) -> scalar negative log
-likelihood, where prediction = predict(params, model), by default
-model.set(params).model(). params is a dict {path: array}; trainable selects
-entries (True/False or a boolean array per key; unspecified keys are fitted) and
-frozen entries keep their initial values exactly. nll must give finite
-gradients at NaN (excluded) data: mask with np.where before arithmetic, as
-gaussian_nll does; np.nansum alone does not. Enable jax_enable_x64 first.
+The three main ways to fit are:
 
-Curvature (kind="expected", the default) is the Fisher matrix
-F = J.T H J, with J = d prediction / d params and H the Hessian of nll with
-respect to the prediction, evaluated with the data replaced by the prediction
-(NaN pixels kept). This is exactly the Fisher matrix for Gaussian noise of fixed
-(co)variance, correlated or not, and for Poisson noise, and it is positive
-semi-definite everywhere. kind="observed" is the Hessian of the loss against
-the actual data (or curvature_data): it includes residual terms and can be
-indefinite away from the best fit.
+```python
+problem = FitProblem(model, params, data, gaussian_nll, std, trainable=mask)
+fit = problem.fit().run(200)                        # 1. diagonal Fisher, Nesterov SGD
+fit = problem.fit(optimiser="lbfgs").run(100)       # 2. L-BFGS (stops when converged)
+fit = problem.fit(precondition="full").run(10)      # 3. natural gradient
+sigma = problem.curvature(fit.params, precondition="full").std   # marginal 1-sigma
+```
 
-Fits run in whitened coordinates u, with params x = x0 + T u, chosen so that
-the curvature in u at x0 is (close to) the identity. Linear algebra is done on
-the unit-free normalised Fisher F_n = S F S, S = diag(1/sqrt(diag(F))).
-
-precondition="diagonal" (default): T = S / sqrt(lambda_max(F_n)). Only the
-    diagonal of F is computed, and lambda_max by power iteration (kind="observed"
-    always computes the full matrix, at the same cost). SGD is
-    gradient descent preconditioned by 1/diag(F); lr = 1 is a Newton step along
-    the stiffest direction and lr < 2 is stable at x0. Correlated directions
-    converge at about lambda_min/lambda_max per step.
-precondition="full": T = S L^-T with L L^T = F_n + damping I. SGD is natural-
-    gradient descent with the Fisher fixed at x0: lr = 1 is a Newton (Fisher
-    scoring) step, lr < 2 is stable at x0. Requires F_n to be non-singular, or
-    damping > 0 (in unit-free terms: 0.01 adds 1% of each diagonal).
-
-optimiser:
-    1.0 (default): plain SGD with that learning rate; strictly first-order, one
-        gradient per step. With the diagonal, lr = 1 steps exactly to the minimum
-        along the stiffest direction; correlated parameters converge slowly.
-    "lbfgs": optax.lbfgs, a line search with no learning rate, which also learns
-        how the curvature changes as the fit moves. About 2 gradients per step,
-        but in benchmarks/fitting_benchmark.md a whole fit took 3-17x fewer
-        gradients than the default unless already near the minimum of an
-        uncorrelated problem (then equal). With precondition="full" it was the
-        fastest and most robust method from both near and far starts.
-    "nesterov": SGD with lr 1 and Nesterov momentum 0.9. Still one gradient
-        per step and no curvature model, but 5-9x fewer steps than plain SGD
-        when parameters are correlated (similar when they are not).
-    Any optax GradientTransformation also works; it sees u-space gradients.
-    Avoid optax.adam: its per-coordinate rescaling undoes the whitening.
-
-The curvature is computed once per fit; refresh() recomputes it at the current
-parameters and restarts the optimiser state there.
+Enable `jax_enable_x64` before building models. See the "Fitting" guide in the
+documentation for when to use each option.
 """
 
 from dataclasses import dataclass
@@ -74,9 +34,24 @@ __all__ = ["FitProblem", "Curvature", "FisherFit", "ParameterSelection", "gaussi
 
 
 def gaussian_nll(prediction, data, std):
-    """Independent Gaussian negative log likelihood (up to a constant).
+    """Independent Gaussian negative log likelihood, up to a constant.
 
-    Pixels where data or std is NaN are excluded, with finite gradients.
+    Pixels where `data` or `std` is NaN are excluded. Unlike `np.nansum`, the masking
+    happens before any arithmetic, so gradients stay finite at excluded pixels.
+
+    Parameters
+    ----------
+    prediction : Array
+        Model prediction.
+    data : Array
+        Data, the same shape as `prediction`. NaN marks excluded pixels.
+    std : Array
+        Per-pixel standard deviation, broadcastable to `data`. NaN also excludes.
+
+    Returns
+    -------
+    Array
+        Scalar `0.5 * sum(((data - prediction) / std) ** 2)` over included pixels.
     """
     excluded = np.isnan(data) | np.isnan(std)
     residual = np.where(excluded, 0.0, np.where(excluded, 0.0, data) - prediction)
@@ -85,7 +60,33 @@ def gaussian_nll(prediction, data, std):
 
 
 class ParameterSelection:
-    """Flatten dictionary parameters and retain only trainable entries."""
+    """Flatten dictionary parameters and keep track of which entries are fitted.
+
+    Used internally by `FitProblem`; exposed for its labels and helpers.
+
+    Parameters
+    ----------
+    params : dict
+        `{path: array}` of real floating parameters, e.g.
+        `{"source.position": np.zeros(2)}`. All values must be finite.
+    trainable : dict, optional
+        `{path: bool or boolean array}`. `True` fits every entry of that key, `False`
+        freezes it, and a boolean array (broadcastable to the parameter's shape)
+        selects entries. Keys not given are fitted. Default fits everything.
+
+    Attributes
+    ----------
+    initial_params : dict
+        The parameters as given.
+    initial_active : Array
+        The fitted (active) entries, flattened in JAX's sorted-key order.
+    indices : Array
+        Positions of the active entries in the full flattened vector.
+    active_labels : list of str
+        One label per active entry, e.g. `"source.position[0]"`.
+    mask : dict
+        The boolean mask per key, at full shape.
+    """
 
     def __init__(self, params, trainable=None):
         if not isinstance(params, dict) or not params:
@@ -126,7 +127,18 @@ class ParameterSelection:
         self.active_labels = [labels[int(i)] for i in self.indices]
 
     def active_of(self, params):
-        """Trainable entries of a full parameter dictionary."""
+        """Active (fitted) entries of a full parameter dictionary.
+
+        Parameters
+        ----------
+        params : dict
+            Dictionary with the same keys and shapes as the initial parameters.
+
+        Returns
+        -------
+        Array
+            The active entries, flattened, ordered as `active_labels`.
+        """
         if set(params) != set(self.initial_params):
             raise ValueError(f"params must have keys {sorted(self.initial_params)}")
         flat, _ = ravel_pytree({key: np.asarray(params[key]) for key in self.initial_params})
@@ -135,11 +147,35 @@ class ParameterSelection:
         return flat[self.indices]
 
     def expand(self, active):
-        """Full parameter dictionary with frozen entries unchanged."""
+        """Full parameter dictionary from active entries; frozen entries unchanged.
+
+        Parameters
+        ----------
+        active : Array
+            Values for the active entries, ordered as `active_labels`.
+
+        Returns
+        -------
+        dict
+            `{path: array}` with the initial values for frozen entries.
+        """
         return self.unflatten(self.initial_flat.at[self.indices].set(active))
 
     def expand_zeros(self, active):
-        """Full-shaped values; frozen entries are exactly zero."""
+        """Like `expand`, but frozen entries are set to exactly zero.
+
+        Used for per-entry quantities such as uncertainties.
+
+        Parameters
+        ----------
+        active : Array
+            Values for the active entries, ordered as `active_labels`.
+
+        Returns
+        -------
+        dict
+            `{path: array}` with zeros for frozen entries.
+        """
         return self.unflatten(np.zeros_like(self.initial_flat).at[self.indices].set(active))
 
 
@@ -167,7 +203,35 @@ def _apply(transform, u):
 
 
 class FitProblem:
-    """What is fitted: model, parameters, data and likelihood."""
+    """What is fitted: model, parameters, data and likelihood.
+
+    Parameters
+    ----------
+    model : zodiax.Base
+        The model, e.g. a `dl.Telescope`. Parameters are set with `model.set(params)`.
+    params : dict
+        Starting parameters, `{path: array}`.
+    data : Array
+        The data. NaN marks excluded pixels (the likelihood must handle them).
+    nll : callable
+        `nll(prediction, data, *nll_args, **nll_kwargs) -> scalar`, a negative log
+        likelihood: summed over pixels, not averaged, so that the Fisher matrix and
+        uncertainties come out in the right units. It must give finite gradients at
+        NaN pixels; mask with `np.where` before arithmetic, as `gaussian_nll` does.
+    *nll_args
+        Extra positional arguments for `nll`, e.g. the per-pixel `std`.
+    trainable : dict, optional
+        Which entries to fit; see `ParameterSelection`. Default fits everything.
+    predict : callable, optional
+        `predict(params, model) -> prediction`. Default `model.set(params).model()`.
+    nll_kwargs : dict, optional
+        Extra keyword arguments for `nll`.
+
+    Raises
+    ------
+    ValueError
+        If `jax_enable_x64` is not enabled.
+    """
 
     def __init__(self, model, params, data, nll, *nll_args, trainable=None, predict=None,
                  nll_kwargs=None):
@@ -182,20 +246,75 @@ class FitProblem:
 
     @property
     def active_labels(self):
+        """Labels of the fitted entries, e.g. `"source.position[0]"`."""
         return self.selection.active_labels
 
     def predict(self, active):
+        """Model prediction for active entries `active` (frozen entries unchanged)."""
         return np.asarray(self.predict_fn(self.selection.expand(active), self.model))
 
     def loss(self, active, data=None):
+        """The negative log likelihood at active entries `active`.
+
+        Parameters
+        ----------
+        active : Array
+            Values of the active entries, ordered as `active_labels`.
+        data : Array, optional
+            Data to evaluate against. Default is the problem's data.
+
+        Returns
+        -------
+        Array
+            Scalar loss.
+        """
         return self.nll(self.predict(active), self.data if data is None else data)
 
     def curvature(self, params=None, *, precondition="diagonal", kind="expected", damping=0.0,
                   curvature_data=None, batch_size=1):
-        """Curvature at params (default: the problem's initial params).
+        """The Fisher matrix (or loss Hessian) at `params`, in unit-free form.
 
-        Frozen entries always take the problem's values. batch_size sets how many
-        derivative columns are computed at once (memory only).
+        With `kind="expected"` this is the Fisher matrix `F = J.T H J`, where `J` is
+        the Jacobian of the prediction and `H` the Hessian of `nll` with respect to
+        the prediction, with the data replaced by the prediction (NaN pixels kept).
+        That is exactly the Fisher matrix for Gaussian noise of fixed (co)variance,
+        correlated or not, and for Poisson noise, and it is positive semi-definite
+        everywhere.
+
+        Parameters
+        ----------
+        params : dict, optional
+            Where to evaluate it. Default is the problem's initial parameters. Frozen
+            entries always take the problem's values.
+        precondition : {"diagonal", "full"}, optional
+            `"diagonal"` (default) computes only the diagonal of `F`, plus its
+            largest normalised eigenvalue by power iteration; that is enough for
+            whitening but not for covariances. `"full"` computes the whole matrix.
+        kind : {"expected", "observed"}, optional
+            `"expected"` (default) is the Fisher matrix described above. `"observed"`
+            is the Hessian of the loss against the actual data (or `curvature_data`),
+            which includes residual terms and can be indefinite away from the best
+            fit. `"observed"` always computes the full matrix.
+        damping : float, optional
+            Added to the normalised matrix's diagonal before whitening, so 0.01 adds
+            1% of each diagonal entry. Only for `precondition="full"`, to whiten near-
+            singular problems. Covariances stay undamped. Default 0.
+        curvature_data : Array, optional
+            Data to use instead of the problem's data. Only for `kind="observed"`.
+        batch_size : int, optional
+            How many derivative columns to compute at once. Affects memory only.
+            Default 1.
+
+        Returns
+        -------
+        Curvature
+
+        Raises
+        ------
+        ValueError
+            If a parameter has no positive curvature (freeze it), if the curvature is
+            not finite, or if `precondition="full"` and the normalised matrix is
+            singular or indefinite (freeze degenerate parameters or set `damping`).
         """
         if precondition not in ("diagonal", "full"):
             raise ValueError("precondition must be 'diagonal' or 'full'")
@@ -275,29 +394,76 @@ class FitProblem:
         return Curvature(self.selection, x, kind, precondition, damping, curvature_data,
                          batch_size, scales, normalised, eigenvalues, lambda_max, transform)
 
-    def fit(self, curvature=None, optimiser=1.0, **curvature_options):
-        """A resumable FisherFit starting where curvature was evaluated.
+    def fit(self, curvature=None, optimiser=None, tol=None, **curvature_options):
+        """Start a resumable `FisherFit` where the curvature was evaluated.
 
-        Pass a Curvature, or options for self.curvature() (not both).
-        optimiser: SGD learning rate (default 1.0), "lbfgs", "nesterov", or an optax
-        transform.
+        Parameters
+        ----------
+        curvature : Curvature, optional
+            The curvature to whiten with. Default computes one with
+            `self.curvature(**curvature_options)`.
+        optimiser : None, "lbfgs" or optax.GradientTransformation, optional
+            `None` (default) picks SGD with lr 1: with Nesterov momentum 0.9 for a
+            diagonal curvature, plain (natural gradient) for a full one. `"lbfgs"` is
+            `optax.lbfgs()`. Any optax transform also works; it receives gradients
+            in whitened coordinates. Avoid `optax.adam`, which undoes the whitening.
+        tol : float, optional
+            Stop once steps move every parameter by less than `tol` conditional sigma;
+            see `FisherFit`. Default 0.01 for `"lbfgs"` and 0 (no early stop) otherwise.
+        **curvature_options
+            Passed to `curvature` when no `curvature` is given, e.g.
+            `precondition="full"`.
+
+        Returns
+        -------
+        FisherFit
+
+        Raises
+        ------
+        ValueError
+            If both `curvature` and `curvature_options` are given.
         """
         if curvature is not None and curvature_options:
             raise ValueError("Pass either a Curvature or curvature options, not both")
         if curvature is None:
             curvature = self.curvature(**curvature_options)
-        return FisherFit(self, curvature, optimiser)
+        return FisherFit(self, curvature, optimiser, tol)
 
 
 @dataclass
 class Curvature:
-    """Fisher (or loss Hessian) at one point, held in unit-free form.
+    """The Fisher matrix (or loss Hessian) at one point, held in unit-free form.
 
-    scales: 1/sqrt(diag F), the conditional 1-sigma of each active entry.
-    normalised: S F S with unit diagonal (precondition='full' or kind='observed').
-    eigenvalues: of normalised, ascending (None when only the diagonal exists).
-    lambda_max: largest eigenvalue of normalised (power iteration if diagonal only).
-    transform: T in x = x0 + T u (vector for diagonal, matrix for full).
+    Created by `FitProblem.curvature`. The matrix is stored as
+    `F = normalised / outer(scales, scales)`, where `normalised` has a unit diagonal.
+    Matrix-valued properties need `precondition="full"` (or `kind="observed"`).
+
+    Attributes
+    ----------
+    selection : ParameterSelection
+        The problem's parameter selection.
+    active : Array
+        The active entries where the curvature was evaluated.
+    kind, precondition : str
+        As passed to `FitProblem.curvature`.
+    damping : float
+        As passed to `FitProblem.curvature`.
+    curvature_data : Array or None
+        As passed to `FitProblem.curvature`.
+    batch_size : int
+        As passed to `FitProblem.curvature`.
+    scales : Array
+        `1 / sqrt(diag(F))`: the conditional 1-sigma of each active entry (all other
+        entries held fixed), in the parameters' own units.
+    normalised : Array or None
+        `S F S` with `S = diag(scales)`, unit diagonal. `None` for a diagonal-only
+        curvature.
+    eigenvalues : Array or None
+        Eigenvalues of `normalised`, ascending. `None` for a diagonal-only curvature.
+    lambda_max : float
+        Largest eigenvalue of `normalised` (power iteration if diagonal only).
+    transform : Array
+        `T` in `x = x0 + T u`, the whitening: a vector for diagonal, a matrix for full.
     """
 
     selection: ParameterSelection
@@ -315,6 +481,7 @@ class Curvature:
 
     @property
     def labels(self):
+        """Labels of the active entries; the order of all matrices and vectors."""
         return self.selection.active_labels
 
     @property
@@ -324,7 +491,11 @@ class Curvature:
 
     @property
     def conditional_std(self):
-        """1/sqrt(F_ii) in dict shapes: 1-sigma with all other entries held fixed."""
+        """Conditional 1-sigma, `1 / sqrt(F_ii)`, in the parameters' dict shapes.
+
+        This is the uncertainty with all other entries held fixed, so it is
+        optimistic when parameters are correlated. Frozen entries are 0.
+        """
         return self.selection.expand_zeros(self.scales)
 
     def _full(self):
@@ -334,12 +505,24 @@ class Curvature:
 
     @property
     def matrix(self):
-        """F in original units, ordered by labels."""
+        """The matrix `F` in the parameters' own units, ordered by `labels`.
+
+        In float32 this can over/underflow when units span many decades; prefer
+        `normalised` and `scales` for any further linear algebra.
+        """
         return unscale(self._full(), self.scales)
 
     @property
     def covariance(self):
-        """inv(F) in original units (undamped), ordered by labels."""
+        """Covariance `inv(F)` in the parameters' own units, ordered by `labels`.
+
+        Computed by Cholesky of `normalised`, then rescaled; never damped.
+
+        Raises
+        ------
+        ValueError
+            If the curvature is not positive definite.
+        """
         covariance = scaled_covariance(self._full(), self.scales)
         if not bool(np.all(np.isfinite(covariance))):
             raise ValueError("Curvature is not positive definite; no covariance exists")
@@ -347,59 +530,118 @@ class Curvature:
 
     @property
     def std(self):
-        """Marginal 1-sigma, sqrt(diag(covariance)), in dict shapes (frozen = 0)."""
+        """Marginal 1-sigma, `sqrt(diag(covariance))`, in the parameters' dict shapes.
+
+        Frozen entries are 0; they are treated as known, not marginalised over.
+        """
         return self.selection.expand_zeros(np.sqrt(np.diag(self.covariance)))
 
     @property
     def correlation(self):
-        """Correlation matrix of the covariance, ordered by labels."""
+        """Correlation matrix of the covariance, ordered by `labels`."""
         return correlation(self._full())
 
     @property
     def condition_number(self):
-        """cond(normalised): degeneracy left after removing units."""
+        """Condition number of `normalised`: the degeneracy left once units are removed.
+
+        Roughly, digits lost when inverting. Values near 1 mean uncorrelated
+        parameters; large values mean near-degenerate combinations.
+        """
         self._full()
         return float(self.eigenvalues[-1] / self.eigenvalues[0])
 
 
-def _make_optimiser(optimiser):
-    if isinstance(optimiser, str):
-        named = {"lbfgs": optax.lbfgs, "nesterov": lambda: optax.sgd(1.0, 0.9, nesterov=True)}
-        if optimiser not in named:
-            raise ValueError("optimiser must be a learning rate, 'lbfgs', 'nesterov', or an "
-                             "optax transform")
-        return named[optimiser]()
-    if isinstance(optimiser, (int, float)):
-        if not (onp.isfinite(optimiser) and optimiser > 0):
-            raise ValueError("learning rate must be finite and positive")
-        return optax.sgd(float(optimiser))
+def _make_optimiser(optimiser, precondition):
+    if optimiser is None:
+        if precondition == "diagonal":
+            return optax.sgd(1.0, momentum=0.9, nesterov=True)
+        return optax.sgd(1.0)
+    if optimiser == "lbfgs":
+        return optax.lbfgs()
+    if not hasattr(optimiser, "update"):
+        raise ValueError("optimiser must be None, 'lbfgs', or an optax transform "
+                         "(e.g. optax.sgd(1.0) for plain SGD)")
     return optimiser
 
 
 class FisherFit:
-    """A resumable fit in whitened coordinates. run() mutates and returns self.
+    """A resumable fit in Fisher-whitened coordinates.
 
-    Losses and history are recorded BEFORE each update, so history[i]
-    produced losses[i]. active_history is (n_steps, n_active), columns named by
-    active_labels; param_history is {key: (n_steps, *shape)}.
+    Usually created by `FitProblem.fit`. The fit optimises `u`, where the active
+    parameters are `x = x0 + T u` with `T = curvature.transform`, so that the curvature
+    in `u` at `x0` is (close to) the identity. `run` and `refresh` return `self`, so
+    calls chain: `fit.run(200).refresh().run(200)`.
+
+    Parameters
+    ----------
+    problem : FitProblem
+        The problem to fit.
+    curvature : Curvature
+        The curvature to whiten with; the fit starts where it was evaluated.
+    optimiser : None, "lbfgs" or optax.GradientTransformation, optional
+        See `FitProblem.fit`.
+    tol : float, optional
+        `run` stops once two consecutive steps each move every parameter by less than
+        `tol` conditional sigma (`curvature.scales`), and sets `converged`. Because it
+        is measured in sigma, the test does not depend on the likelihood's
+        normalisation, provided `nll` is a proper (summed) negative log likelihood.
+        Default 0.01 for `"lbfgs"` and 0 (no early stop) otherwise. Small steps
+        reliably mean convergence for L-BFGS and natural gradient, whose steps approach
+        the whole remaining distance. Diagonal SGD on correlated parameters can take
+        small steps while still far away, so use a smaller `tol` there.
+
+    Attributes
+    ----------
+    losses : list of float
+        Loss before each step.
+    history : list of Array
+        Active entries before each step, so `history[i]` produced `losses[i]`.
+    moves : list of float
+        Size of each step: the largest change of any parameter, in conditional sigma.
+    steps : int
+        Number of steps taken.
+    converged : bool
+        Whether the `tol` test has been met (reset by `refresh`).
+    curvature : Curvature
+        The curvature currently used for whitening.
+    state
+        The optimiser state.
     """
 
-    def __init__(self, problem, curvature, optimiser=1.0):
+    def __init__(self, problem, curvature, optimiser=None, tol=None):
         self.problem = problem
-        self.optimiser = _make_optimiser(optimiser)
-        self.losses, self.history, self.steps = [], [], 0
+        if tol is None:
+            tol = 0.01 if isinstance(optimiser, str) and optimiser == "lbfgs" else 0.0
+        if not (onp.isfinite(tol) and tol >= 0):
+            raise ValueError("tol must be finite and nonnegative")
+        self.tol = float(tol)
+        self.optimiser = _make_optimiser(optimiser, curvature.precondition)
+        self.losses, self.history, self.moves, self.steps = [], [], [], 0
         loss = problem.loss
         optimiser = self.optimiser
+        # Line-search optimisers (L-BFGS) store the value and gradient at the accepted
+        # point; reusing them avoids recomputing both at the start of the next step.
+        probe = optimiser.init(np.zeros_like(curvature.active))
+        reuse = all(optax.tree_utils.tree_get(probe, name) is not None
+                    for name in ("value", "grad"))
 
         @jax.jit
-        def step(u, state, center, transform):
+        def step(u, state, center, transform, scales):
             def value(v):
                 return loss(center + _apply(transform, v))
 
-            loss_value, grad = jax.value_and_grad(value)(u)
+            if reuse:
+                loss_value, grad = optax.value_and_grad_from_state(value)(u, state=state)
+            else:
+                loss_value, grad = jax.value_and_grad(value)(u)
             updates, state = optimiser.update(grad, state, u, value=loss_value, grad=grad,
                                               value_fn=value)
-            return loss_value, grad, optax.apply_updates(u, updates), state
+            new_u = optax.apply_updates(u, updates)
+            finite_loss = np.isfinite(loss_value) & np.all(np.isfinite(grad))
+            finite_step = np.all(np.isfinite(new_u))
+            move = np.max(np.abs(_apply(transform, new_u - u)) / scales)
+            return loss_value, new_u, state, finite_loss, finite_step, move
 
         self._step = step
         self._restart(curvature)
@@ -408,37 +650,55 @@ class FisherFit:
         self.curvature = curvature
         self._u = np.zeros_like(curvature.active)
         self.state = self.optimiser.init(self._u)
+        self.converged, self._small_steps = False, 0
 
     @property
     def active(self):
+        """Current values of the active entries, ordered as `active_labels`."""
         return self.curvature.active + _apply(self.curvature.transform, self._u)
 
     @property
     def active_labels(self):
+        """Labels of the active entries."""
         return self.problem.active_labels
 
     @property
     def params(self):
+        """Current full parameter dictionary, frozen entries included."""
         return self.problem.selection.expand(self.active)
 
     @property
     def fitted_model(self):
+        """The model with the current parameters set."""
         return self.problem.model.set(self.params)
 
     @property
     def active_history(self):
-        """Fitted entries before each step, shape (n_steps, n_active)."""
+        """Active entries before each step, shape `(n_steps, n_active)`.
+
+        Columns are ordered as `active_labels`, so
+        `plt.plot(fit.active_history, label=fit.active_labels)` plots one line each.
+        """
         if not self.history:
             return np.zeros((0, self.active.size), dtype=self.active.dtype)
         return np.stack(self.history)
 
     @property
     def param_history(self):
-        """Full parameter dictionary before each step: {key: (n_steps, *shape)}."""
+        """Full parameter dictionary before each step, `{key: (n_steps, *shape)}`."""
         return jax.vmap(self.problem.selection.expand)(self.active_history)
 
     def refresh(self):
-        """Recompute the curvature (same settings) at the current parameters."""
+        """Recompute the curvature at the current parameters, with the same settings.
+
+        The fit restarts from there with a fresh optimiser state; history, losses and
+        step count are kept.
+
+        Returns
+        -------
+        FisherFit
+            `self`.
+        """
         c = self.curvature
         self._restart(self.problem.curvature(
             self.params, precondition=c.precondition, kind=c.kind, damping=c.damping,
@@ -446,19 +706,50 @@ class FisherFit:
         return self
 
     def step(self):
+        """Take one step, even if already converged.
+
+        Returns
+        -------
+        float
+            The loss before the step.
+
+        Raises
+        ------
+        FloatingPointError
+            If the loss, gradient or proposed parameters are not finite. No update is
+            applied, so the fit can continue from the last good point.
+        """
         c = self.curvature
-        loss, grad, u, state = self._step(self._u, self.state, c.active, c.transform)
-        if not bool(np.isfinite(loss)) or not bool(np.all(np.isfinite(grad))):
+        loss, u, state, finite_loss, finite_step, move = self._step(
+            self._u, self.state, c.active, c.transform, c.scales)
+        if not bool(finite_loss):
             raise FloatingPointError("Nonfinite loss/gradient; no update applied")
-        if not bool(np.all(np.isfinite(u))):
+        if not bool(finite_step):
             raise FloatingPointError("Nonfinite proposed parameters; no update applied")
         self.history.append(self.active)
         self._u, self.state = u, state
         self.steps += 1
         self.losses.append(float(loss))
-        return float(loss)
+        self.moves.append(float(move))
+        self._small_steps = self._small_steps + 1 if self.moves[-1] < self.tol else 0
+        self.converged = self._small_steps >= 2
+        return self.losses[-1]
 
     def run(self, nsteps=100, *, progress=True):
+        """Take up to `nsteps` steps, stopping early once converged (see `tol`).
+
+        Parameters
+        ----------
+        nsteps : int, optional
+            Maximum number of steps. Default 100.
+        progress : bool, optional
+            Show a tqdm progress bar, if tqdm is installed. Default True.
+
+        Returns
+        -------
+        FisherFit
+            `self`.
+        """
         if not isinstance(nsteps, int) or nsteps < 0:
             raise ValueError("nsteps must be a nonnegative integer")
         iterator = range(nsteps)
@@ -470,7 +761,12 @@ class FisherFit:
             except ImportError:
                 pass
         for _ in iterator:
+            if self.converged:
+                break
             loss = self.step()
             if hasattr(iterator, "set_postfix"):
-                iterator.set_postfix(loss=f"{loss:.6g}", step=self.steps)
+                iterator.set_postfix(loss=f"{loss:.6g}", step=self.steps,
+                                     move=f"{self.moves[-1]:.2g} sigma")
+        if hasattr(iterator, "close"):
+            iterator.close()
         return self

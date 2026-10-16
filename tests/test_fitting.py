@@ -5,6 +5,7 @@ import dLux.utils as dlu
 import jax
 import jax.numpy as np
 import numpy as onp
+import optax
 import pytest
 
 from dluxtras.fitting import FitProblem, gaussian_nll
@@ -94,17 +95,17 @@ def test_full_whitening_newton_step_and_diagonal_convergence():
     problem = linear_problem()
     truth = problem.selection.active_of(LINEAR_TRUTH)
     # Quadratic loss: natural gradient with lr = 1 lands on the minimum in one step.
-    fit = problem.fit(optimiser=1.0, precondition="full").run(1, progress=False)
+    fit = problem.fit(precondition="full").run(1, progress=False)
     onp.testing.assert_allclose(fit.active, truth, rtol=1e-10, atol=1e-20)
 
-    fit = problem.fit()  # default diagonal SGD, lr 1: stable without tuning
+    fit = problem.fit(optimiser=optax.sgd(1.0))  # plain SGD, lr 1: monotone without tuning
     fit.run(300, progress=False)
     assert onp.all(onp.diff(fit.losses) <= 1e-12)
     onp.testing.assert_allclose(fit.active, truth, rtol=1e-6)
     assert fit.active_history.shape == (300, 3)
     assert fit.active_labels == ["a", "b[0]", "b[1]"]
 
-    fit = problem.fit(optimiser="nesterov").run(300, progress=False)
+    fit = problem.fit().run(300, progress=False)  # default: Nesterov momentum
     onp.testing.assert_allclose(fit.active, truth, rtol=1e-6)
 
 
@@ -142,8 +143,9 @@ def test_degenerate_and_invalid_options():
         problem.curvature(damping=0.1)
     with pytest.raises(ValueError, match="curvature_data"):
         problem.curvature(curvature_data=problem.data)
-    with pytest.raises(ValueError, match="nesterov"):
-        problem.fit(optimiser="adam")
+    for bad in ("adam", 0.5):
+        with pytest.raises(ValueError, match="optax"):
+            problem.fit(optimiser=bad)
     with pytest.raises(ValueError, match="not both"):
         problem.fit(problem.curvature(), precondition="full")
 
@@ -167,3 +169,21 @@ def test_dlux_fit_recovers_truth():
     fit = problem.fit(optimiser="lbfgs").run(40, progress=False)
     for k in keys:
         assert onp.all(onp.abs(fit.params[k] - truth[k]) < 1e-3 * sigma[k])
+
+
+def test_lbfgs_stops_on_convergence_by_default():
+    problem = linear_problem()
+    truth = problem.selection.active_of(LINEAR_TRUTH)
+    fit = problem.fit(optimiser="lbfgs").run(300, progress=False)
+    assert fit.converged and fit.steps < 50 and len(fit.moves) == fit.steps
+    assert fit.moves[-1] < fit.tol and fit.moves[-2] < fit.tol
+    onp.testing.assert_allclose(fit.active, truth, rtol=1e-4)
+    assert fit.run(10, progress=False).steps == fit.steps  # converged: no more steps
+    assert fit.refresh().converged is False  # refresh restarts the test
+
+    assert problem.fit(optimiser="lbfgs", tol=0).run(60, progress=False).steps == 60
+    assert problem.fit().tol == 0.0  # SGD: no early stop unless asked
+    stopped = problem.fit(precondition="full", tol=0.01).run(100, progress=False)
+    assert stopped.converged and stopped.steps < 10
+    with pytest.raises(ValueError, match="tol"):
+        problem.fit(tol=-1.0)

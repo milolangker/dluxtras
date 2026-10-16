@@ -1,0 +1,92 @@
+# Built with zensical (reads this file); same setup as the dLux documentation.
+# Local preview:  zensical serve      Build:  zensical build --strict
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - toc.integrate
+    - content.action.edit
+    - content.action.view
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: lucide/sun
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: lucide/moon
+        name: Switch to light mode
+
+site_name: dluxtras documentation
+docs_dir: docs/
+site_description: Documentation for dluxtras, extensions for dLux.
+site_author: Milo Langker
+site_url: https://milolangker.github.io/dluxtras/
+repo_url: https://github.com/milolangker/dluxtras
+repo_name: milolangker/dluxtras
+edit_uri: edit/main/docs/
+
+strict: true
+
+plugins:
+  - zensical/search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: "numpy"
+            show_root_heading: true
+            show_source: true
+            members_order: source
+            merge_init_into_class: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: "¤"
+      toc_depth: 2
+  - attr_list
+  - md_in_html
+  - tables
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra:
+  version:
+    provider: mike
+
+nav:
+  - Home: index.md
+  - Guides:
+    - Spectra, sources and throughput: spectra.md
+    - Spectral eigenmodes: spectral_eigenmodes.md
+    - Wavefront eigenmodes: wavefront_eigenmodes.md
+    - Fitting: fitting.md
+    - Unit-free Hessians: curvature.md
+    - Fitting benchmarks: fitting_benchmark.md
+  - Validation:
+    - Wavelength sampling: wavelength_sampling.md
+  - API:
+    - Spectra: API/spectra.md
+    - Sources: API/sources.md
+    - Throughput: API/throughput.md
+    - Spectral eigenmodes: API/spectral_eigenmodes.md
+    - Wavefront eigenmodes: API/wavefront_eigenmodes.md
+    - Eigenmode core: API/eigenmodes.md
+    - Fitting: API/fitting.md
+    - Curvature: API/curvature.md

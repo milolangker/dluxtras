@@ -2,16 +2,20 @@
 
 # dluxtras
 
-Extensions for [∂Lux](https://github.com/LouisDesdoigts/dLux): reusable pieces shared by several dLux-based projects. It currently holds the spectral tools:
+Extensions for [∂Lux](https://github.com/LouisDesdoigts/dLux): reusable pieces shared by several dLux-based projects.
+
+**Documentation: <https://milolangker.github.io/dluxtras/>** (guides on when to use each option, plus the full API reference).
 
 | Module | Contents |
 | --- | --- |
-| `dluxtras.spectra` | `CombinedSpectrum` / `CombinedBasisSpectrum`: a source spectrum (`spec_weights`, incident photons per bin) times a system throughput (`filt_weights`). Also `propagate_spectrum`, with **Hermite wavelength sparsity**: set `n_coarse` to propagate only that many wavelengths, each with its derivative, and cubic-Hermite-interpolate the rest. And `recommend_wavelength_sampling`, which gives `n_coarse ≈ 2K` from the number of constrainable modes K. |
-| `dluxtras.sources` | `HermitePointSource` (a `dl.PointSource` that honours `n_coarse`) and `PointSourceArcsec` (position in arcsec, flux = detected photons). |
-| `dluxtras.throughput` | Loading and binning system throughput, and `spectrum_args(...)`, which builds the arguments for a `CombinedBasisSpectrum`. |
-| `dluxtras.spectral_eigenmodes` | Spectral Fisher matrix and eigenmodes, `mode_criterion` and `constrainable_modes` (K). |
-
-More will follow, e.g. other eigenbases and Fisher-based fitting.
+| `dluxtras.spectra` | `CombinedSpectrum` / `CombinedBasisSpectrum`: a source spectrum times a system throughput, with **Hermite wavelength sparsity** (`n_coarse`) and `recommend_wavelength_sampling`. |
+| `dluxtras.sources` | `HermitePointSource` (honours `n_coarse`) and `PointSourceArcsec` (position in arcsec, flux = detected photons). |
+| `dluxtras.throughput` | Loading and binning system throughput; `spectrum_args(...)` builds a `CombinedBasisSpectrum`. |
+| `dluxtras.spectral_eigenmodes` | Spectral Fisher matrix and eigenmodes, and the number of constrainable modes K. |
+| `dluxtras.wavefront_eigenmodes` | `MaskedPixelOPD` and matrix-free wavefront Fisher eigenmodes. |
+| `dluxtras.eigenmodes` | Shared core: marginalising any model parameter (per exposure or shared) and `leading_modes`. |
+| `dluxtras.fitting` | `FitProblem` / `Curvature` / `FisherFit`: Fisher-whitened fitting (Nesterov SGD, L-BFGS or natural gradient) and uncertainties. |
+| `dluxtras.curvature` | Unit-free (Jacobi-normalised) Hessians, covariances and correlations. |
 
 ## Install
 
@@ -45,27 +49,23 @@ image = telescope.model()  # sums to ~spectrum.proper_flux(); 12 propagated wave
 
 ## Fitting
 
-`FitProblem` holds what is fitted (model, parameters, data, likelihood); its `curvature()` is the
-Fisher matrix in unit-free form; `fit()` runs a resumable optimiser in Fisher-whitened coordinates.
-
 ```python
 from dluxtras import FitProblem, gaussian_nll
 
-params = {"source.position": np.zeros(2), "aberrations.coefficients": np.zeros(8)}
-problem = FitProblem(telescope, params, data, gaussian_nll, std)
-fit = problem.fit()                       # default: 1/diag(Fisher) preconditioned SGD, lr 1
-fit.run(200).refresh().run(200)           # refresh: recompute the Fisher where the fit is now
-fit = problem.fit(precondition="full", optimiser="lbfgs").run(50)   # usually much faster
+problem = FitProblem(telescope, {"source.position": np.zeros(2)}, data, gaussian_nll, std)
+fit = problem.fit().run(200)                         # default: Nesterov SGD, diagonal Fisher
+fit = problem.fit(optimiser="lbfgs").run(100)        # usually fastest; stops when converged
+fit = problem.fit(precondition="full").run(10)       # natural gradient, near the minimum
 sigma = problem.curvature(fit.params, precondition="full").std   # marginal 1-sigma
 ```
 
-The likelihood is any `nll(prediction, data, *args)`; the Fisher is exact for Gaussian noise of
-fixed (co)variance, correlated or not, and for Poisson noise. See `dluxtras.fitting` for details, and `benchmarks/fitting_benchmark.md` for which method to use.
+See the [fitting guide](https://milolangker.github.io/dluxtras/fitting/) for when to use each.
 
-## Tests
+## Tests and docs
 
 ```bash
 pytest
+pip install -e ".[docs]" && zensical serve   # docs preview at http://localhost:8000
 ```
 
 ## Credits

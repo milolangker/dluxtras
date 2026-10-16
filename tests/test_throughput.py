@@ -64,3 +64,19 @@ def test_invalid_inputs(tmp_path):
         bin_throughput(np.array([1e-6, 2e-6]), np.ones(2), 4, threshold=1.5)
     with pytest.raises(ValueError, match="nwavels"):
         filter_integrate(np.array([1e-6, 2e-6]), np.ones(2), 0)
+
+
+def test_spectrum_args_rejects_ignored_photons_and_integer_k():
+    from dluxtras.spectra import recommend_wavelength_sampling
+
+    wavelengths = np.linspace(600e-9, 700e-9, 101)
+    throughput = np.ones(101)
+    assert spectrum_args(wavelengths, throughput, 4)["basis_weights"].sum() == pytest.approx(1.0)
+    with pytest.raises(ValueError, match="photons"):
+        spectrum_args(wavelengths, throughput, 4, photons=1e6, basis_weights=np.ones(4))
+    with pytest.raises(ValueError, match="photons"):
+        spectrum_args(wavelengths, throughput, 4, photons=1e6, basis=np.eye(4),
+                      basis_weights=np.ones(4))
+    assert recommend_wavelength_sampling(3.0, 1e9, verbose=False)["speedup"] > 0  # 3.0 is fine
+    with pytest.raises(ValueError, match="integer"):
+        recommend_wavelength_sampling(2.5, 1e9, verbose=False)

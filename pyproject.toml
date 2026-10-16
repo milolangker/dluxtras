@@ -17,10 +17,13 @@ dependencies = [
     "zodiax>=0.5",
     "equinox",
     "optax",
+    "scipy",
 ]
 
 [project.optional-dependencies]
 test = ["pytest"]
+docs = ["zensical", "mkdocstrings-python"]
+benchmarks = ["optimistix"]  # only for the optional scripts in benchmarks/
 
 [project.urls]
 Repository = "https://github.com/milolangker/dluxtras"

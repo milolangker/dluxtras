@@ -1,7 +1,7 @@
 """System throughput as user-supplied arrays (or an explicit two-column table).
 
 No files are opened during import and no instrument file-naming convention is
-assumed: pass wavelengths [m] and dimensionless throughput (source spectrum
+assumed: pass wavelengths in metres and dimensionless throughput (source spectrum
 excluded: optics x filter x detector QE, as appropriate for your bench).
 """
 
@@ -15,9 +15,34 @@ _UNITS = {"angstrom": 1e-10, "nm": 1e-9, "um": 1e-6, "m": 1.0}
 def load_throughput(file, wavelength_unit="um", skiprows=0, negative_tol=1e-3):
     """Read two whitespace-delimited columns; return (n, 2) [wavelength m, throughput].
 
-    Lines beginning with # are comments. No throughput renormalization.
-    Slightly negative throughputs (down to -negative_tol * peak, i.e. table
+    Lines beginning with `#` are comments. No throughput renormalization.
+    Slightly negative throughputs (down to `-negative_tol * peak`, i.e. table
     noise) are clipped to zero; anything more negative is an error.
+
+    Parameters
+    ----------
+    file : str or path-like
+        Path to the text table (wavelength, throughput).
+    wavelength_unit : str, optional
+        Unit of the wavelength column: one of "angstrom", "nm", "um", "m". Converted
+        to metres. Default "um".
+    skiprows : int, optional
+        Number of leading lines to skip (passed to `numpy.loadtxt`). Default 0.
+    negative_tol : float, optional
+        Negative throughputs down to `-negative_tol * peak` are clipped to zero.
+        Default 1e-3.
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape (n, 2): wavelength in metres, dimensionless throughput.
+
+    Raises
+    ------
+    ValueError
+        If `wavelength_unit` is unknown, the table does not have at least two rows and
+        exactly two columns, or the data are not finite, positive, increasing
+        wavelengths with nonnegative (after clipping), not-all-zero throughput.
     """
     if wavelength_unit not in _UNITS:
         raise ValueError(f"wavelength_unit must be one of {tuple(_UNITS)}")
@@ -53,7 +78,37 @@ def _check(wavelengths, throughput):
 
 
 def filter_integrate(wl_array, throughput_array, nwavels, norm=False):
-    """Midpoint wavelengths and integrated bin weights, with interpolated bin edges."""
+    """Midpoint wavelengths and integrated bin weights, with interpolated bin edges.
+
+    The range `[wl_array[0], wl_array[-1]]` is split into `nwavels` equal-width bins.
+    Throughput is linearly interpolated at the bin edges and integrated over each bin
+    with the trapezoid rule, using the input samples that fall inside it.
+
+    Parameters
+    ----------
+    wl_array : Array
+        Finite, positive, strictly increasing wavelengths (1D, at least two samples).
+    throughput_array : Array
+        Nonnegative throughput, same shape as `wl_array`, not zero everywhere.
+    nwavels : int
+        Number of bins; a positive integer.
+    norm : bool, optional
+        Normalise the bin weights to sum to one. Default False.
+
+    Returns
+    -------
+    wavelengths : numpy.ndarray
+        Bin-centre (midpoint) wavelengths, shape (nwavels,), in the units of `wl_array`.
+    weights : numpy.ndarray
+        Integrated throughput per bin (throughput x wavelength units), or normalised
+        weights if `norm` is True.
+
+    Raises
+    ------
+    ValueError
+        If the inputs fail validation, `nwavels` is not a positive integer, or the
+        integrated throughput is zero.
+    """
     x, y = _check(wl_array, throughput_array)
     if int(nwavels) != nwavels or nwavels < 1:
         raise ValueError("nwavels must be a positive integer")
@@ -73,7 +128,33 @@ def filter_integrate(wl_array, throughput_array, nwavels, norm=False):
 
 
 def trim_throughput(wavelengths, throughput, threshold):
-    """Keep where throughput > threshold * peak, plus one neighbouring sample each side."""
+    """Keep where throughput > threshold * peak, plus one neighbouring sample each side.
+
+    The kept range runs contiguously from one sample before the first sample above
+    `threshold * peak` to one sample after the last (clipped to the array ends).
+
+    Parameters
+    ----------
+    wavelengths : Array
+        Finite, positive, strictly increasing wavelengths (1D, at least two samples).
+    throughput : Array
+        Nonnegative throughput, same shape as `wavelengths`, not zero everywhere.
+    threshold : float or None
+        Fraction of the peak throughput, with `0 <= threshold < 1`. None returns the
+        validated inputs untrimmed.
+
+    Returns
+    -------
+    wavelengths : numpy.ndarray
+        Trimmed wavelengths.
+    throughput : numpy.ndarray
+        Trimmed throughput.
+
+    Raises
+    ------
+    ValueError
+        If the inputs fail validation or `threshold` is outside [0, 1).
+    """
     x, y = _check(wavelengths, throughput)
     if threshold is None:
         return x, y
@@ -87,8 +168,32 @@ def trim_throughput(wavelengths, throughput, threshold):
 def bin_throughput(wavelengths, throughput, nwavels=9, *, threshold=None):
     """Return bin-centre wavelengths [m] and dimensionless MEAN throughput per bin.
 
-    wavelengths are in metres. threshold (fraction of peak) optionally trims
-    the band edges first, as in spectrum_args.
+    The (optionally trimmed) range is split into `nwavels` equal-width bins and the
+    integrated throughput of each bin (`filter_integrate`) is divided by the bin width.
+
+    Parameters
+    ----------
+    wavelengths : Array
+        Wavelengths in metres; finite, positive, strictly increasing.
+    throughput : Array
+        Dimensionless nonnegative throughput, same shape as `wavelengths`.
+    nwavels : int, optional
+        Number of wavelength bins. Default 9.
+    threshold : float or None, optional
+        Fraction of peak; optionally trims the band edges first, as in
+        `spectrum_args` (see `trim_throughput`). Keyword-only. Default None (no trim).
+
+    Returns
+    -------
+    wavelengths : numpy.ndarray
+        Bin-centre wavelengths in metres, shape (nwavels,).
+    throughput : numpy.ndarray
+        Dimensionless mean throughput per bin, shape (nwavels,).
+
+    Raises
+    ------
+    ValueError
+        If the inputs, `threshold` or `nwavels` are invalid.
     """
     x, y = trim_throughput(wavelengths, throughput, threshold)
     wavels, areas = filter_integrate(x, y, nwavels, norm=False)
@@ -98,19 +203,63 @@ def bin_throughput(wavelengths, throughput, nwavels=9, *, threshold=None):
 
 def spectrum_args(
     wavelengths, throughput, nwavels=9, *,
-    photons=1.0, basis=None, basis_weights=None,
+    photons=None, basis=None, basis_weights=None,
     threshold=1e-2,  # default 1% truncation of peak
     n_coarse=None, low_memory=False,
 ):
-    """Keyword arguments for CombinedBasisSpectrum(**args).
+    """Keyword arguments for `CombinedBasisSpectrum(**args)`.
 
-    wavelengths [m] and throughput describe the system response. photons is
-    the INCIDENT photon count (before throughput), split evenly over the bins
-    of the default identity basis; detected photons are
-    CombinedBasisSpectrum(**args).proper_flux(). n_coarse and low_memory are
-    passed through (only when set) to enable Hermite wavelength sparsity /
-    sequential propagation; see CombinedSpectrum.
+    The throughput is binned with `bin_throughput` (mean throughput per bin becomes
+    `filt_weights`). Detected photons are `CombinedBasisSpectrum(**args).proper_flux()`.
+    The same dictionary is accepted by `spectral_eigenmodes.attach_spectrum` and
+    `spectral_eigenmodes.spectral_eigenmodes`.
+
+    Parameters
+    ----------
+    wavelengths : Array
+        Wavelengths in metres; with `throughput`, describes the system response.
+    throughput : Array
+        Dimensionless system throughput, same shape as `wavelengths`.
+    nwavels : int, optional
+        Number of wavelength bins. Default 9.
+    photons : float, optional
+        INCIDENT photon count (before throughput), split evenly over the bins of the
+        default identity basis. Only valid when both `basis` and `basis_weights` are
+        None; otherwise `basis_weights` sets the photons and passing `photons` is an
+        error. Keyword-only. Default None, meaning 1.0.
+    basis : Array or None, optional
+        Custom basis of shape (nwavels, n_coefficients). None uses the identity
+        (an independently adjustable photon count in every bin). Keyword-only.
+        Default None.
+    basis_weights : Array or None, optional
+        Basis coefficients. Required with a custom `basis`; with the default basis,
+        None gives `photons / nwavels` in every bin. Keyword-only. Default None.
+    threshold : float or None, optional
+        Fraction of peak throughput below which the band edges are trimmed (see
+        `trim_throughput`). Keyword-only. Default 1e-2 (1% truncation of peak).
+    n_coarse : int or None, optional
+        Passed through (only when not None) to enable Hermite wavelength sparsity;
+        see `CombinedSpectrum`. Keyword-only. Default None.
+    low_memory : bool, optional
+        Passed through (only when True) to enable sequential propagation; see
+        `CombinedSpectrum`. Keyword-only. Default False.
+
+    Returns
+    -------
+    dict
+        Keys `wavels`, `filt_weights`, `basis_weights`, `basis`, plus `n_coarse` and
+        `low_memory` when set.
+
+    Raises
+    ------
+    ValueError
+        If a custom `basis` is supplied without `basis_weights`, if `photons` is given
+        together with `basis` or `basis_weights`, or if binning fails.
     """
+    if photons is not None and (basis is not None or basis_weights is not None):
+        raise ValueError("photons only applies to the default basis without basis_weights; "
+                         "set the photons through basis_weights instead")
+    photons = 1.0 if photons is None else photons
     wavels, filt = bin_throughput(wavelengths, throughput, nwavels, threshold=threshold)
 
     # Default: independently adjustable photon count in every bin.
@@ -132,7 +281,31 @@ def spectrum_args(
 def fractional_bandwidth(wavelengths, throughput, *, threshold=1e-2):
     """Return (fractional bandwidth dlambda / lambda_c, central wavelength [m]).
 
-    The band is where throughput exceeds threshold * peak (as in spectrum_args).
+    The band is where throughput exceeds threshold * peak (as in `spectrum_args`); it
+    is found with `trim_throughput`, so it also includes one neighbouring sample on
+    each side. `lambda_c` is the midpoint of the band edges.
+
+    Parameters
+    ----------
+    wavelengths : Array
+        Wavelengths in metres; finite, positive, strictly increasing.
+    throughput : Array
+        Dimensionless nonnegative throughput, same shape as `wavelengths`.
+    threshold : float or None, optional
+        Fraction of peak throughput defining the band; None uses the full range.
+        Keyword-only. Default 1e-2.
+
+    Returns
+    -------
+    bandwidth : float
+        Fractional bandwidth dlambda / lambda_c.
+    centre : float
+        Central wavelength lambda_c in metres.
+
+    Raises
+    ------
+    ValueError
+        If the inputs or `threshold` are invalid.
     """
     x, _ = trim_throughput(wavelengths, throughput, threshold)
     lo, hi = x[0], x[-1]

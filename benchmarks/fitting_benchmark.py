@@ -14,8 +14,9 @@ roughly k^2 / 2), plus one "physical" start: 10 nm rms coefficient errors,
 
 Reported per method: steps until the loss is within 0.01 of the minimum (the
 median over starts, with the number of starts that converged), and the wall
-time to get there = curvature setup + steps x (time per step after JIT
-warm-up). Compile time of the step function (~1 s, once per fit) is excluded.
+time to get there = curvature setup + steps x time per step (each step timed
+along the real trajectories; the method's median). Compile time of the step function (~1 s, once
+per fit) is excluded. Each run stops once converged.
 Output is a markdown table on stdout.
 """
 
@@ -82,17 +83,18 @@ def old_default(curvature_diag, curvature_full):
 
 METHODS = [
     # label, precondition, optimiser, refresh_at
-    ("diagonal SGD, lr 1.0 (default)", "diagonal", 1.0, None),
-    ("diagonal SGD, lr 0.5", "diagonal", 0.5, None),
-    ("diagonal SGD, Nesterov (lr 1, momentum 0.9)", "diagonal", "nesterov", None),
-    ("diagonal SGD, heavy-ball momentum 0.9", "diagonal", optax.sgd(1.0, 0.9), None),
-    ("diagonal Adam, lr 0.1 (not recommended)", "diagonal", optax.adam(0.1), None),
-    ("full SGD, lr 0.5", "full", 0.5, None),
-    ("full SGD, lr 1.0", "full", 1.0, None),
-    ("full SGD, lr 1.0, refresh at step 5", "full", 1.0, 5),
-    ("diagonal L-BFGS", "diagonal", "lbfgs", None),
-    ("full L-BFGS", "full", "lbfgs", None),
-    ("baseline: old diag(F^-1) SGD, lr 0.5", "old", 0.5, None),
+    ("1. diagonal, Nesterov lr 1 (default)", "diagonal", None, None),
+    ("diagonal, Nesterov lr 0.7", "diagonal", optax.sgd(0.7, 0.9, nesterov=True), None),
+    ("diagonal, plain SGD lr 1", "diagonal", optax.sgd(1.0), None),
+    ("diagonal, heavy-ball momentum 0.9", "diagonal", optax.sgd(1.0, 0.9), None),
+    ("diagonal, Adam lr 0.1 (not recommended)", "diagonal", optax.adam(0.1), None),
+    ("2. diagonal L-BFGS", "diagonal", "lbfgs", None),
+    ("2. full L-BFGS", "full", "lbfgs", None),
+    ("3. full, natural gradient (SGD lr 1)", "full", None, None),
+    ("full, natural gradient, refresh at step 5", "full", None, 5),
+    ("full, natural gradient SGD lr 0.5", "full", optax.sgd(0.5), None),
+    ("full, Nesterov lr 1 (not recommended)", "full", optax.sgd(1.0, 0.9, nesterov=True), None),
+    ("baseline: old diag(F^-1) SGD, lr 0.5", "old", optax.sgd(0.5), None),
 ]
 
 
@@ -102,28 +104,28 @@ def timed_curvature(problem, params, precondition):
     return curvature, time.perf_counter() - t
 
 
-def step_time(problem, curvature, optimiser, nsteps=20):
-    fit = problem.fit(curvature, optimiser=optimiser).run(3, progress=False)  # compile
-    t = time.perf_counter()
-    fit.run(nsteps, progress=False)
-    return (time.perf_counter() - t) / nsteps
-
-
 def steps_to_converge(problem, curvature, optimiser, refresh_at, cap, loss_min):
+    """(steps to converge or None, refresh seconds, wall time of each step).
+
+    Steps are timed individually along the real trajectory and the run stops at
+    convergence; the first step's time includes compilation.
+    """
     fit = problem.fit(curvature, optimiser=optimiser)
-    extra = 0.0
+    extra, times = 0.0, []
     try:
-        if refresh_at:
-            fit.run(refresh_at, progress=False)
+        while fit.steps < cap:
+            if refresh_at and fit.steps == refresh_at:
+                t = time.perf_counter()
+                fit.refresh()
+                extra = time.perf_counter() - t
             t = time.perf_counter()
-            fit.refresh()
-            extra = time.perf_counter() - t
-        fit.run(cap - fit.steps, progress=False)
+            fit.step()  # returns a Python float, so the step has finished
+            times.append(time.perf_counter() - t)
+            if fit.losses[-1] - loss_min < TOLERANCE:  # loss before this step's update
+                return fit.steps - 1, extra, times
     except FloatingPointError:
-        return None, extra
-    excess = onp.array(fit.losses + [float(problem.loss(fit.active))]) - loss_min
-    hit = onp.flatnonzero(excess < TOLERANCE)
-    return (int(hit[0]) if hit.size else None), extra
+        pass
+    return None, extra, times
 
 
 def benchmark(n_zernikes, distances, n_random, sgd_cap, lbfgs_cap):
@@ -134,24 +136,12 @@ def benchmark(n_zernikes, distances, n_random, sgd_cap, lbfgs_cap):
     print(f"\n### n = {n} parameters ({n_zernikes} Zernikes + position + flux), "
           f"{photons:.2g} detected photons, cond(F_n) at truth = {reference.condition_number:.3g}\n")
 
-    # Per-step cost after warm-up, measured once at the physical start.
+    # Curvature setup cost, timed at the physical start.
     timed_curvature(problem, physical, "diagonal")  # first-call tracing overheads
-    cd, td = timed_curvature(problem, physical, "diagonal")
-    cf, tf = timed_curvature(problem, physical, "full")
+    _, td = timed_curvature(problem, physical, "diagonal")
+    _, tf = timed_curvature(problem, physical, "full")
     setup = {"diagonal": td, "full": tf, "old": td + tf}
-    per_step = {}
-    for label, precondition, optimiser, _ in METHODS:
-        curvature = {"diagonal": cd, "full": cf, "old": old_default(cd, cf)}[precondition]
-        per_step[label] = step_time(problem, curvature, optimiser)
-    grad = per_step[METHODS[0][0]]  # an SGD step is one value_and_grad
-    print(f"Curvature setup (incl. compile): diagonal {td:.2f} s (~{td / grad:.0f} gradients), "
-          f"full {tf:.2f} s (~{tf / grad:.0f} gradients). One value_and_grad ~ "
-          f"{grad * 1e3:.1f} ms.\n")
 
-    header = "| method | ms/step | " + " | ".join(
-        f"{name}: steps (conv.) / time" for name in start_sets) + " |"
-    print(header)
-    print("|" + "---|" * (2 + len(start_sets)))
     results = {label: [] for label, *_ in METHODS}
     for name, params_list in start_sets.items():
         for params in params_list:
@@ -160,19 +150,32 @@ def benchmark(n_zernikes, distances, n_random, sgd_cap, lbfgs_cap):
             for label, precondition, optimiser, refresh_at in METHODS:
                 curvature = {"diagonal": cd, "full": cf, "old": old_default(cd, cf)}[precondition]
                 cap = lbfgs_cap if optimiser == "lbfgs" else sgd_cap
-                steps, extra = steps_to_converge(problem, curvature, optimiser, refresh_at, cap,
-                                                 loss_min)
-                results[label].append((name, steps, extra))
+                steps, extra, times = steps_to_converge(problem, curvature, optimiser, refresh_at,
+                                                        cap, loss_min)
+                per_step = float(onp.median(times[1:])) if len(times) > 1 else onp.nan
+                results[label].append((name, steps, extra, per_step))
+
+    # Time per step: median over all runs of each run's median (compile step excluded).
+    per_step = {label: float(onp.nanmedian([r[3] for r in runs]))
+                for label, runs in results.items()}
+    grad = per_step[METHODS[0][0]]  # a (Nesterov) SGD step is one value_and_grad
+    print(f"Curvature setup (incl. compile): diagonal {td:.2f} s (~{td / grad:.0f} gradients), "
+          f"full {tf:.2f} s (~{tf / grad:.0f} gradients). One value_and_grad ~ "
+          f"{grad * 1e3:.1f} ms.\n")
+    header = "| method | ms/step | " + " | ".join(
+        f"{name}: steps (conv.) / time" for name in start_sets) + " |"
+    print(header)
+    print("|" + "---|" * (2 + len(start_sets)))
     for label, precondition, optimiser, _ in METHODS:
         cells = []
-        for name, params_list in start_sets.items():
-            runs = [(s, e) for nm, s, e in results[label] if nm == name]
-            done = [s for s, _ in runs if s is not None]
+        for name in start_sets:
+            runs = [r for r in results[label] if r[0] == name]
+            done = [(s, e, ps) for _, s, e, ps in runs if s is not None]
             if not done:
                 cells.append(f"not converged (0/{len(runs)})")
                 continue
-            median = float(onp.median(done))
-            seconds = setup[precondition] + median * per_step[label] + max(e for _, e in runs)
+            median = float(onp.median([s for s, _, _ in done]))
+            seconds = setup[precondition] + median * per_step[label] + max(e for _, e, _ in done)
             cells.append(f"{median:.0f} ({len(done)}/{len(runs)}) / {seconds:.2f} s")
         print(f"| {label} | {per_step[label] * 1e3:.1f} | " + " | ".join(cells) + " |")
 

@@ -62,3 +62,53 @@ def test_spectral_fisher_matches_dense_and_criterion():
                                  detector=detector, position_arcsec=(0.03, -0.02))
     finite = onp.isfinite(criterion)
     onp.testing.assert_allclose(mode_criterion(bright)[finite], criterion[finite] / 10, rtol=1e-6)
+
+
+def test_spectral_marginalisation_matches_dense_schur():
+    detector = make_detector()
+    models = attach_spectrum([make_optics(), make_optics()], spectral_args(),
+                             detector=detector, position_arcsec=[(0.03, -0.02), (-0.01, 0.02)])
+    flux_direction = onp.asarray(models[0].source.bin_flux)  # overall flux scale
+
+    def jac(model, key):
+        value = np.asarray(model.get(key), dtype=float)
+        f = lambda v: model.set(key, v.reshape(value.shape)).model().ravel()
+        return onp.asarray(jax.jacfwd(f)(value.ravel())).reshape(-1, value.size)
+
+    # Joint (bin flux, own position, own flux scale, shared pixel scale) Fisher, by brute force.
+    n = N_WAV
+    rows = []
+    for model in models:
+        Jq = jac(model, "source.bin_flux")
+        rows.append((Jq, onp.column_stack([jac(model, "source.position"), Jq @ flux_direction]),
+                     jac(model, "optics.psf_pixel_scale"), 1 / onp.asarray(model.model()).ravel()))
+    n_eta = 2 * 3 + 1
+    F = onp.zeros((n + n_eta, n + n_eta))
+    for i, (Jq, own, shared, w) in enumerate(rows):
+        J = onp.zeros((Jq.shape[0], n + n_eta))
+        J[:, :n], J[:, n + 3 * i:n + 3 * i + 3], J[:, -1:] = Jq, own, shared
+        F += J.T @ (w[:, None] * J)
+    d = onp.sqrt(onp.diag(F[n:, n:]))
+    inv = onp.linalg.pinv(F[n:, n:] / onp.outer(d, d), rcond=1e-10, hermitian=True) / onp.outer(d, d)
+    expected = F[:n, :n] - F[:n, n:] @ inv @ F[n:, :n]
+
+    got = spectral_fisher(models, marginalise=["source.position", flux_direction],
+                          marginalise_shared=["optics.psf_pixel_scale"])
+    onp.testing.assert_allclose(got, expected, rtol=1e-6, atol=1e-9 * onp.abs(expected).max())
+    assert onp.linalg.norm(got @ flux_direction) < 1e-8 * onp.linalg.norm(F[:n, :n] @ flux_direction)
+
+    modes = spectral_eigenmodes([make_optics(), make_optics()], spectral_args(), k=3,
+                                detector=detector,
+                                position_arcsec=[(0.03, -0.02), (-0.01, 0.02)],
+                                marginalise=["source.position"],
+                                marginalise_shared=["optics.psf_pixel_scale"])
+    assert modes.values.shape == (3,) and onp.all(modes.residuals < 1e-10)
+
+
+def test_spectral_masks_with_one_model_list():
+    detector = make_detector()
+    model = attach_spectrum(make_optics(), spectral_args(), detector=detector)
+    mask = onp.zeros((8, 8), dtype=bool)
+    mask[0] = True
+    onp.testing.assert_allclose(spectral_fisher([model], bad_masks=[mask]),
+                                spectral_fisher(model, bad_masks=mask))

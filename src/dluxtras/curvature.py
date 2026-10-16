@@ -1,25 +1,24 @@
 """Unit-free (diagonally equilibrated) Hessians.
 
-A Hessian in physical units has entries d2L/dx_i dx_j, so its rows and columns
-carry the units of each parameter: a coefficient in metres with a nm-scale
-effect gives entries ~1e18 larger than one with unit scale. Its condition
-number is then dominated by units rather than by real parameter degeneracy.
+A Hessian in physical units has entries `d2L / dx_i dx_j`, so its rows and columns
+carry each parameter's units. A Zernike coefficient in metres with a nm-scale effect
+gives entries ~1e18 larger than a parameter of order one, and the matrix's condition
+number then reflects units rather than real degeneracy between parameters.
 
-These functions reparameterise x = x0 + scales * u, differentiate in u, and
-then symmetrically normalise the result to unit diagonal (Jacobi scaling):
+These functions hold the Hessian as
 
     H = normalised / outer(s, s),    s = 1 / sqrt(|diag(H)|)
 
-normalised is dimensionless and ~O(1); s carries the units. For a Fisher
-matrix, s_i is the conditional 1-sigma uncertainty of x_i (all others fixed)
-and normalised is the Fisher matrix of the standardised parameters.
-Do linear algebra (solves, inverses, eigendecompositions) on normalised and
-only reapply s at the end; never invert the physical-units matrix directly.
+where `normalised` is dimensionless with a unit diagonal (Jacobi scaling) and `s`
+carries the units. For a Fisher matrix, `s_i` is the conditional 1-sigma of `x_i` (all
+other parameters fixed). Do linear algebra on `normalised` and reapply `s` at the end;
+never invert the physical-units matrix directly, and never apply damping, ridges or
+eigenvalue cutoffs to it.
 
-Normalisation removes ill-conditioning caused by units only. Degeneracy
-between parameters (correlations near +-1) survives it: cond(normalised)
-measures that, and is within a factor n of the best any diagonal rescaling
-can achieve (van der Sluis, 1969).
+Normalisation removes ill-conditioning caused by units only. Degeneracy between
+parameters (correlations near +-1) survives it: `cond(normalised)` measures that, and
+is within a factor n of the best any diagonal rescaling can achieve (van der Sluis,
+1969). `dluxtras.fitting` builds on these functions.
 """
 
 import jax
@@ -46,21 +45,45 @@ def _flat_scales(scales, x):
 
 
 def scaled_hessian(f, x, scales=None, *, nbatches=1, jit=True, checkpoint=False):
-    """Hessian of scalar f at pytree x, returned in unit-free form.
+    """Hessian of a scalar function, returned in unit-free form.
 
-    scales: rough characteristic size of each parameter in its own units,
-    as None (all ones), a scalar, or a pytree matching x whose leaves
-    broadcast to x's leaves, e.g. {'coefficients': 1e-9, 'position': 1e-7}.
-    Order-of-magnitude guesses are enough: they only keep intermediate
-    values far from float over/underflow during differentiation. The
-    exact normalisation is computed from the result.
+    Differentiates `f(x0 + c * u)` at `u = 0` with `zodiax.diffops.hessian`, then
+    normalises the result to a unit diagonal. Rescaling does not change the accuracy of
+    the Hessian itself (floating point and autodiff are scale-invariant); `scales` only
+    keeps intermediate values away from float over/underflow.
 
-    nbatches, jit and checkpoint are passed to zodiax.diffops.hessian.
+    Parameters
+    ----------
+    f : callable
+        Scalar function of a pytree, e.g. a negative log likelihood.
+    x : PyTree
+        Point to evaluate at, e.g. `{"coefficients": ..., "position": ...}`.
+    scales : None, float or PyTree, optional
+        Rough characteristic size of each parameter in its own units: a scalar, or a
+        pytree matching `x` whose leaves broadcast to `x`'s leaves, e.g.
+        `{"coefficients": 1e-9, "position": 1e-7}`. Order-of-magnitude guesses are
+        enough. Default `None` (all ones).
+    nbatches : int, optional
+        Passed to `zodiax.diffops.hessian` (memory). Default 1.
+    jit : bool, optional
+        Passed to `zodiax.diffops.hessian`. Default True.
+    checkpoint : bool, optional
+        Passed to `zodiax.diffops.hessian`. Default False.
 
-    Returns (normalised, s, unflatten): normalised is (n, n) with unit
-    diagonal (zero where a parameter has no curvature, -1 where it is
-    negative), s is (n,) in x's units with H = normalised / outer(s, s),
-    and unflatten maps a flat (n,) vector back to x's structure.
+    Returns
+    -------
+    normalised : Array
+        `(n, n)` Hessian with unit diagonal: zero where a parameter has no curvature
+        and -1 where its curvature is negative.
+    s : Array
+        `(n,)` scales in `x`'s units, with `H = normalised / outer(s, s)`.
+    unflatten : callable
+        Maps a flat `(n,)` vector back to `x`'s structure.
+
+    Raises
+    ------
+    ValueError
+        If `scales` are not finite and positive.
     """
     x_flat, unflatten = ravel_pytree(x)
     c = _flat_scales(scales, x)
@@ -85,20 +108,43 @@ def scaled_hessian(f, x, scales=None, *, nbatches=1, jit=True, checkpoint=False)
 
 
 def unscale(normalised, s):
-    """The Hessian in original units, normalised / outer(s, s).
+    """The Hessian in the parameters' own units, `normalised / outer(s, s)`.
 
-    In float32 this can over/underflow when s spans many decades; prefer
-    working with (normalised, s) directly.
+    In float32 this can over/underflow when `s` spans many decades; prefer working with
+    `(normalised, s)` directly.
+
+    Parameters
+    ----------
+    normalised : Array
+        `(n, n)` unit-free matrix.
+    s : Array
+        `(n,)` scales.
+
+    Returns
+    -------
+    Array
+        `(n, n)` matrix in original units.
     """
     return normalised / (s[:, None] * s[None, :])
 
 
 def scaled_covariance(normalised, s):
-    """Covariance inv(H) in original units, via Cholesky of normalised.
+    """Covariance `inv(H)` in the parameters' own units, via Cholesky of `normalised`.
 
-    Requires normalised to be positive definite (e.g. a Fisher matrix, or
-    the Hessian of a negative log likelihood at a minimum); otherwise the
-    result is NaN. Marginal uncertainties are np.sqrt(np.diag(cov)).
+    Requires `normalised` to be positive definite (e.g. a Fisher matrix, or the Hessian
+    of a negative log likelihood at a minimum); otherwise the result is NaN.
+
+    Parameters
+    ----------
+    normalised : Array
+        `(n, n)` unit-free matrix.
+    s : Array
+        `(n,)` scales.
+
+    Returns
+    -------
+    Array
+        `(n, n)` covariance. Marginal uncertainties are `np.sqrt(np.diag(cov))`.
     """
     factor = jsl.cho_factor(normalised, lower=True)
     inverse = jsl.cho_solve(factor, np.eye(normalised.shape[0], dtype=normalised.dtype))
@@ -107,9 +153,19 @@ def scaled_covariance(normalised, s):
 
 
 def correlation(normalised):
-    """Parameter correlation matrix (of the covariance) from normalised.
+    """Correlation matrix of the covariance `inv(H)`, from `normalised` alone.
 
-    Unit-free, so it never needs s: the scales cancel.
+    The scales cancel, so `s` is not needed.
+
+    Parameters
+    ----------
+    normalised : Array
+        `(n, n)` unit-free, positive-definite matrix.
+
+    Returns
+    -------
+    Array
+        `(n, n)` correlation matrix with unit diagonal.
     """
     factor = jsl.cho_factor(normalised, lower=True)
     inverse = jsl.cho_solve(factor, np.eye(normalised.shape[0], dtype=normalised.dtype))
