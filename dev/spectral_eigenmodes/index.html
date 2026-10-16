@@ -461,6 +461,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#reporting-the-spectrum-in-bins" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Reporting the spectrum in bins
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -696,6 +707,8 @@
       
         
       
+        
+      
     
     
     
@@ -831,6 +844,33 @@
     
   
   Spectral eigenmodes
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/spectral_bins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spectral bins
 
     
   </span>
@@ -1125,6 +1165,73 @@ with the spectrum's colour. Here's a 1 m circular aperture, 48 × 48 px at 0.06�
 </ul>
 <p>Then use K to choose wavelength sampling:
 <code>recommend_wavelength_sampling(K, photons=N)</code> suggests <code>n_coarse ≈ 2K</code>.</p>
+<h2 id="reporting-the-spectrum-in-bins">Reporting the spectrum in bins<a class="headerlink" href="#reporting-the-spectrum-in-bins" title="Permanent link">¤</a></h2>
+<p>After fitting the spectrum in the eigenmode basis, only the first K modes are measured; the
+rest stay at the reference spectrum. To report the result as K top-hat bins, choose bins that
+the measured modes can fully represent. Otherwise the unmeasured modes leak into the bin
+values as bias.</p>
+<p><code>optimal_bins</code> places the edges. With <code>B</code> the bin matrix (row k is the fraction of each fine
+wavelength cell inside bin k) and <code>P = V Vᵀ</code> the projector onto the K modes, the <strong>leakage</strong>
+of bin k is the fraction of the bin outside the modes' span:</p>
+<div class="arithmatex">\[
+L_k = \frac{\lVert B_k (I - P)\rVert^2}{\lVert B_k\rVert^2}
+\]</div>
+<p>The edges minimise the mean leakage, and every mode counts equally. Since top-hats don't
+overlap, K bins for K modes give the same optimum whether you ask how well the modes
+represent the bins or how well the bins represent the modes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dluxtras</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimal_bins</span><span class="p">,</span> <span class="n">constrainable_modes</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="n">constrainable_modes</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:,</span> <span class="p">:</span><span class="n">K</span><span class="p">]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">optimal_bins</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">modes</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">)</span>                     <span class="c1"># free widths</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">optimal_bins</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">modes</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">equal_widths</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only the outer edges move</span>
+
+<span class="c1"># After fitting coefficients c in that basis, with covariance C (e.g. diag(1 / values)):</span>
+<span class="n">flux</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">bins</span><span class="o">.</span><span class="n">bin_modes</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">modes</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>                <span class="c1"># photons per bin</span>
+<span class="n">density</span><span class="p">,</span> <span class="n">dcov</span> <span class="o">=</span> <span class="n">bins</span><span class="o">.</span><span class="n">bin_modes</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">modes</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># per metre</span>
+<span class="n">bins</span><span class="o">.</span><span class="n">edges</span><span class="p">,</span> <span class="n">bins</span><span class="o">.</span><span class="n">centres</span><span class="p">,</span> <span class="n">bins</span><span class="o">.</span><span class="n">widths</span><span class="p">,</span> <span class="n">bins</span><span class="o">.</span><span class="n">leakage</span>
+</code></pre></div>
+<ul>
+<li><strong>Outer edges</strong> may move inward by up to <code>max_edge_shift</code> (default 10% of the span), to
+  trim poorly constrained band tails. <code>max_edge_shift=0</code> fixes them.</li>
+<li><strong>Free widths</strong> are always at least one fine cell wide.</li>
+<li><strong>The search is global.</strong> The objective has kinks wherever an edge crosses a fine cell
+  boundary, so the outer edges are first scanned on a grid, then polished. The free-width
+  search starts from that equal-width optimum, so free widths are never worse than equal
+  widths.</li>
+<li><strong>Your own modes work too.</strong> <code>modes</code> can be a <code>SpectralModes</code>, or any orthonormal columns
+  with their <code>wavelengths</code>, e.g. eigenvectors of the observed information at your best fit.</li>
+</ul>
+<h3 id="equal-widths-vs-free-widths-and-the-choice-of-normalisation">Equal widths vs free widths, and the choice of normalisation<a class="headerlink" href="#equal-widths-vs-free-widths-and-the-choice-of-normalisation" title="Permanent link">¤</a></h3>
+<p>Here are both options for the 8 leading F606W modes (101 cells, 4700–7200 Å):</p>
+<table>
+<thead>
+<tr>
+<th>bins</th>
+<th>outer edges</th>
+<th>mean leakage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>equal widths (<code>equal_widths=True</code>)</td>
+<td>4749.8–7117.1 Å</td>
+<td>0.162</td>
+</tr>
+<tr>
+<td>free widths</td>
+<td>optimised</td>
+<td><strong>0.144</strong> (bins 253–338 Å wide)</td>
+</tr>
+</tbody>
+</table>
+<p>With equal widths, the mean leakage is the same quantity as the width-weighted
+<code>Σ‖B_k(I−P)‖² / Σ‖B_k‖²</code>; on these modes the two agreed to 0.35% or better (cells cut by an
+edge are the only difference). Optimising either one finds the same outer edges, to within
+0.3 Å.</p>
+<p>With free widths they differ, and the width-weighted form fails. It lets the optimiser shrink
+seven bins to zero width and give the eighth the whole band (a "leakage" of 0.002), which is
+why each bin is normalised separately here.</p>
 
 
 
